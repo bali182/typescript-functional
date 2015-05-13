@@ -15,7 +15,7 @@ class Iterables {
 		return Iterables.ofArray(elements);
 	}
 
-	public static filter<T>(iterable: Iterable<T>, predicate: (item : T) => boolean): Iterable<T> {
+	public static filter<T>(iterable: Iterable<T>, predicate: (item: T) => boolean): Iterable<T> {
 		return {
 			iterator(): Iterator<T> {
 				return Iterators.filter(iterable.iterator(), predicate);
@@ -23,7 +23,7 @@ class Iterables {
 		}
 	}
 
-	public static map<T, R>(iterable: Iterable<T>, mapper: (item : T) => R): Iterable<R> {
+	public static map<T, R>(iterable: Iterable<T>, mapper: (item: T) => R): Iterable<R> {
 		return {
 			iterator(): Iterator<R> {
 				return Iterators.map(iterable.iterator(), mapper);
@@ -31,11 +31,11 @@ class Iterables {
 		}
 	}
 
-	public static all<T>(iterable: Iterable<T>, predicate: (item : T) => boolean): boolean {
+	public static all<T>(iterable: Iterable<T>, predicate: (item: T) => boolean): boolean {
 		return Iterators.all(iterable.iterator(), predicate);
 	}
 
-	public static any<T>(iterable: Iterable<T>, predicate: (item : T) => boolean): boolean {
+	public static any<T>(iterable: Iterable<T>, predicate: (item: T) => boolean): boolean {
 		return Iterators.any(iterable.iterator(), predicate);
 	}
 
@@ -77,6 +77,10 @@ class Iterables {
 				return Iterators.skip(iterable.iterator(), skipped);
 			}
 		};
+	}
+
+	public static forEach<T>(iterable: Iterable<T>, consumer: (input: T) => void) : void {
+		Iterators.forEach(iterable.iterator(), consumer);
 	}
 
 	public static toArray<T>(iterable: Iterable<T>): Array<T> {

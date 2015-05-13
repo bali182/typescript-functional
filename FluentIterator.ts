@@ -63,6 +63,10 @@ class FluentIterator<T> implements Iterator<T> {
 		return Iterators.last(this.mDelegate);
 	}
 
+	public forEach(consumer: (input: T) => void): void {
+		Iterators.forEach(this.mDelegate, consumer);
+	}
+
 	public toArray(): Array<T> {
 		return Iterators.toArray(this.mDelegate);
 	}

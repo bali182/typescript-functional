@@ -83,6 +83,12 @@ class Iterators {
 		return new SkippingIterator<T>(iterator, skipped);
 	}
 
+	public static forEach<T>(iterator: Iterator<T>, consumer: (input: T) => void) : void {
+		while (iterator.hasNext()) {
+			consumer(iterator.next());
+		}
+	}
+
 	public static empty<T>(): Iterator<T> {
 		return Iterators.EMPTY;
 	}
@@ -196,7 +202,7 @@ class AbstractDelegateIterator<T> extends AbstractIterator<T> {
 }
 
 class FilteringIterator<T> extends AbstractDelegateIterator<T> {
-	private mPredicate: (input : T) => boolean;
+	private mPredicate: (input: T) => boolean;
 
 	constructor(delegate: Iterator<T>, predicate: (input: T) => boolean) {
 		super(delegate);
