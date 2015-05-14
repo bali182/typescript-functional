@@ -29,11 +29,12 @@ class FilteringIterator<T> extends DelegateIterator<T> {
 				if (this.mPredicate(next)) {
 					this.mCurrent = next;
 					this.mConsumed = false;
-					break;
+					return true;
 				}
 			}
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	next(): T {
