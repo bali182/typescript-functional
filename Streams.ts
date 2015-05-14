@@ -26,6 +26,10 @@ class Streams {
 	public static generate<T>(supplier: () => T): Stream<T> {
 		return Streams.ofIterator(new EndlessIterator(supplier));
 	}
+	
+	public static repeat<T>(value : T) : Stream<T> {
+		return Streams.generate(() => value);
+	}
 
 	public static range(from: number, to: number, delta?: number): Stream<number> {
 		return Streams.ofIterator(new RangeIterator(from, to, delta));
