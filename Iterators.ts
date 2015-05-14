@@ -317,3 +317,41 @@ class ConcatenatingIterator<T> implements Iterator<T> {
         return currentHasNext;
 	}
 }
+
+class EndlessIterator<T> implements Iterator<T> {
+	private mSupplier: () => T;
+
+	constructor(supplier: () => T) {
+		this.mSupplier = supplier;
+	}
+
+	next(): T {
+		return this.mSupplier();
+	}
+
+	hasNext(): boolean {
+		return true;
+	}
+}
+
+class RangeIterator implements Iterator<number> {
+	private mFrom: number;
+	private mTo: number;
+	private mCurrent: number;
+	private mDelta: number
+
+	constructor(from: number, to: number, delta?: number) {
+		this.mCurrent = from;
+		this.mTo = to;
+		this.mDelta = delta ? delta : 1;
+	}
+
+	next(): number {
+		this.mCurrent = this.mCurrent + this.mDelta;
+		return this.mCurrent;
+	}
+
+	hasNext(): boolean {
+		return this.mCurrent + this.mDelta <= this.mTo;
+	}
+}
