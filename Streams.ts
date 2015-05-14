@@ -91,9 +91,6 @@ class Streams {
 	 * Constructs an empty Stream.
 	 */
 	public static empty<T>(): Stream<T> {
-		return Streams.EMPTY;
+		return Streams.ofIterator(Iterators.empty<T>());
 	}
-	
-	/** Empty stream, which emits no elements. */
-	private static EMPTY : Stream<any> = Streams.ofIterator(Iterators.empty<any>());
 }

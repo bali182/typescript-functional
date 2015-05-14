@@ -21,17 +21,22 @@ class RangeIterator implements Iterator<number> {
 	 * @param delta (Optional) optional delta. If not present, +1 will be used.
 	 */
 	constructor(from: number, to: number, delta?: number) {
-		this.mCurrent = from;
 		this.mTo = to;
+		this.mFrom = from;
 		this.mDelta = delta ? delta : 1;
+		this.mCurrent = from;
 	}
 
 	next(): number {
+		if (!this.hasNext()) {
+			throw new Error("No more elements");
+		}
+		var current = this.mCurrent;
 		this.mCurrent = this.mCurrent + this.mDelta;
-		return this.mCurrent;
+		return current;
 	}
 
 	hasNext(): boolean {
-		return this.mCurrent + this.mDelta <= this.mTo;
+		return this.mDelta > 0 ? this.mCurrent <= this.mTo : this.mCurrent > this.mTo;
 	}
 }
