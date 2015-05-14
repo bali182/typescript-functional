@@ -1,7 +1,11 @@
 /// <reference path="IteratorStream" />
 /// <reference path="Iterators" />
+/// <reference path="ArrayIterator" />
+/// <reference path="EndlessIterator" />
+/// <reference path="RangeIterator" />
 
 class Streams {
+	
 	public static ofIterator<T>(iterator: Iterator<T>): Stream<T> {
 		return new IteratorStream(iterator);
 	}
@@ -21,8 +25,8 @@ class Streams {
 	public static generate<T>(supplier: () => T): Stream<T> {
 		return Streams.ofIterator(new EndlessIterator(supplier));
 	}
-	
-	public static repeat<T>(value : T) : Stream<T> {
+
+	public static repeat<T>(value: T): Stream<T> {
 		return Streams.generate(() => value);
 	}
 

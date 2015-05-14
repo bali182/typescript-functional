@@ -1,4 +1,5 @@
 class Optional<T> {
+	
 	private static EMPTY: Optional<any> = new Optional(null);
 	private mReference: T = undefined;
 

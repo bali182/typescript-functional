@@ -1,6 +1,7 @@
 /// <reference path="Optional" />
 
 interface Stream<T> {
+	
 	filter(predicate: (input: T) => boolean): Stream<T>;
 
 	map<R>(mapper: (input: T) => R): Stream<R>
