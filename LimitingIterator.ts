@@ -1,10 +1,20 @@
 /// <reference path="Iterator" />
 /// <reference path="DelegateIterator" />
 
+/**
+ * Iterator, which limits the emited elements.
+ */
 class LimitingIterator<T> extends DelegateIterator<T> {
+	/** The limit of the emited elements */
 	private mLimit: number;
+	/** Internal indicator, on how many items have already been emited. */
 	private mIteratedCount: number;
-
+	
+	/**
+	 * Constructor.
+	 * @param delegate The delegate iterator.
+	 * @param limit The maximum amount of emited elements.
+	 */
 	constructor(delegate: Iterator<T>, limit: number) {
 		super(delegate)
 		this.mLimit = limit;

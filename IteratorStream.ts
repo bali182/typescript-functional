@@ -2,6 +2,9 @@
 /// <reference path="Iterators" />
 /// <reference path="Stream" />
 
+/**
+ * Stream, which operates on an iterator.
+ */
 class IteratorStream<T> implements Stream<T>{
 	private mIterator: Iterator<T>
 	private mIterated: boolean;

@@ -1,10 +1,18 @@
 /// <reference path="Iterator" />
 
+/**
+ * Iterator, which iterates on an array of any type.
+ */
 class ArrayIterator<T> implements Iterator<T> {
-	
+	/** The current index of the iteration. */
 	private mIndex: number;
+	/** The iterated array. */
 	private mArray: Array<T>;
-
+	
+	/**
+	 * Constructor.
+	 * @param array The iterated array.
+	 */
 	constructor(array: Array<T>) {
 		this.mArray = array;
 		this.mIndex = 0;
@@ -12,7 +20,7 @@ class ArrayIterator<T> implements Iterator<T> {
 
 	next(): T {
 		if (!this.hasNext()) {
-			throw new Error("no such element");
+			throw new Error("No such element");
 		}
 		return this.mArray[this.mIndex++];
 	}

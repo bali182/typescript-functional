@@ -1,7 +1,10 @@
 /// <reference path="Optional" />
 
+/**
+ * Stream is a wrapper interface for iteratos, to perform operations comfortably on them.
+ */
 interface Stream<T> {
-	
+
 	filter(predicate: (input: T) => boolean): Stream<T>;
 
 	map<R>(mapper: (input: T) => R): Stream<R>
@@ -27,6 +30,6 @@ interface Stream<T> {
 	forEach(consumer: (input: T) => void): void
 
 	toArray(): Array<T>
-	
-	iterator() : Iterator<T>
+
+	iterator(): Iterator<T>
 }

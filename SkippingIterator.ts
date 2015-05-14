@@ -1,11 +1,21 @@
 /// <reference path="Iterator" />
 /// <reference path="DelegateIterator" />
 
+/**
+ * Iterator which skips a given amount of elements from the delegate iterator.
+ */
 class SkippingIterator<T> extends DelegateIterator<T> {
 	
+	/** The amount of elements to skip. */
 	private mSkip: number;
+	/** true, if the elements are already skiped, false otherwise. */
 	private mSkiped: boolean;
-
+	
+	/**
+	 * Constructor.
+	 * @param delegate The delegate iterator.
+	 * @param skip The number of skiped elements.
+	 */
 	constructor(delegate: Iterator<T>, skip: number) {
 		super(delegate);
 		this.mSkip = skip;
