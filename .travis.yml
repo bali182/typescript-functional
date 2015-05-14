@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "0.12"
+before_script:
+ - chmod +x runtests.sh
+notifications:
+  email:
+    recipients:
+      - edesbalazs@gmail.com
+    on_success: change
+    on_failure: change
+script: ./runtests.sh
