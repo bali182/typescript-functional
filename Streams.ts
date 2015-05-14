@@ -1,6 +1,5 @@
 /// <reference path="IteratorStream" />
 /// <reference path="Iterators" />
-/// <reference path="Iterable" />
 
 class Streams {
 	public static ofIterator<T>(iterator: Iterator<T>): Stream<T> {
@@ -17,10 +16,6 @@ class Streams {
 
 	public static ofValues<T>(...values: Array<T>): Stream<T> {
 		return Streams.ofArray(values);
-	}
-
-	public static ofIterable<T>(iterable: Iterable<T>): Stream<T> {
-		return Streams.ofIterator(iterable.iterator());
 	}
 
 	public static generate<T>(supplier: () => T): Stream<T> {
