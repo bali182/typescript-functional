@@ -3,4 +3,4 @@ npm install -g jasmine
 cd src-test
 tsc
 jasmine init
-node src-gen/app.js
+jasmine src-gen/app.js
