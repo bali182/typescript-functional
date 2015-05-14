@@ -26,4 +26,6 @@ interface Stream<T> {
 	forEach(consumer: (input: T) => void): void
 
 	toArray(): Array<T>
+	
+	iterator() : Iterator<T>
 }
