@@ -36,6 +36,12 @@ class IteratorStream<T> implements Stream<T>{
 	tail(): Stream<T> {
 		return new IteratorStream(Iterators.tail(this.mIterator), this.mIterated);
 	}
+	
+	iterator() : Iterator<T> {
+		this.checkIterated();
+		this.mIterated = true;
+		return this.mIterator;
+	}
 
 	any(predicate: (input: T) => boolean): boolean {
 		this.checkIterated();
