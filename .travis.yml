@@ -7,6 +7,5 @@ notifications:
   email:
     recipients:
       - edesbalazs@gmail.com
-    on_success: change
     on_failure: change
 script: ./runtests.sh
