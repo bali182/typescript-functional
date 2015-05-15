@@ -4,7 +4,7 @@
  * Collector for calculating the average (sum / count) of numeric values.
  */
 class AveragingCollector extends SumCollector {
-	private mCount: number;
+	private mCount: number = 0;
 
 	accumulate(first: number, second: number): number {
 		this.mCount++;

@@ -18,9 +18,10 @@ class MinCollector<T> implements Collector<T, T, Optional<T>> {
 
 	accumulate(first: T, second: T): T {
 		if (!this.mStared) {
+			this.mStared = true;
 			return second;
 		}
-		return this.mComparator(first, second) > 0 ? first : second;
+		return this.mComparator(first, second) < 0 ? first : second;
 	}
 
 	finish(accumulated: T): Optional<T> {

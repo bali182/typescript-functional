@@ -22,8 +22,8 @@ describe("Collectors", () => {
 		expect(minPresent.get()).toEqual(1);
 
 		var minForSingle = Streams.ofValue(5).collect(Collectors.min(comparator));
-		expect(minPresent.isPresent()).toEqual(true);
-		expect(minPresent.get()).toEqual(5);
+		expect(minForSingle.isPresent()).toEqual(true);
+		expect(minForSingle.get()).toEqual(5);
 
 		var minForNone = Streams.empty<number>().collect(Collectors.min(comparator));
 		expect(minForNone.isPresent()).toEqual(false);
@@ -37,8 +37,8 @@ describe("Collectors", () => {
 		expect(minPresent.get()).toEqual(11);
 
 		var minForSingle = Streams.ofValue(5).collect(Collectors.min(comparator));
-		expect(minPresent.isPresent()).toEqual(true);
-		expect(minPresent.get()).toEqual(5);
+		expect(minForSingle.isPresent()).toEqual(true);
+		expect(minForSingle.get()).toEqual(5);
 
 		var minForNone = Streams.empty<number>().collect(Collectors.min(comparator));
 		expect(minForNone.isPresent()).toEqual(false);
