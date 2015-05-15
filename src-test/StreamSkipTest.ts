@@ -9,7 +9,7 @@ describe("Stream#skip", () => {
 	});
 
 	it("Skip ranges", () => {
-		expect(Streams.range(0, 10).skip(8).toArray()).toEqual([9, 10]);
+		expect(Streams.range(0, 10).skip(8).toArray()).toEqual([8, 9, 10]);
 		expect(Streams.range(0, 10, 2).skip(2).toArray()).toEqual([4, 6, 8, 10]);
 		expect(Streams.range(10, 0, -2).skip(2).toArray()).toEqual([6, 4, 2, 0]);
 	});
