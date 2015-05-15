@@ -37,6 +37,6 @@ class RangeIterator implements Iterator<number> {
 	}
 
 	hasNext(): boolean {
-		return this.mDelta > 0 ? this.mCurrent <= this.mTo : this.mCurrent > this.mTo;
+		return this.mDelta > 0 ? this.mCurrent <= this.mTo : this.mCurrent >= this.mTo;
 	}
 }

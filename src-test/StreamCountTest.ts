@@ -18,7 +18,7 @@ describe("Stream#count", () => {
 			.map(n => n.toString())
 			.limit(3)
 			.skip(1)
-			.toArray();
+			.count();
 		expect(result).toEqual(2);
 	});
 })
