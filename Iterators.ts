@@ -115,19 +115,6 @@ class Iterators {
 	}
 	
 	/**
-	 * Returns the count of the items in the iterator.
-	 * @param iterator The iterator.
-	 */
-	public static count<T>(iterator: Iterator<T>): number {
-		var count = 0;
-		while (iterator.hasNext()) {
-			iterator.next();
-			count++;
-		}
-		return count;
-	}
-	
-	/**
 	 * Limits the iterator, to contain maximum so many elements as the limit.
 	 * @param iterator The iterator. 
 	 * @param limit The limit.
@@ -143,18 +130,6 @@ class Iterators {
 	 */
 	public static skip<T>(iterator: Iterator<T>, skipped: number): Iterator<T> {
 		return new SkippingIterator<T>(iterator, skipped);
-	}
-	
-	/**
-	 * Converts the given iterator to an array.
-	 * @param iterator The iterator.
-	 */
-	public static toArray<T>(iterator: Iterator<T>): Array<T> {
-		var array: Array<T> = [];
-		while (iterator.hasNext()) {
-			array.push(iterator.next());
-		}
-		return array;
 	}
 	
 	/**

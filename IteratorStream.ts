@@ -1,6 +1,8 @@
 /// <reference path="Iterator" />
 /// <reference path="Iterators" />
 /// <reference path="Stream" />
+/// <reference path="Collector" />
+/// <reference path="Collectors" />
 
 /**
  * Stream, which operates on an iterator.
@@ -39,8 +41,8 @@ class IteratorStream<T> implements Stream<T>{
 	tail(): Stream<T> {
 		return new IteratorStream(Iterators.tail(this.mIterator), this.mIterated);
 	}
-	
-	iterator() : Iterator<T> {
+
+	iterator(): Iterator<T> {
 		this.checkIterated();
 		this.mIterated = true;
 		return this.mIterator;
@@ -77,9 +79,7 @@ class IteratorStream<T> implements Stream<T>{
 	}
 
 	count(): number {
-		this.checkIterated();
-		this.mIterated = true;
-		return Iterators.count(this.mIterator);
+		return this.collect(Collectors.count());
 	}
 
 	forEach(consumer: (input: T) => void): void {
@@ -89,14 +89,28 @@ class IteratorStream<T> implements Stream<T>{
 	}
 
 	toArray(): Array<T> {
-		this.checkIterated();
-		this.mIterated = true;
-		return Iterators.toArray(this.mIterator);
+		return this.collect(Collectors.toArray<T>());
 	}
-	
-	collect<I, R>(collector: Collector<I, T, R>) : R {
+
+	collect<I, R>(collector: Collector<I, T, R>): R {
 		this.checkIterated();
 		this.mIterated = true;
 		return Iterators.collect(this.mIterator, collector);
+	}
+
+	min(comparator: (first: T, second: T) => number): Optional<T> {
+		return this.collect(Collectors.min(comparator));
+	}
+
+	max(comparator: (first: T, second: T) => number): Optional<T> {
+		return this.collect(Collectors.max(comparator));
+	}
+
+	average(mapper: (input: T) => number): number {
+		return this.map(mapper).collect(Collectors.average());
+	}
+
+	sum(mapper: (input: T) => number): number {
+		return this.map(mapper).collect(Collectors.sum());
 	}
 }

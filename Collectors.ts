@@ -12,12 +12,12 @@
 class Collectors {
 	
 	/** Returns a collector, which accumulates the average of numeric values. */
-	public average(): Collector<number, number, number> {
+	public static average(): Collector<number, number, number> {
 		return new AveragingCollector();
 	}
 	
 	/** Returns a collector, which accumulates the sum of numeric values. */
-	public sum(): Collector<number, number, number> {
+	public static sum(): Collector<number, number, number> {
 		return new SumCollector();
 	}
 	
@@ -25,7 +25,7 @@ class Collectors {
 	 * Returns a collector, which finds the minimum of values, using the given comparator function.
 	 * @param comparator The comparator function to compare the values. ret < 0 - first is smaller, == 0 - equals, > 0 - bigger, than the second.
 	 */
-	public min<T>(comparator: (first: T, second: T) => number): Collector<T, T, Optional<T>> {
+	public static min<T>(comparator: (first: T, second: T) => number): Collector<T, T, Optional<T>> {
 		return new MinCollector(comparator);
 	}
 
@@ -33,17 +33,17 @@ class Collectors {
 	 * Returns a collector, which finds the maximum of values, using the given comparator function.
 	 * @param comparator The comparator function to compare the values. ret < 0 - first is smaller, == 0 - equals, > 0 - bigger, than the second.
 	 */
-	public max<T>(comparator: (first: T, second: T) => number): Collector<T, T, Optional<T>> {
+	public static max<T>(comparator: (first: T, second: T) => number): Collector<T, T, Optional<T>> {
 		return new MaxCollector(comparator);
 	}
 	
 	/** Returns a collector, which counts the values. */
-	public count<T>(): Collector<number, T, number> {
+	public static count<T>(): Collector<number, T, number> {
 		return new CounterCollector();
 	}
 	
 	/** Returns a collector, which puts all the elements passed through into an array, and finally returns this array. */
-	public toArray<T>(): Collector<Array<T>, T, Array<T>> {
+	public static toArray<T>(): Collector<Array<T>, T, Array<T>> {
 		return new ToArrayCollector<T>();
 	}
 }

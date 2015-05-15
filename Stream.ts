@@ -26,13 +26,21 @@ interface Stream<T> {
 
 	last(): Optional<T>
 
+	min(comparator: (first: T, second: T) => number): Optional<T>
+
+	max(comparator: (first: T, second: T) => number): Optional<T>
+
+	average(mapper: (input: T) => number): number
+
+	sum(mapper: (input: T) => number): number
+
 	count(): number
 
 	forEach(consumer: (input: T) => void): void
 
 	toArray(): Array<T>
 
-	collect<I, R>(collector: Collector<I, T, R>) : R
+	collect<I, R>(collector: Collector<I, T, R>): R
 
 	iterator(): Iterator<T>
 }
