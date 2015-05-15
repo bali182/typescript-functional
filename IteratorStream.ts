@@ -8,14 +8,22 @@
  * Stream, which operates on an iterator.
  */
 class IteratorStream<T> implements Stream<T>{
+	/** The delegeate iterator */
 	private mIterator: Iterator<T>
+	/** Flag indicating if the Stream was already iterated or not. */
 	private mIterated: boolean;
-
+	
+	/**
+	 * Constructor.
+	 * @param iterator The delegeate iterator
+	 * @param iterated Flag indicating if the Stream was already iterated or not.
+	 */
 	constructor(iterator: Iterator<T>, iterated?: boolean) {
 		this.mIterator = iterator;
 		this.mIterated = !!iterated;
 	}
-
+	
+	/** Throws an exception if the Stream is already iterated. */
 	private checkIterated(): void {
 		if (this.mIterated) {
 			throw new Error("Already iterated");
