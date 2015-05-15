@@ -1,118 +1,49 @@
 /// <reference path="Collector" />
-/// <reference path="Iterator" />
+/// <reference path="AveragingCollector" />
+/// <reference path="MinCollector" />
+/// <reference path="MaxCollector" />
+/// <reference path="CounterCollector" />
+/// <reference path="SumCollector" />
+/// <reference path="ToArrayCollector" />
 
-// Base collect method:
-
+/**
+ * Collection of static factory methods for creating collectors.
+ */
 class Collectors {
+	
+	/** Returns a collector, which accumulates the average of numeric values. */
 	public average(): Collector<number, number, number> {
 		return new AveragingCollector();
 	}
-
+	
+	/** Returns a collector, which accumulates the sum of numeric values. */
 	public sum(): Collector<number, number, number> {
 		return new SumCollector();
 	}
-
-	public min<T>(comparator: (first: T, second: T) => number): Collector<T, T, T> {
+	
+	/**
+	 * Returns a collector, which finds the minimum of values, using the given comparator function.
+	 * @param comparator The comparator function to compare the values. ret < 0 - first is smaller, == 0 - equals, > 0 - bigger, than the second.
+	 */
+	public min<T>(comparator: (first: T, second: T) => number): Collector<T, T, Optional<T>> {
 		return new MinCollector(comparator);
 	}
 
-	public max<T>(comparator: (first: T, second: T) => number): Collector<T, T, T> {
+	/**
+	 * Returns a collector, which finds the maximum of values, using the given comparator function.
+	 * @param comparator The comparator function to compare the values. ret < 0 - first is smaller, == 0 - equals, > 0 - bigger, than the second.
+	 */
+	public max<T>(comparator: (first: T, second: T) => number): Collector<T, T, Optional<T>> {
 		return new MaxCollector(comparator);
 	}
-
-	public count<T>() {
+	
+	/** Returns a collector, which counts the values. */
+	public count<T>(): Collector<number, T, number> {
 		return new CounterCollector();
 	}
-}
-
-class CounterCollector<T> implements Collector<number, T, number> {
-
-	initial(): number {
-		return 0;
-	}
-
-	accumulate(countSoFar: number, input: T): number {
-		return countSoFar + 1;
-	}
-
-	finish(accumulated: number): number {
-		return accumulated;
-	}
-}
-
-class MinCollector<T> implements Collector<T, T, T> {
-
-	private mStared: boolean = false;
-	private mComparator: (first: T, second: T) => number;
-
-	constructor(comparator: (first: T, second: T) => number) {
-		this.mComparator = comparator;
-	}
-
-	initial(): T {
-		return undefined;
-	}
-
-	accumulate(first: T, second: T): T {
-		if (!this.mStared) {
-			return second;
-		}
-		return this.mComparator(first, second) < 0 ? first : second;
-	}
-
-	finish(accumulated: T): T {
-		return accumulated;
-	}
-}
-
-class MaxCollector<T> implements Collector<T, T, T> {
-
-	private mStared: boolean = false;
-	private mComparator: (first: T, second: T) => number;
-
-	constructor(comparator: (first: T, second: T) => number) {
-		this.mComparator = comparator;
-	}
-
-	initial(): T {
-		return undefined;
-	}
-
-	accumulate(first: T, second: T): T {
-		if (!this.mStared) {
-			return second;
-		}
-		return this.mComparator(first, second) > 0 ? first : second;
-	}
-
-	finish(accumulated: T): T {
-		return accumulated;
-	}
-}
-
-class SumCollector implements Collector<number, number, number>{
-	initial(): number {
-		return 0;
-	}
-
-	accumulate(first: number, second: number): number {
-		return first + second;
-	}
-
-	finish(accumulated: number): number {
-		return accumulated;
-	}
-}
-
-class AveragingCollector extends SumCollector {
-	private mCount: number;
-
-	accumulate(first: number, second: number): number {
-		this.mCount++;
-		return super.accumulate(first, second);
-	}
-
-	finish(accumulated: number): number {
-		return accumulated / this.mCount;
+	
+	/** Returns a collector, which puts all the elements passed through into an array, and finally returns this array. */
+	public toArray<T>(): Collector<Array<T>, T, Array<T>> {
+		return new ToArrayCollector<T>();
 	}
 }
