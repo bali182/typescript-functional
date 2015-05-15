@@ -6,9 +6,9 @@
  */
 interface Collector<I, T, R> {
 	/** Supplies the initial data. */
-	supplier(): () => I;
+	initial(): I;
 	/** Accumulates each new element. */
-	accumulator(): (state: I, element: T) => I;
+	accumulate(first: I, second: T): I;
 	/** Returns the finished data. */
-	finisher(): (state: I) => R;
+	finish(accumulated: I): R;
 }

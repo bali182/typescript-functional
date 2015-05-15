@@ -6,6 +6,7 @@
 /// <reference path="LimitingIterator" />
 /// <reference path="SkippingIterator" />
 /// <reference path="FilteringIterator" />
+/// <reference path="Collector" />
 
 /**
  * Collection of static methods, which operate on iterators.
@@ -165,6 +166,19 @@ class Iterators {
 		while (iterator.hasNext()) {
 			consumer(iterator.next());
 		}
+	}
+	
+	/**
+	 * Generic way of accumulating all the elements in the given iterator.
+	 * @param iterator The iterator to accumulate.
+	 * @param collector The collector to do the accumulating.
+	 */
+	public static collect<I, T, R>(iterator: Iterator<T>, collector: Collector<I, T, R>): R {
+		var accumulated: I = collector.initial();
+		while (iterator.hasNext()) {
+			accumulated = collector.accumulate(accumulated, iterator.next());
+		}
+		return collector.finish(accumulated);
 	}
 	
 	/**

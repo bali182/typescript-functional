@@ -1,4 +1,5 @@
 /// <reference path="Optional" />
+/// <reference path="Collector" />
 
 /**
  * Stream is a wrapper interface for iteratos, to perform operations comfortably on them.
@@ -30,6 +31,8 @@ interface Stream<T> {
 	forEach(consumer: (input: T) => void): void
 
 	toArray(): Array<T>
+
+	collect<I, R>(collector: Collector<I, T, R>) : R
 
 	iterator(): Iterator<T>
 }

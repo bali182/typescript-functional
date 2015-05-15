@@ -93,4 +93,10 @@ class IteratorStream<T> implements Stream<T>{
 		this.mIterated = true;
 		return Iterators.toArray(this.mIterator);
 	}
+	
+	collect<I, R>(collector: Collector<I, T, R>) : R {
+		this.checkIterated();
+		this.mIterated = true;
+		return Iterators.collect(this.mIterator, collector);
+	}
 }
