@@ -73,10 +73,23 @@ What is done, and what is planned:
 ##Tests
 
 ###For Iterators
-Implicitly used by Streams, no separate tests, unless necessary
+- [x] `ArrayIterator`
+- [x] `DelegateIterator`
+- [x] `FilteringIterator`
+- [x] `ConcatenatingIterator`
+- [x] `RangeIterator`
+- [x] `LimitingIterator`
+- [x] `SkippingIterator`
+- [ ] `EndlessIterator` - Bunch of stuff tests it implicitly, but how to test it individually?
 
 ###For Collectors
-Implicitly used by Streams, no separate tests, unless necessary
+- [x] `AverageCollector`
+- [x] `SumCollector`
+- [x] `MinCollector`
+- [x] `MaxCollector`
+- [x] `CounterCollector`
+- [x] `ToArrayCollector`
+- [x] `JoiningCollector`
 
 ###For Streams
 
