@@ -54,6 +54,7 @@ What is done, and what is planned:
 - [ ] `zip()` - 2 Streams to 1
 - [ ] `reverse()` 
 - [ ] `sort()`
+- [x] `flatten()`
 - [ ] `distinct()` - Maybe with a `Collector` - needs a `Set` datatype.
 - [ ] `groupBy()` - Maybe with a `Collector` - needs a `Map` datatype.
 
@@ -96,3 +97,4 @@ Implicitly used by Streams, no separate tests, unless necessary
 - [x] `sum()` 
 - [x] `count()`
 - [x] `toArray()`
+- [x] `flatten()`

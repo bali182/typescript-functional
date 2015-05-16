@@ -49,6 +49,12 @@ class IteratorStream<T> implements Stream<T>{
 	tail(): Stream<T> {
 		return new IteratorStream(Iterators.tail(this.mIterator), this.mIterated);
 	}
+	
+	flatten<R>(streamify: (input: T) => Stream<R>): Stream<R> {
+		return new IteratorStream<R>(new ConcatenatingIterator<R>(
+			this.map(streamify).map(stream => stream.iterator()).iterator()
+		), this.mIterated);
+	}
 
 	iterator(): Iterator<T> {
 		this.checkIterated();

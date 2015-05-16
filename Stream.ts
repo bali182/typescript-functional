@@ -36,6 +36,8 @@ interface Stream<T> {
 
 	count(): number
 
+	flatten<R>(streamify: (input: T) => Stream<R>): Stream<R>;
+
 	forEach(consumer: (input: T) => void): void
 
 	toArray(): Array<T>
