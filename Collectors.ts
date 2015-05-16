@@ -5,6 +5,7 @@
 /// <reference path="CounterCollector" />
 /// <reference path="SumCollector" />
 /// <reference path="ToArrayCollector" />
+/// <reference path="JoiningCollector" />
 
 /**
  * Collection of static factory methods for creating collectors.
@@ -45,5 +46,14 @@ class Collectors {
 	/** Returns a collector, which puts all the elements passed through into an array, and finally returns this array. */
 	public static toArray<T>(): Collector<Array<T>, T, Array<T>> {
 		return new ToArrayCollector<T>();
+	}
+	/** 
+	 * Returns a collector, which joins all the elements as a single string
+	 * @param separator The separator used to separate values (e.g.: ', ')
+	 * @param prefix The prefix used to put before all joined values (e.g.: '[')
+	 * @param suffix The suffix used to put after all joined values (e.g.: ']')
+	 */
+	public static join<T>(separator?: string, prefix?: string, suffix?: string): Collector<string, T, string> {
+		return new JoiningCollector(separator, prefix, suffix);
 	}
 }

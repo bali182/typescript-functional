@@ -66,6 +66,7 @@ What is done, and what is planned:
 - [x] `min()` 
 - [x] `max()` 
 - [x] `count()` 
+- [x] `join()` 
 - [ ] `groupBy()` 
 - [ ] `distinct()`
 

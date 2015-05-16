@@ -43,6 +43,12 @@ describe("Collectors", () => {
 		var minForNone = Streams.empty<number>().collect(Collectors.min(comparator));
 		expect(minForNone.isPresent()).toEqual(false);
 	});
+
+	it("Join", () => {
+		expect(Streams.ofArray(["A", "B", "C"]).collect(Collectors.join())).toEqual("ABC");
+		expect(Streams.ofArray(["A", "B", "C"]).collect(Collectors.join(",", "[", "]"))).toEqual("[A,B,C]");
+		expect(Streams.ofArray([1, 2, 3]).collect(Collectors.join(",", "["))).toEqual("[1,2,3");
+	});
 	
 	// count and toArray are tested implicitly
 });
