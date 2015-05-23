@@ -12,6 +12,19 @@ describe("Stream#count", () => {
 		expect(Streams.ofArray(["A", "B", "C", "D", "E"]).count()).toEqual(5);
 	});
 
+	it("Filtered", () => {
+		expect(Streams.ofValues(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10).filter(n => n % 2 == 0).count()).toBe(6)
+	});
+
+	it("Mapped", () => {
+		expect(Streams.range(1, 10).map(s => s.toString()).count()).toEqual(10);
+		expect(Streams.ofValues(1, 2, 3, 4, 5).map(n => n.toString()).count()).toBe(5)
+	});
+
+	it("Skip & Limit", () => {
+		expect(Streams.range(1, 10).skip(2).limit(6).count()).toBe(6);
+	});
+
 	it("After transformation and filter", () => {
 		var result = Streams.range(0, 20)
 			.filter(n => n % 2 == 0)

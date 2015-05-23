@@ -1,8 +1,9 @@
 /// <reference path="IteratorStream" />
-/// <reference path="Iterators" />
 /// <reference path="ArrayIterator" />
 /// <reference path="EndlessIterator" />
+/// <reference path="EndlessRepeatingIterator" />
 /// <reference path="RangeIterator" />
+/// <reference path="EmptyIteratorStream" />
 
 /**
  * Collection of static utility methods to work with streams.
@@ -22,6 +23,9 @@ class Streams {
 	 * @param array The array.
 	 */
 	public static ofArray<T>(array: Array<T>): Stream<T> {
+		if (array.length == 0) {
+			return Streams.empty<T>();
+		}
 		return Streams.ofIterator(new ArrayIterator(array));
 	}
 	
@@ -54,7 +58,7 @@ class Streams {
 	 * @param value The repeated value.
 	 */
 	public static repeat<T>(value: T): Stream<T> {
-		return Streams.generate(() => value);
+		return Streams.ofIterator(new EndlessRepeatingIterator(value));
 	}
 	
 	/**
@@ -72,14 +76,14 @@ class Streams {
 	 * @param streams The Streams to concatenate.
 	 */
 	public static concatenate<T>(...streams: Array<Stream<T>>): Stream<T> {
-		if (streams.length == 0) {
+		if (streams.length === 0) {
 			return Streams.empty<T>();
-		} else if (streams.length == 1) {
+		} else if (streams.length === 1) {
 			return streams[0];
 		} else {
 			return Streams.ofIterator(
-				Iterators.concatenate(
-					Iterators.map(
+				new ConcatenatingIterator(
+					new MappingIterator(
 						new ArrayIterator(streams), s => s.iterator()
 					)
 				)
@@ -91,6 +95,6 @@ class Streams {
 	 * Constructs an empty Stream.
 	 */
 	public static empty<T>(): Stream<T> {
-		return Streams.ofIterator(Iterators.empty<T>());
+		return EmptyIteratorStream.instance<T>();
 	}
 }

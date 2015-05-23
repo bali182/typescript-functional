@@ -14,22 +14,6 @@ What is done, and what is planned:
 - [ ] Switch to a standard build system
 - [ ] Create an extensive documentation
 
-##Iterators
-
-- [x] `forEach()`
-- [x] `map()`
-- [x] `filter()`
-- [x] `limit()`
-- [x] `skip()`
-- [x] `all()`
-- [x] `any()`
-- [x] `reduce()`
-- [x] `head()`
-- [x] `tail()`
-- [x] `last()`
-- [x] `collect()`
-- [x] `empty()`
-
 ##Stream
 
 - [x] `forEach()`
@@ -50,11 +34,15 @@ What is done, and what is planned:
 - [x] `sum()` - using a `Collector`
 - [x] `count()` - using a `Collector`
 - [x] `toArray()` - using a `Collector`
-- [ ] `cast()` - Does it even make sense?
-- [ ] `zip()` - 2 Streams to 1
+- [x] `zip()`
+- [x] `findFirst()`
+- [x] `findLast()`
+- [x] `append()`
+- [x] `flatten()`
+- [x] `partition()`
+- [x] `peek()`
 - [ ] `reverse()` 
 - [ ] `sort()`
-- [x] `flatten()`
 - [ ] `distinct()` - Maybe with a `Collector` - needs a `Set` datatype.
 - [ ] `groupBy()` - Maybe with a `Collector` - needs a `Map` datatype.
 
@@ -93,17 +81,17 @@ What is done, and what is planned:
 
 ###For Streams
 
-- [ ] `forEach()`
+- [x] `forEach()`
 - [x] `map()`
 - [x] `filter()`
 - [x] `limit()`
 - [x] `skip()`
 - [x] `all()`
-- [ ] `any()`
+- [x] `any()`
 - [x] `reduce()`
 - [x] `head()`
-- [ ] `tail()`
-- [ ] `last()`
+- [x] `tail()`
+- [x] `last()`
 - [x] `collect()`
 - [x] `min()`
 - [x] `max()`

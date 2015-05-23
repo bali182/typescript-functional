@@ -1,5 +1,10 @@
 /// <reference path="jasmine.d.ts" />
-/// <reference path="../Streams" />
+/// <reference path="../MappingIterator" />
+/// <reference path="../ConcatenatingIterator" />
+/// <reference path="../LimitingIterator" />
+/// <reference path="../SkippingIterator" />
+/// <reference path="../FilteringIterator" />
+/// <reference path="../PeekingIterator" />
 
 describe("Iterators", () => {
 	it("ArrayIterator)", () => {
@@ -12,7 +17,7 @@ describe("Iterators", () => {
 		expect(iterator.next()).toEqual("C");
 		expect(iterator.hasNext()).toEqual(false);
 	});
-	
+
 	it("DelegateIterator", () => {
 		var delegate = new ArrayIterator([1, 2, 3]);
 		var iterator = new DelegateIterator(delegate);
@@ -68,7 +73,7 @@ describe("Iterators", () => {
 		expect(iterator.next()).toEqual("E");
 		expect(iterator.hasNext()).toEqual(false);
 	});
-	
+
 	it("RangeIterator", () => {
 		var iterator = new RangeIterator(1, 3, 1);
 		expect(iterator.hasNext()).toEqual(true);
@@ -89,7 +94,7 @@ describe("Iterators", () => {
 		expect(iterator.next()).toEqual("A");
 		expect(iterator.hasNext()).toEqual(false);
 	});
-	
+
 	it("SkippingIterator", () => {
 		var delegate = new ArrayIterator([0, 1, 2, 3]);
 		var iterator = new SkippingIterator(delegate, 2);
@@ -97,6 +102,19 @@ describe("Iterators", () => {
 		expect(iterator.next()).toEqual(2);
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual(3);
+		expect(iterator.hasNext()).toEqual(false);
+	});
+
+	it("ZippingIterator", () => {
+		var first = new ArrayIterator(["A", "B", "C"]);
+		var second = new ArrayIterator([1, 2, 3]);
+		var iterator = new ZipIterator(first, second);
+		expect(iterator.hasNext()).toEqual(true);
+		expect(iterator.next()).toEqual({ first: "A", second: 1 });
+		expect(iterator.hasNext()).toEqual(true);
+		expect(iterator.next()).toEqual({ first: "B", second: 2 });
+		expect(iterator.hasNext()).toEqual(true);
+		expect(iterator.next()).toEqual({ first: "C", second: 3 });
 		expect(iterator.hasNext()).toEqual(false);
 	});
 });

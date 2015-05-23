@@ -15,7 +15,7 @@ describe("Collectors", () => {
 	});
 
 	it("Min", () => {
-		var comparator = (a, b) => a < b ? -1 : (a > b ? + 1 : 0);
+		var comparator = (a : number, b : number) => a < b ? -1 : (a > b ? + 1 : 0);
 
 		var minPresent = Streams.ofValues(10, 7, 5, 1, 11, 6, 5).collect(Collectors.min(comparator));
 		expect(minPresent.isPresent()).toEqual(true);
@@ -30,7 +30,7 @@ describe("Collectors", () => {
 	});
 
 	it("Max", () => {
-		var comparator = (a, b) => a < b ? 1 : (a > b ? + -1 : 0);
+		var comparator = (a : number, b : number) => a < b ? 1 : (a > b ? + -1 : 0);
 
 		var minPresent = Streams.ofValues(10, 7, 5, 1, 11, 6, 5).collect(Collectors.min(comparator));
 		expect(minPresent.isPresent()).toEqual(true);

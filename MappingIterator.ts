@@ -5,7 +5,7 @@
  */
 class MappingIterator<T, R> implements Iterator<R> {
 	/** The mapper function. */
-	private mMapper: (T) => R;
+	private mMapper: (input: T) => R;
 	/** The delegate iterator. */
 	private mDelegate: Iterator<T>;
 	

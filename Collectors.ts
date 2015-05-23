@@ -24,7 +24,7 @@ class Collectors {
 	
 	/**
 	 * Returns a collector, which finds the minimum of values, using the given comparator function.
-	 * @param comparator The comparator function to compare the values. ret < 0 - first is smaller, == 0 - equals, > 0 - bigger, than the second.
+	 * @param comparator The comparator function to compare the values. ret < 0 - first is smaller, === 0 - equals, > 0 - bigger, than the second.
 	 */
 	public static min<T>(comparator: (first: T, second: T) => number): Collector<T, T, Optional<T>> {
 		return new MinCollector(comparator);
@@ -32,7 +32,7 @@ class Collectors {
 
 	/**
 	 * Returns a collector, which finds the maximum of values, using the given comparator function.
-	 * @param comparator The comparator function to compare the values. ret < 0 - first is smaller, == 0 - equals, > 0 - bigger, than the second.
+	 * @param comparator The comparator function to compare the values. ret < 0 - first is smaller, === 0 - equals, > 0 - bigger, than the second.
 	 */
 	public static max<T>(comparator: (first: T, second: T) => number): Collector<T, T, Optional<T>> {
 		return new MaxCollector(comparator);

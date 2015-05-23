@@ -27,7 +27,7 @@ class Optional<T> {
 	 * Returns true, if there is no non-null and non-undefined reference present, false otherwise.
 	 */
 	public isAbsent(): boolean {
-		return this.mReference == undefined;
+		return this.mReference === undefined;
 	}
 
 	/**
@@ -44,6 +44,9 @@ class Optional<T> {
 	 * Returns the referenced value if present, otherwise returns the fallback value.
 	 */
 	public or(fallback: T): T {
+		if (fallback === null || fallback === undefined) {
+			throw new Error("use orUndefined instead");
+		}
 		if (this.isPresent()) {
 			return this.mReference;
 		}
@@ -51,11 +54,21 @@ class Optional<T> {
 	}
 	
 	/**
+	 * Returns the referenced value if present, otherwise returns the fallback value.
+	 */
+	public orUndefined(): T {
+		if (this.isPresent()) {
+			return this.mReference;
+		}
+		return undefined;
+	}
+	
+	/**
 	 * Constructs an optional with a non-null and non-undefined value. If null or undefined is supplied, an error will be thrown.
 	 * @param item The referenced value. May not be null or undefined.
 	 */
 	public static of<T>(item: T): Optional<T> {
-		if (item == undefined) {
+		if (item === undefined || item === null) {
 			throw new Error("undefined or null");
 		}
 		return new Optional<T>(item);
@@ -66,7 +79,7 @@ class Optional<T> {
 	 * @param item The referenced value. Can be null.
 	 */
 	public static ofNullable<T>(item: T): Optional<T> {
-		if (item == undefined) {
+		if (item === undefined || item === null) {
 			return Optional.EMPTY;
 		}
 		return new Optional<T>(item);

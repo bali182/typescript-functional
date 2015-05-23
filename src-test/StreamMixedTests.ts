@@ -1,7 +1,8 @@
 /// <reference path="../Streams" />
+/// <reference path="../Collectors" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream complex examples", () => {
+describe("Stream mixed examples", () => {
 	it("Multiply", () => {
 		var a = 6;
 		var b = 4;
@@ -15,15 +16,11 @@ describe("Stream complex examples", () => {
 		{ name: "Ed", age: 50 },
 	];
 
-	function createJoiner(separator: string): (a: string, b: string) => string {
-		return (a, b) => a ? (a + separator + b) : b
-	}
-
 	it("Join names of older than 20", () => {
 		var names = Streams.ofArray(users)
 			.filter(u => u.age > 20)
 			.map(u => u.name)
-			.reduce(createJoiner(" and "));
+			.collect(Collectors.join(" and "));
 
 		expect(names).toEqual("Bob and Ed");
 	});
@@ -36,8 +33,8 @@ describe("Stream complex examples", () => {
 		var sequence = Streams.ofArray(users)
 			.map(u => u.name)
 			.map(name => name.length)
-			.map(length => Streams.repeat("A").limit(length).reduce(createJoiner("")))
-			.reduce(createJoiner(" "))
+			.map(length => Streams.repeat("A").limit(length).collect(Collectors.join("")))
+			.collect(Collectors.join(" "))
 
 		expect(sequence).toEqual("AAA AAAAAA AAAAAA AA");
 	});

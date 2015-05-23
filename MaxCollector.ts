@@ -25,6 +25,9 @@ class MaxCollector<T> implements Collector<T, T, Optional<T>> {
 	}
 
 	finish(accumulated: T): Optional<T> {
+		if (!this.mStared) {
+			return Optional.empty<T>();
+		}
 		return Optional.ofNullable(accumulated);
 	}
 }

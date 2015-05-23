@@ -1,5 +1,5 @@
 /// <reference path="Iterator" />
-/// <reference path="Iterators" />
+/// <reference path="EmptyIterator" />
 
 /**
  * Iterator, which concatenates more iterators.
@@ -9,7 +9,7 @@ class ConcatenatingIterator<T> implements Iterator<T> {
 	/** The iterators to concatenate. */
 	private mIterators: Iterator<Iterator<T>>;
 	/** The currently iterated iterator. */
-	private mCurrent: Iterator<T> = Iterators.empty<T>();
+	private mCurrent: Iterator<T> = EmptyIterator.instance<T>()
 	
 	/**
 	 * Constructor.
