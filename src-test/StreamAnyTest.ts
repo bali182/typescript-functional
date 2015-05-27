@@ -15,4 +15,14 @@ describe("Stream#any", () => {
 	it("Values", () => {
 		expect(Streams.ofArray(["A", "B", "C"]).any(s => s === "C"));
 	});
+
+	it("empty", () => {
+		expect(Streams.empty<any>().any(s => s === "C")).toBe(false);
+	});
+
+	it("any for 100000 elements", () => {
+		var elements = Streams.range(2, 100000, 2).toArray();
+		expect(Streams.ofArray(elements).any(n => n % 2 == 0)).toBe(true);
+		expect(Streams.ofArray(elements).any(n => n % 2 != 0)).toBe(false);
+	});
 })

@@ -26,4 +26,17 @@ describe("Stream#limit", () => {
 			.toArray();
 		expect(result).toEqual(["0", "2", "4"]);
 	});
+
+	it("empty", () => {
+		expect(Streams.empty<any>().limit(3).toArray()).toEqual([]);
+	});
+
+	it("limit of 100000 elements", () => {
+		var joined = Streams.repeat("A").limit(100000).join();
+		var reference = "";
+		for (var i = 0; i < 100000; i++) {
+			reference += "A";
+		}
+		expect(joined).toBe(reference);
+	});
 })

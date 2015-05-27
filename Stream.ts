@@ -19,6 +19,12 @@ interface Stream<T> {
 	any(predicate: (input: T) => boolean): boolean
 	
 	/**
+	 * Returns the element of the underlying Iterator at the specified index, wrapped in an Optional, or Optional#empty() if the index doesn't exist.
+	 * @param index The index of the element to return to.
+	 */
+	at(index: number): Optional<T>;
+	
+	/**
 	 * Creates a lazily concatenated stream whose elements are all the elements of this stream followed by all the elements of the other stream.
 	 * @param other The other stream.
 	 */
@@ -87,6 +93,14 @@ interface Stream<T> {
 	 * Returns the Iterator, of this Stream.
 	 */
 	iterator(): Iterator<T>
+	
+	/**
+	 * Joins the Streams contents to a single string.
+	 * @param separator The separator between the elements. Empty string ("") by default.
+	 * @param prefix The prefix of the generated string. Empty string ("") by default.
+	 * @param postfix The postfix of the generated string. Empty string ("") by default.
+	 */
+	join(separator?: string, prefix?: string, suffix?: string): string
 
 	/**
 	 * Returns the last element of this Stream wrapped in an Optional. If the Stream is empty, Optional#empty() is returned.

@@ -16,6 +16,7 @@ describe("Iterators", () => {
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual("C");
 		expect(iterator.hasNext()).toEqual(false);
+		expect(() => iterator.next()).toThrow();
 	});
 
 	it("DelegateIterator", () => {
@@ -28,6 +29,7 @@ describe("Iterators", () => {
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual(3);
 		expect(iterator.hasNext()).toEqual(false);
+		expect(() => iterator.next()).toThrow();
 	});
 
 	it("FilteringIterator", () => {
@@ -38,6 +40,7 @@ describe("Iterators", () => {
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual(4);
 		expect(iterator.hasNext()).toEqual(false);
+		expect(() => iterator.next()).toThrow();
 	});
 
 	it("MappingIterator", () => {
@@ -50,17 +53,18 @@ describe("Iterators", () => {
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual("3 is a string now");
 		expect(iterator.hasNext()).toEqual(false);
+		expect(() => iterator.next()).toThrow();
 	});
 
 	it("ConcatenatingIterator", () => {
 		var iterator = new ConcatenatingIterator(
-				new ArrayIterator([
-					new ArrayIterator(["A", "B"]),
-					new ArrayIterator(["C"]),
-					new ArrayIterator(["D", "E"])
-				]
-			)
-		);
+			new ArrayIterator([
+				new ArrayIterator(["A", "B"]),
+				new ArrayIterator(["C"]),
+				new ArrayIterator(["D", "E"])
+			]
+				)
+			);
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual("A");
 		expect(iterator.hasNext()).toEqual(true);
@@ -72,6 +76,7 @@ describe("Iterators", () => {
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual("E");
 		expect(iterator.hasNext()).toEqual(false);
+		expect(() => iterator.next()).toThrow();
 	});
 
 	it("RangeIterator", () => {
@@ -83,6 +88,7 @@ describe("Iterators", () => {
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual(3);
 		expect(iterator.hasNext()).toEqual(false);
+		expect(() => iterator.next()).toThrow();
 	});
 
 	it("LimitingIterator", () => {
@@ -93,6 +99,7 @@ describe("Iterators", () => {
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual("A");
 		expect(iterator.hasNext()).toEqual(false);
+		expect(() => iterator.next()).toThrow();
 	});
 
 	it("SkippingIterator", () => {
@@ -103,6 +110,7 @@ describe("Iterators", () => {
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual(3);
 		expect(iterator.hasNext()).toEqual(false);
+		expect(() => iterator.next()).toThrow();
 	});
 
 	it("ZippingIterator", () => {
@@ -116,5 +124,12 @@ describe("Iterators", () => {
 		expect(iterator.hasNext()).toEqual(true);
 		expect(iterator.next()).toEqual({ first: "C", second: 3 });
 		expect(iterator.hasNext()).toEqual(false);
+		expect(() => iterator.next()).toThrow();
+	});
+
+	it("EmptyIterator", () => {
+		var iterator = EmptyIterator.instance<any>()
+		expect(iterator.hasNext()).toEqual(false);
+		expect(() => iterator.next()).toThrow();
 	});
 });

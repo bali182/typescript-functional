@@ -2,20 +2,19 @@
 
 /** Iterator, that repeats one element endlessly. */
 class EndlessRepeatingIterator<T> implements Iterator<T> {
-	
 	/** The repeated element. */
-	private mRepeated: T;
+	private mElement: T;
 	
 	/** 
 	 * Constructor.
 	 * @param repeated The endlessly repeated element.
 	 */
-	constructor(repeated: T) {
-		this.mRepeated = repeated;
+	constructor(element: T) {
+		this.mElement = element;
 	}
 
 	next(): T {
-		return this.mRepeated;
+		return this.mElement;
 	}
 
 	hasNext(): boolean {

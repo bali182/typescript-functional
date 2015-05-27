@@ -14,6 +14,24 @@ describe("Stream#flatten", () => {
 	];
 
 	it("Flatten mapped values", () => {
-		expect(Streams.ofArray(users).map(u => u.children).flatten(ch => Streams.repeat("a").limit(ch)).toArray()).toEqual(["a", "a", "a", "a", "a", "a", "a", "a", ]);
+		var array = Streams.ofArray(users)
+			.map(u => u.children)
+			.flatten(ch => Streams.repeat("a").limit(ch))
+			.toArray()
+		expect(array).toEqual(["a", "a", "a", "a", "a", "a", "a", "a", ]);
+	});
+
+	it("Flatten empties", () => {
+		var stream = Streams.repeat(undefined)
+			.limit(5)
+			.flatten(n => Streams.empty<string>());
+		expect(stream.toArray()).toEqual([]);
+	});
+
+	it("Flatten 100000 streams", () => {
+		var stream = Streams.repeat(undefined)
+			.limit(100000)
+			.flatten(n => Streams.ofValue("A"));
+		expect(stream.toArray()).toEqual(Streams.repeat("A").limit(100000).toArray());
 	});
 })

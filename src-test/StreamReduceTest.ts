@@ -15,4 +15,8 @@ describe("Stream#reduce", () => {
 	it("Join", () => {
 		expect(Streams.ofArray(["A", "B", "C", "D", "E"]).reduce(emptyJoiner)).toEqual("ABCDE");
 	});
+
+	it("empty", () => {
+		expect(Streams.empty<number>().reduce(sumReducer, 0)).toBe(0);
+	});
 })

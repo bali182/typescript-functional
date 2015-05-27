@@ -25,6 +25,10 @@ describe("Stream#count", () => {
 		expect(Streams.range(1, 10).skip(2).limit(6).count()).toBe(6);
 	});
 
+	it("empty", () => {
+		expect(Streams.empty<any>().count()).toBe(0);
+	});
+
 	it("After transformation and filter", () => {
 		var result = Streams.range(0, 20)
 			.filter(n => n % 2 == 0)
@@ -33,5 +37,10 @@ describe("Stream#count", () => {
 			.skip(1)
 			.count();
 		expect(result).toEqual(2);
+	});
+
+	it("count 100000 elements", () => {
+		var result = Streams.range(1, 100000).count();
+		expect(result).toBe(100000);
 	});
 })

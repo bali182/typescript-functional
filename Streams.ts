@@ -5,9 +5,7 @@
 /// <reference path="RangeIterator" />
 /// <reference path="EmptyIteratorStream" />
 
-/**
- * Collection of static utility methods to work with streams.
- */
+/** Collection of static utility methods to work with streams. */
 class Streams {
 	
 	/** 

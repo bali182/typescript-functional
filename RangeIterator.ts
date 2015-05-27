@@ -1,8 +1,6 @@
 /// <reference path="Iterator" />
 
-/**
- * Iterator, which iterates on numeric ranges. From - To values are inclusive.
- */
+/** Iterator, which iterates on numeric ranges. From - To values are inclusive. */
 class RangeIterator implements Iterator<number> {
 	
 	/** The starting point of the iteration */
@@ -29,10 +27,10 @@ class RangeIterator implements Iterator<number> {
 
 	next(): number {
 		if (!this.hasNext()) {
-			throw new Error("No more elements");
+			throw new Error("No such element");
 		}
 		var current = this.mCurrent;
-		this.mCurrent = this.mCurrent + this.mDelta;
+		this.mCurrent += this.mDelta;
 		return current;
 	}
 

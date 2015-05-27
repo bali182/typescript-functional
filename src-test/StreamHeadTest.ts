@@ -14,6 +14,5 @@ describe("Stream#head", () => {
 
 	it("Head of empty", () => {
 		expect(Streams.empty().head().isPresent()).toEqual(false);
-		expect(Streams.empty().head().isAbsent()).toEqual(true);
 	});
 })

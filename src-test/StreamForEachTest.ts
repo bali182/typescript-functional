@@ -40,4 +40,16 @@ describe("Stream#forEach", () => {
 			expect(str).toBe(array[index++]);
 		});
 	});
+
+	it("empty", () => {
+		var sum = 0;
+		Streams.empty<number>().forEach(n => sum += n);
+		expect(sum).toBe(0);
+	});
+
+	it("forEach 100000 elements", () => {
+		var sum = 0;
+		Streams.repeat(1).limit(100000).forEach(n => sum += n);
+		expect(sum).toBe(100000);
+	});
 })

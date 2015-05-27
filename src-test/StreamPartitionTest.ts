@@ -47,4 +47,8 @@ describe("Stream#partition", () => {
 			iterationCount++;
 		});
 	});
+
+	it("empty", () => {
+		expect(Streams.empty<any>().partition(2).toArray()).toEqual([]);
+	});
 })

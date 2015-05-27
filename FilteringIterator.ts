@@ -23,10 +23,12 @@ class FilteringIterator<T> extends DelegateIterator<T> {
 	}
 
 	hasNext(): boolean {
+		var predicate = this.mPredicate;
+		var delegate = this.mDelegate;
 		if (this.mConsumed) {
-			while (this.mDelegate.hasNext()) {
-				var next: T = this.mDelegate.next();
-				if (this.mPredicate(next)) {
+			while (delegate.hasNext()) {
+				var next: T = delegate.next();
+				if (predicate(next)) {
 					this.mCurrent = next;
 					this.mConsumed = false;
 					return true;

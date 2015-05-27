@@ -16,4 +16,8 @@ describe("Stream#tail", () => {
 	it("Repeat & Limit", () => {
 		expect(Streams.repeat("A").limit(5).tail().toArray()).toEqual(["A", "A", "A", "A"]);
 	});
+
+	it("empty", () => {
+		expect(Streams.empty<any>().tail().toArray()).toEqual([]);
+	});
 })

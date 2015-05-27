@@ -20,4 +20,14 @@ describe("Stream#all", () => {
 			.all(n => n % 2 != 0);
 		expect(result).toEqual(true);
 	});
+
+	it("Empty", () => {
+		expect(Streams.empty<any>().all(e => e === "A")).toBe(true);
+	});
+
+	it("all for 100000 elements", () => {
+		var elements = Streams.range(2, 100000, 2).toArray();
+		expect(Streams.ofArray(elements).all(n => n % 2 == 0)).toBe(true);
+		expect(Streams.ofArray(elements).all(n => n % 2 != 0)).toBe(false);
+	});
 })

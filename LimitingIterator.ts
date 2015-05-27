@@ -23,7 +23,7 @@ class LimitingIterator<T> extends DelegateIterator<T> {
 
 	next(): T {
 		if (!this.hasNext()) {
-			throw new Error("no more elements");
+			throw new Error("No such element");
 		}
 		var next = this.mDelegate.next();
 		this.mIteratedCount++;

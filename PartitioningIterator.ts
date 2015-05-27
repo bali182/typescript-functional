@@ -1,13 +1,21 @@
 /// <reference path="Iterator" />
 
+/** Iterator for splitting the elements of a delegate iterator into chuncks of predetermined size. */
 class PartitioningIterator<T> implements Iterator<Array<T>> {
-
-	private mPartitionSize: number;
+	
+	/** The chunk size. */
+	private mChunkSize: number;
+	/** The delegate iterator. */
 	private mDelegate: Iterator<T>;
-
-	constructor(delegate: Iterator<T>, partitionSize: number) {
+	
+	/**
+	 * Constructor.
+	 * @param delegate The delegate iterator.
+	 * @param chunkSize The chunk size.
+	 */
+	constructor(delegate: Iterator<T>, chunkSize: number) {
 		this.mDelegate = delegate;
-		this.mPartitionSize = partitionSize;
+		this.mChunkSize = chunkSize;
 	}
 
 	next(): Array<T> {
@@ -16,8 +24,10 @@ class PartitioningIterator<T> implements Iterator<Array<T>> {
 		}
 		var array: Array<T> = [];
 		var counter = 0;
-		while (this.mDelegate.hasNext() && counter++ < this.mPartitionSize) {
-			array.push(this.mDelegate.next())
+		var partitionSize = this.mChunkSize;
+		var delegate = this.mDelegate;
+		while (delegate.hasNext() && counter++ < partitionSize) {
+			array.push(delegate.next())
 		}
 		return array;
 	}

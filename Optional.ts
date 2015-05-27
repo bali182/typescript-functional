@@ -35,17 +35,19 @@ class Optional<T> {
 	 */
 	public get(): T {
 		if (this.isAbsent()) {
-			throw new Error("absent");
+			throw new Error("The element is absent");
 		}
 		return this.mReference;
 	}
 	
 	/**
 	 * Returns the referenced value if present, otherwise returns the fallback value.
+	 * null or undefined is not acceptable as fallback value, use orNull() or orUndefined() instead.
+	 * @param fallback The fallback value to use, if the value is absent.
 	 */
-	public or(fallback: T): T {
+	public getOr(fallback: T): T {
 		if (fallback === null || fallback === undefined) {
-			throw new Error("use orUndefined instead");
+			throw new Error("use orUndefined() or orNull() instead");
 		}
 		if (this.isPresent()) {
 			return this.mReference;
@@ -54,9 +56,9 @@ class Optional<T> {
 	}
 	
 	/**
-	 * Returns the referenced value if present, otherwise returns the fallback value.
+	 * Returns the referenced value if present, undefined otherwise.
 	 */
-	public orUndefined(): T {
+	public getOrUndefined(): T {
 		if (this.isPresent()) {
 			return this.mReference;
 		}
@@ -64,25 +66,45 @@ class Optional<T> {
 	}
 	
 	/**
-	 * Constructs an optional with a non-null and non-undefined value. If null or undefined is supplied, an error will be thrown.
-	 * @param item The referenced value. May not be null or undefined.
+	 * Returns the referenced value if present, null otherwise.
 	 */
-	public static of<T>(item: T): Optional<T> {
-		if (item === undefined || item === null) {
+	public getOrNull(): T {
+		if (this.isPresent()) {
+			return this.mReference;
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns the referenced value if present, throws the given Error otherwise.
+	 */
+	public getOrThrow(error: Error): T {
+		if (this.isPresent()) {
+			return this.mReference;
+		}
+		throw error;
+	}
+	
+	/**
+	 * Constructs an optional with a non-null and non-undefined value. If null or undefined is supplied, an error will be thrown.
+	 * @param input The referenced value. May not be null or undefined.
+	 */
+	public static of<T>(input: T): Optional<T> {
+		if (input === undefined || input === null) {
 			throw new Error("undefined or null");
 		}
-		return new Optional<T>(item);
+		return new Optional<T>(input);
 	}
 	
 	/**
 	 * Constructs an optional from the given value, which may be null.
-	 * @param item The referenced value. Can be null.
+	 * @param input The referenced value. Can be null.
 	 */
-	public static ofNullable<T>(item: T): Optional<T> {
-		if (item === undefined || item === null) {
+	public static ofNullable<T>(input: T): Optional<T> {
+		if (input === undefined || input === null) {
 			return Optional.EMPTY;
 		}
-		return new Optional<T>(item);
+		return new Optional<T>(input);
 	}
 	
 	/**
@@ -94,7 +116,7 @@ class Optional<T> {
 
 	toString(): String {
 		if (this.isPresent()) {
-			return "Present {" + this.mReference.toString() + "}";
+			return "Present { " + this.mReference.toString() + " }";
 		}
 		return "Absent {}";
 	}

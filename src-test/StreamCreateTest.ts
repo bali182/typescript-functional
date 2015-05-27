@@ -35,4 +35,8 @@ describe("Streams#create", () => {
 		expect(Streams.repeat("A").limit(5).toArray()).toEqual(["A", "A", "A", "A", "A"])
 		expect(Streams.repeat([0]).limit(3).toArray()).toEqual([[0], [0], [0]])
 	});
+
+	it("empty()", () => {
+		expect(Streams.empty<any>().toArray()).toEqual([])
+	});
 });

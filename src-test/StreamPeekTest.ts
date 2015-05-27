@@ -31,4 +31,10 @@ describe("Stream#peek", () => {
 		expect(concatenated).toBe("123");
 		expect(summed).toBe(6);
 	});
+
+	it("empty", () => {
+		var count = 0;
+		Streams.empty<number>().peek(n => count += n).forEach(n => { });
+		expect(count).toBe(0);
+	});
 })

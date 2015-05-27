@@ -22,15 +22,15 @@ class ConcatenatingIterator<T> implements Iterator<T> {
 	next(): T {
 		if (!this.hasNext()) {
 			throw new Error("No such element");
-        }
-        return this.mCurrent.next();
+		}
+		return this.mCurrent.next();
 	}
 
 	hasNext(): boolean {
 		var currentHasNext: boolean = false;
-        while (!(currentHasNext = this.mCurrent.hasNext()) && this.mIterators.hasNext()) {
+		while (!(currentHasNext = this.mCurrent.hasNext()) && this.mIterators.hasNext()) {
 			this.mCurrent = this.mIterators.next();
-        }
-        return currentHasNext;
+		}
+		return currentHasNext;
 	}
 }

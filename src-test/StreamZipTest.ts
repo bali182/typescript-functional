@@ -19,25 +19,36 @@ describe("Stream#zip", () => {
 
 	it("zip arrays of different length", () => {
 		var as = Streams.ofValues("A", "A", "A", "B");
-		var bs = Streams.ofValues("B", "B");
+		var bs = Streams.repeat("B").limit(2);
 
 		var zipped = as.zip(bs, (a, b) => a + b);
 		expect(zipped.toArray()).toEqual(["AB", "AB"]);
 	});
 
 	it("zip endless streams", () => {
-		var as = Streams.repeat("A")
+		var as = Streams.ofArray(["A", "A", "A"])
 		var bs = Streams.repeat("B")
 
 		var zipped = as.zip(bs, (a, b) => a + b).limit(3);
 		expect(zipped.toArray()).toEqual(["AB", "AB", "AB"]);
 	});
+
 	it("zip something zipped", () => {
 		var as = Streams.repeat("A")
 		var bs = Streams.repeat("B")
 		var cs = Streams.repeat("C");
 
-		var zipped = as.zip(bs, (a, b) => a + b).zip(cs, (ab, c) => ab + c).limit(3);
+		var zipped = as
+			.zip(bs, (a, b) => a + b)
+			.zip(cs, (ab, c) => ab + c)
+			.limit(3);
 		expect(zipped.collect(Collectors.join())).toEqual("ABCABCABC");
+	});
+
+	it("empty", () => {
+		var empty = Streams.empty<string>()
+		var bs = Streams.repeat("B").limit(3);
+		var zipped = empty.zip(bs, (a, b) => a + b).limit(3);
+		expect(zipped.toArray()).toEqual([]);
 	});
 })

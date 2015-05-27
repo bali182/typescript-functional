@@ -26,4 +26,8 @@ describe("Stream#skip", () => {
 			.toArray();
 		expect(result).toEqual(["6", "8", "10"]);
 	});
+
+	it("empty", () => {
+		expect(Streams.empty<string>().skip(3).toArray()).toEqual([]);
+	});
 })

@@ -4,7 +4,9 @@
         "module": "commonjs",
         "target": "ES5",
         "outDir": "src-gen",
-        "out" : "src-gen/app.js",
-        "removeComments": true
+        "out": "src-gen/app.js",
+        "removeComments": false,
+        "suppressImplicitAnyIndexErrors": false,
+        "noEmitOnError": true
     }
 }
