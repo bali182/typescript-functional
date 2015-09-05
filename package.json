@@ -1,0 +1,22 @@
+{
+	"name": "typescript-functional",
+	"description": "Library for lazy collection manipulation in TypeScript and JavaScript",
+	"author": "Balázs Édes <edesbalazs@gmail.com>",
+	"dependencies": {
+		"typescript": "*"
+	},
+	"devDependencies": {
+		"gulp": "3.9.0",
+		"gulp-concat": "2.6.0",
+		"gulp-replace": "0.5.4",
+		"gulp-typescript": "2.8.2",
+		"gulp-uglify": "1.4.0",
+		"gulp-jasmine": "2.0.1",
+		"gulp-clean": "0.3.1",
+		"merge2": "0.3.6"
+	},
+	"scripts": {
+		"build": "gulp",
+		"test": "gulp test"
+	}
+}

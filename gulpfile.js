@@ -1,10 +1,10 @@
 var gulp = require('gulp'),
-	gutil = require('gulp-util'),
 	concat = require('gulp-concat'),
 	replace = require('gulp-replace'),
 	merge = require('merge2'),
 	uglifiy = require('gulp-uglify'),
 	jasmine = require('gulp-jasmine'),
+	clean = require('gulp-clean'),
 	ts = require('gulp-typescript');
 
 var REFERENCE_REPLACE_REGEX = /^\s*\/\/\/\s*<\s*reference\s*path\s*=\s*".*"\s*\/>\s*/mg;
@@ -37,11 +37,11 @@ var tsTestCompiler = ts({
 
 gulp.task('compile-src', function () {
 	var result = gulp.src(SRC_FILES_EXPR)
-		.pipe(tsSourceCompiler)
+		.pipe(tsSourceCompiler);
 	return merge([
 		result.js.pipe(replace(REFERENCE_REPLACE_REGEX, '')).pipe(gulp.dest(DIST_FOLDER)),
 		result.dts.pipe(replace(REFERENCE_REPLACE_REGEX, '')).pipe(gulp.dest(DIST_FOLDER)),
-	])
+	]);
 });
 
 gulp.task('test', function () {
@@ -49,6 +49,7 @@ gulp.task('test', function () {
 		.pipe(tsTestCompiler).js
 		.pipe(gulp.dest(DIST_FOLDER))
 		.pipe(jasmine({ verbose: true, showStackTrace: true }))
+		.pipe(clean());
 })
 
 gulp.task('minify', ['compile-src'], function () {
