@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#append", () => {
+describe("Sequence#append", () => {
 	it("Append arrays", () => {
 		var first = ["A", "B"];
 		var second = ["C"];

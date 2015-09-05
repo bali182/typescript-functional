@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#tail", () => {
+describe("Sequence#tail", () => {
 	it("Array", () => {
 		expect(Sequences.ofArray(["A", "B", "C", "D", "E"]).tail().toArray()).toEqual(["B", "C", "D", "E"]);
 		expect(Sequences.ofArray(["A", "E"]).tail().toArray()).toEqual(["E"]);

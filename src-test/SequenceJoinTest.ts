@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#join", () => {
+describe("Sequence#join", () => {
 	it("join empty", () => {
 		expect(Sequences.empty<string>().join()).toBe("");
 		expect(Sequences.empty<string>().join(",")).toBe("");

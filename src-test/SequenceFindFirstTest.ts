@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#findFirst", () => {
+describe("Sequence#findFirst", () => {
 	var users: Array<{ name: String, age: number, children: number }> = [
 		{ name: "Angela", age: 20, children: 1 },
 		{ name: "Robert", age: 19, children: 0 },

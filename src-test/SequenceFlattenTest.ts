@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#flatten", () => {
+describe("Sequence#flatten", () => {
 	it("Flatten array of array", () => {
 		expect(Sequences.ofValues([1, 2], [3], [4, 5]).flatten(a => Sequences.ofArray(a)).toArray()).toEqual([1, 2, 3, 4, 5]);
 	});
@@ -22,16 +22,16 @@ describe("Stream#flatten", () => {
 	});
 
 	it("Flatten empties", () => {
-		var stream = Sequences.repeat(undefined)
+		var Sequence = Sequences.repeat(undefined)
 			.limit(5)
 			.flatten(n => Sequences.empty<string>());
-		expect(stream.toArray()).toEqual([]);
+		expect(Sequence.toArray()).toEqual([]);
 	});
 
-	it("Flatten 100000 streams", () => {
-		var stream = Sequences.repeat(undefined)
+	it("Flatten 100000 Sequences", () => {
+		var Sequence = Sequences.repeat(undefined)
 			.limit(100000)
 			.flatten(n => Sequences.ofValue("A"));
-		expect(stream.toArray()).toEqual(Sequences.repeat("A").limit(100000).toArray());
+		expect(Sequence.toArray()).toEqual(Sequences.repeat("A").limit(100000).toArray());
 	});
 })

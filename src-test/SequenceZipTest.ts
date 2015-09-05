@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#zip", () => {
+describe("Sequence#zip", () => {
 	it("zip something with empty", () => {
 		var as = Sequences.empty<string>();
 		var bs = Sequences.ofValues("B", "B", "B");
@@ -25,7 +25,7 @@ describe("Stream#zip", () => {
 		expect(zipped.toArray()).toEqual(["AB", "AB"]);
 	});
 
-	it("zip endless streams", () => {
+	it("zip endless Sequences", () => {
 		var as = Sequences.ofArray(["A", "A", "A"])
 		var bs = Sequences.repeat("B")
 

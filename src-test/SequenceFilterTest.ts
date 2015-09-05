@@ -1,7 +1,7 @@
 /// <reference path="jasmine.d.ts" />
 /// <reference path="../Sequences" />
 
-describe("Stream#filter", () => {
+describe("Sequence#filter", () => {
 	it("Filter even / odd", () => {
 		expect(Sequences.ofValues(1, 2, 3, 4, 5).filter(n => n % 2 == 0).toArray()).toEqual([2, 4]);
 		expect(Sequences.ofValues(1, 2, 3, 4, 5).filter(n => n % 2 != 0).toArray()).toEqual([1, 3, 5]);

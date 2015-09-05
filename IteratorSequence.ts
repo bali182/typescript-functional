@@ -15,24 +15,24 @@
 /// <reference path="TakeWhileIterator" />
 /// <reference path="ZipIterator" />
 
-/** Stream, which operates on an iterator. */
+/** Sequence, which operates on an iterator. */
 class IteratorSequence<T> implements Sequence<T>{
 	/** The delegeate iterator */
 	private mIterator: Iterator<T>
-	/** Flag indicating if the Stream was already iterated or not. */
+	/** Flag indicating if the Sequence was already iterated or not. */
 	private mConsumed: boolean;
 	
 	/**
 	 * Constructor.
 	 * @param iterator The delegeate iterator
-	 * @param iterated Flag indicating if the Stream was already iterated or not.
+	 * @param iterated Flag indicating if the Sequence was already iterated or not.
 	 */
 	constructor(iterator: Iterator<T>, iterated?: boolean) {
 		this.mIterator = iterator;
 		this.mConsumed = !!iterated;
 	}
 	
-	/** Throws an exception if the Stream is already iterated, then sets the consumed flag to true. */
+	/** Throws an exception if the Sequence is already iterated, then sets the consumed flag to true. */
 	protected invalidate(): void {
 		if (this.isConsumed()) {
 			throw new Error("Already iterated");
@@ -117,10 +117,10 @@ class IteratorSequence<T> implements Sequence<T>{
 		return this.filter(predicate).last();
 	}
 
-	flatten<R>(streamify: (input: T) => Sequence<R>): Sequence<R> {
+	flatten<R>(Sequenceify: (input: T) => Sequence<R>): Sequence<R> {
 		return new IteratorSequence<R>(
 			new ConcatenatingIterator<R>(
-				this.map(streamify).map(stream => stream.iterator()).iterator()
+				this.map(Sequenceify).map(Sequence => Sequence.iterator()).iterator()
 			), 
 			this.isConsumed()
 		);

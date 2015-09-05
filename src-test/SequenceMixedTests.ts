@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream mixed examples", () => {
+describe("Sequence mixed examples", () => {
 	it("Multiply", () => {
 		var a = 6;
 		var b = 4;

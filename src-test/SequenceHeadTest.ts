@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#head", () => {
+describe("Sequence#head", () => {
 	it("Head of non empty", () => {
 		expect(Sequences.ofValues("A").head().get()).toEqual("A");
 		expect(Sequences.ofValues("A").head().isPresent()).toEqual(true);

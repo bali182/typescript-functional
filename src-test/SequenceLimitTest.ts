@@ -1,8 +1,8 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#limit", () => {
-	it("Limit endless stream", () => {
+describe("Sequence#limit", () => {
+	it("Limit endless Sequence", () => {
 		expect(Sequences.repeat("A").limit(3).toArray()).toEqual(["A", "A", "A"]);
 		var i = 0;
 		expect(Sequences.generate(() => ++i).limit(5).toArray()).toEqual([1, 2, 3, 4, 5]);

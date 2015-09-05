@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#forEach", () => {
+describe("Sequence#forEach", () => {
 	it("Range", () => {
 		var counter = 0;
 		Sequences.range(0, 10).forEach(n => {

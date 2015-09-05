@@ -1,8 +1,8 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#skip", () => {
-	it("Skip endless stream", () => {
+describe("Sequence#skip", () => {
+	it("Skip endless Sequence", () => {
 		expect(Sequences.repeat("A").skip(10).limit(3).toArray()).toEqual(["A", "A", "A"]);
 		var i = 0;
 		expect(Sequences.generate(() => ++i).skip(3).limit(5).toArray()).toEqual([4, 5, 6, 7, 8]);
