@@ -33,7 +33,7 @@ class Sequences {
 	 * @param value The value.
 	 */
 	public static ofValue<T>(value: T): Sequence<T> {
-		return Sequences.ofArray([value]);
+		return Sequences.ofIterator(new SingletonIterator(value));
 	}
 
 	/**
@@ -41,7 +41,7 @@ class Sequences {
 	 * @param values The values.
 	 */
 	public static ofValues<T>(...values: Array<T>): Sequence<T> {
-		return Sequences.ofArray(values);
+		return values.length === 1 ? this.ofValue(values[0]) : Sequences.ofArray(values);
 	}
 	
 	/**
@@ -84,9 +84,9 @@ class Sequences {
 				new ConcatenatingIterator(
 					new MappingIterator(
 						new ArrayIterator(sequences), s => s.iterator()
+						)
 					)
-				)
-			);
+				);
 		}
 	}
 	
