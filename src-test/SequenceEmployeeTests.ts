@@ -1,5 +1,5 @@
 /// <reference path="jasmine.d.ts" />
-/// <reference path="../Sequences" />
+/// <reference path="../src/Sequences" />
 /// <reference path="EmployeeModel" />
 
 describe("Sequence test with simple model", () => {

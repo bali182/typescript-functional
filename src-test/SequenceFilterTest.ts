@@ -1,5 +1,5 @@
 /// <reference path="jasmine.d.ts" />
-/// <reference path="../Sequences" />
+/// <reference path="../src/Sequences" />
 
 describe("Sequence#filter", () => {
 	it("Filter even / odd", () => {

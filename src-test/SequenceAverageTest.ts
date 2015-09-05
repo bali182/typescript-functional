@@ -1,5 +1,5 @@
 /// <reference path="jasmine.d.ts" />
-/// <reference path="../Sequences" />
+/// <reference path="../src/Sequences" />
 
 describe("Sequences#average", () => {
 	it("average string length in array", () => {

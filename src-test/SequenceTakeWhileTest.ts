@@ -1,4 +1,4 @@
-/// <reference path="../Sequences" />
+/// <reference path="../src/Sequences" />
 /// <reference path="jasmine.d.ts" />
 
 //TODO - more tests for this

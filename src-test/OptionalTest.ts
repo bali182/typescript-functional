@@ -1,4 +1,4 @@
-/// <reference path="../Optional" />
+/// <reference path="../src/Optional" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Optional", () => {

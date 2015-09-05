@@ -35,46 +35,27 @@ var tsTestCompiler = ts({
 	outFile: JS_TESTS_FILE
 });
 
-gulp.task('concat-src', function () {
-	return gulp.src(SRC_FILES_EXPR)
-		.pipe(concat(TS_CONCAT_SRC_FILE))
-		.pipe(replace(REFERENCE_REPLACE_REGEX, ''))
-		.pipe(gulp.dest(DIST_FOLDER));
+gulp.task('compile-src', function () {
+	var result = gulp.src(SRC_FILES_EXPR)
+		.pipe(tsSourceCompiler)
+	return merge([
+		result.js.pipe(replace(REFERENCE_REPLACE_REGEX, '')).pipe(gulp.dest(DIST_FOLDER)),
+		result.dts.pipe(replace(REFERENCE_REPLACE_REGEX, '')).pipe(gulp.dest(DIST_FOLDER)),
+	])
 });
 
-gulp.task('concat-tests', function () {
-	return gulp.src([TEST_JASMINE, TEST_FILES_EXPR])
-		.pipe(concat(TS_CONCAT_TESTS_FILE))
-		.pipe(replace(/^\s*\/\/\/\s*<\s*reference\s*path\s*=\s*".*"\s*\/>\s*/mg, ''))
-		.pipe(gulp.dest(DIST_FOLDER));
+gulp.task('test', function () {
+	return gulp.src([SRC_FILES_EXPR, TEST_JASMINE, TEST_FILES_EXPR])
+		.pipe(tsTestCompiler).js
+		.pipe(gulp.dest(DIST_FOLDER))
+		.pipe(jasmine({ verbose: true, showStackTrace: true }))
 })
 
-gulp.task('compile', ['concat-src', 'concat-tests'], function () {
-	var srcPath = DIST_FOLDER + '/' + TS_CONCAT_SRC_FILE;
-	var testPath = DIST_FOLDER + '/' + TS_CONCAT_TESTS_FILE;
-
-	var srcResult = gulp.src(srcPath).pipe(tsSourceCompiler);
-	var testResult = gulp.src([srcPath, testPath]).pipe(tsTestCompiler);
-
-	return merge([
-    srcResult.dts.pipe(gulp.dest(DIST_FOLDER)),
-    srcResult.js.pipe(gulp.dest(DIST_FOLDER)),
-		testResult.js.pipe(gulp.dest(DIST_FOLDER))
-	]);
-})
-
-gulp.task('minify', ['compile'], function () {
-	return gulp.src(DIST_FOLDER + '/' + JS_SRC_FILE)
-		.pipe(jasmine());
-})
-
-gulp.task('test', ['compile'], function () {
+gulp.task('minify', ['compile-src'], function () {
 	return gulp.src(DIST_FOLDER + '/' + JS_TESTS_FILE)
 		.pipe(concat(JS_MIN_SRC_FILE)) // to have the desired filename
 		.pipe(uglifiy())
 		.pipe(gulp.dest(DIST_FOLDER));
 })
 
-gulp.task('default', ['minify'], function (input) {
-	return input;
-});
+gulp.task('default', ['test', 'minify']);

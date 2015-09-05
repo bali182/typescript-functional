@@ -1,5 +1,5 @@
 /// <reference path="jasmine.d.ts" />
-/// <reference path="../Sequences" />
+/// <reference path="../src/Sequences" />
 
 describe("Sequences#create", () => {
 	it("ofArray()", () => {
