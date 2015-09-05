@@ -6,11 +6,11 @@
 /// <reference path="RangeIterator" />
 /// <reference path="EmptySequence" />
 
-/** Collection of static utility methods to work with streams. */
+/** Collection of static utility methods to work with Sequences. */
 class Sequences {
 	
 	/** 
-	 * Constructs a Stream from the given iterator.
+	 * Constructs a Sequence from the given iterator.
 	 * @param iterator The iterator.
 	 */
 	public static ofIterator<T>(iterator: Iterator<T>): Sequence<T> {
@@ -18,7 +18,7 @@ class Sequences {
 	}
 	
 	/**
-	 * Constructs a Stream from the given array.
+	 * Constructs a Sequence from the given array.
 	 * @param array The array.
 	 */
 	public static ofArray<T>(array: Array<T>): Sequence<T> {
@@ -29,7 +29,7 @@ class Sequences {
 	}
 	
 	/**
-	 * Constructs a Stream from a single value.
+	 * Constructs a Sequence from a single value.
 	 * @param value The value.
 	 */
 	public static ofValue<T>(value: T): Sequence<T> {
@@ -37,7 +37,7 @@ class Sequences {
 	}
 
 	/**
-	 * Constructs a Stream from variadic arguments.
+	 * Constructs a Sequence from variadic arguments.
 	 * @param values The values.
 	 */
 	public static ofValues<T>(...values: Array<T>): Sequence<T> {
@@ -45,7 +45,7 @@ class Sequences {
 	}
 	
 	/**
-	 * Constructs a Stream, which emits endlessly the value supplied by the given supplier.
+	 * Constructs a Sequence, which emits endlessly the value supplied by the given supplier.
 	 * @param supplier The supplier.
 	 */
 	public static generate<T>(supplier: () => T): Sequence<T> {
@@ -53,7 +53,7 @@ class Sequences {
 	}
 	
 	/**
-	 * Constructs a Stream, which repeats the given value endlessly.
+	 * Constructs a Sequence, which repeats the given value endlessly.
 	 * @param value The repeated value.
 	 */
 	public static repeat<T>(value: T): Sequence<T> {
@@ -61,7 +61,7 @@ class Sequences {
 	}
 	
 	/**
-	 * Constructs a Stream, which emits the numeric values in a given range.
+	 * Constructs a Sequence, which emits the numeric values in a given range.
 	 * @param from The starting point of the iteration.
 	 * @param end The end point of the iteration.
 	 * @param (optional) The delta.
@@ -71,19 +71,19 @@ class Sequences {
 	}
 	
 	/**
-	 * Constructs a Stream, which emits the same elements, as the given array of Streams in order.
-	 * @param streams The Streams to concatenate.
+	 * Constructs a Sequence, which emits the same elements, as the given array of Sequences in order.
+	 * @param Sequences The Sequences to concatenate.
 	 */
-	public static concatenate<T>(...streams: Array<Sequence<T>>): Sequence<T> {
-		if (streams.length === 0) {
+	public static concatenate<T>(...sequences: Array<Sequence<T>>): Sequence<T> {
+		if (sequences.length === 0) {
 			return Sequences.empty<T>();
-		} else if (streams.length === 1) {
-			return streams[0];
+		} else if (Sequences.length === 1) {
+			return Sequences[0];
 		} else {
 			return Sequences.ofIterator(
 				new ConcatenatingIterator(
 					new MappingIterator(
-						new ArrayIterator(streams), s => s.iterator()
+						new ArrayIterator(sequences), s => s.iterator()
 					)
 				)
 			);
@@ -91,7 +91,7 @@ class Sequences {
 	}
 	
 	/**
-	 * Constructs an empty Stream.
+	 * Constructs an empty Sequence.
 	 */
 	public static empty<T>(): Sequence<T> {
 		return EmptySequence.instance<T>();

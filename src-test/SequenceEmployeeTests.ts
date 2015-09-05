@@ -2,7 +2,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="EmployeeModel" />
 
-describe("Stream test with simple model", () => {
+describe("Sequence test with simple model", () => {
 	/** Random generated names & data */
 	var zacharyBaird = { name: 'Zachary Baird', profession: Profession.ANALYST, boss: isaiahNichols, salary: 2700 };
 	var erichColon = { name: 'Erich Colon', profession: Profession.SALESMAN, boss: aaronTillman, salary: 2700 };

@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#reduce", () => {
+describe("Sequence#reduce", () => {
 
 	var sumReducer = (a: number, b: number) => a + b;
 	var emptyJoiner = (a: string, b: string) => a ? a + b : b;

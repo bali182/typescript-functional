@@ -2,21 +2,21 @@
 /// <reference path="../Collectors" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#partition", () => {
+describe("Sequence#partition", () => {
 	it("Count", () => {
-		var originalStream = Sequences.repeat("A").limit(10);
-		var partitionedStream = originalStream.partition(2);
-		expect(partitionedStream.count()).toBe(5);
+		var originalSequence = Sequences.repeat("A").limit(10);
+		var partitionedSequence = originalSequence.partition(2);
+		expect(partitionedSequence.count()).toBe(5);
 	});
 
-	it("Count substreams and check contents", () => {
-		var originalStream = Sequences.repeat("A").limit(15);
-		var partitionedStream = originalStream.partition(3);
+	it("Count subSequences and check contents", () => {
+		var originalSequence = Sequences.repeat("A").limit(15);
+		var partitionedSequence = originalSequence.partition(3);
 
-		partitionedStream.forEach(subStream => {
+		partitionedSequence.forEach(subSequence => {
 			var counter = 0;
 			var concatenated = "";
-			subStream.forEach(a => {
+			subSequence.forEach(a => {
 				concatenated += a
 				counter++;
 			});
@@ -25,15 +25,15 @@ describe("Stream#partition", () => {
 		});
 	});
 
-	it("Count substreams and check contents of incomplete partition", () => {
-		var originalStream = Sequences.repeat("A").limit(13);
-		var partitionedStream = originalStream.partition(5);
+	it("Count subSequences and check contents of incomplete partition", () => {
+		var originalSequence = Sequences.repeat("A").limit(13);
+		var partitionedSequence = originalSequence.partition(5);
 		var iterationCount = 0;
 
-		partitionedStream.forEach(subStream => {
+		partitionedSequence.forEach(subSequence => {
 			var counter = 0;
 			var concatenated = "";
-			subStream.forEach(a => {
+			subSequence.forEach(a => {
 				concatenated += a
 				counter++;
 			});

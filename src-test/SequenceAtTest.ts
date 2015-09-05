@@ -1,7 +1,7 @@
 /// <reference path="jasmine.d.ts" />
 /// <reference path="../Sequences" />
 
-describe("Streams#at", () => {
+describe("Sequences#at", () => {
 	it("array", () => {
 		var result = Sequences.ofArray(["A", "B", "C"]).at(1);
 		expect(result.isPresent()).toBe(true);

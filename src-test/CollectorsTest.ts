@@ -1,4 +1,4 @@
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 /// <reference path="../Collectors" />
 /// <reference path="jasmine.d.ts" />
 

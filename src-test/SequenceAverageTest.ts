@@ -1,7 +1,7 @@
 /// <reference path="jasmine.d.ts" />
 /// <reference path="../Sequences" />
 
-describe("Streams#average", () => {
+describe("Sequences#average", () => {
 	it("average string length in array", () => {
 		var result = Sequences.ofArray(["A", "BB", "CCC", "DDDD", "EEEEE"])
 			.average(s => s.length);

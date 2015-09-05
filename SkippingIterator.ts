@@ -9,7 +9,7 @@ class SkippingIterator<T> extends DelegateIterator<T> {
 	/** The amount of elements to skip. */
 	private mSkip: number;
 	/** true, if the elements are already skiped, false otherwise. */
-	private mSkipped: boolean;
+	private mSkipped: boolean = false;
 	
 	/**
 	 * Constructor.
@@ -19,7 +19,6 @@ class SkippingIterator<T> extends DelegateIterator<T> {
 	constructor(delegate: Iterator<T>, skip: number) {
 		super(delegate);
 		this.mSkip = skip;
-		this.mSkipped = false;
 	}
 
 	hasNext(): boolean {

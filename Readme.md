@@ -3,7 +3,7 @@ Functional TypeScript  [![Build Status](https://travis-ci.org/bali182/typescript
 
 The aim of this project is to bring real lazy functional stuff to java(type)script. It started out as a learning project, but it works pretty well&fast, so I tought I share it.
 
-As a Java developer, I took what I tought was best from the functional part of Googles [Guava](https://github.com/google/guava) and Oracles [Stream API](https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html).
+As a Java developer, I took what I tought was best from the functional part of Googles [Guava](https://github.com/google/guava) and Oracles [Sequence API](https://docs.oracle.com/javase/8/docs/api/java/util/Sequence/package-summary.html).
 
 #TODO list
 
@@ -14,7 +14,7 @@ What is done, and what is planned:
 - [ ] Switch to a standard build system
 - [ ] Create an extensive documentation
 
-##Stream
+##Sequence
 
 - [x] `forEach()`
 - [x] `map()`
@@ -79,7 +79,7 @@ What is done, and what is planned:
 - [x] `ToArrayCollector`
 - [x] `JoiningCollector`
 
-###For Streams
+###For Sequences
 
 - [x] `forEach()`
 - [x] `map()`

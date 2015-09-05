@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#map", () => {
+describe("Sequence#map", () => {
 	it("number to string", () => {
 		expect(Sequences.ofValues(1, 2, 3)
 			.map(n => n.toString())

@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#max", () => {
+describe("Sequence#min", () => {
 	var numComparator = (a: number, b: number) => a < b ? -1 : (a > b ? + 1 : 0);
 	var strLenComparator = (a: string, b: string) => a.length < b.length ?
 		-1
@@ -10,16 +10,16 @@ describe("Stream#max", () => {
 	var ageComparator = (a: { name: String, age: number }, b: { name: String, age: number }) =>
 		a.age < b.age ? -1 : (a.age > b.age ? + 1 : 0);
 
-	it("max numbers in range", () => {
-		var result = Sequences.range(0, 10).max(numComparator);
+	it("min numbers in range", () => {
+		var result = Sequences.range(0, 10).min(numComparator);
 		expect(result.isPresent()).toBe(true);
-		expect(result.get()).toBe(10);
+		expect(result.get()).toBe(0);
 	});
 
-	it("max length string", () => {
-		var result = Sequences.ofValues("Apple", "Orange", "Almonds", "Peach", "Berry").max(strLenComparator);
+	it("min length string", () => {
+		var result = Sequences.ofValues("Apple", "Orange", "Dog", "Peach", "Berry").min(strLenComparator);
 		expect(result.isPresent()).toBe(true);
-		expect(result.get()).toBe("Almonds");
+		expect(result.get()).toBe("Dog");
 	});
 
 	var users: Array<{ name: String, age: number }> = [
@@ -29,20 +29,20 @@ describe("Stream#max", () => {
 		{ name: "Robert", age: 19 }
 	];
 
-	it("max age person", () => {
-		var result = Sequences.ofArray(users).max(ageComparator);
+	it("min age person", () => {
+		var result = Sequences.ofArray(users).min(ageComparator);
 		expect(result.isPresent()).toBe(true);
-		expect(result.get().name).toBe("Ed");
+		expect(result.get().name).toBe("Robert");
 	});
 
 	it("empty", () => {
-		var last = Sequences.empty<string>().max(strLenComparator);
+		var last = Sequences.empty<string>().min(strLenComparator);
 		expect(last.isAbsent()).toBe(true);
 	});
 
 	it("max of 1000 elements", () => {
-		var max = Sequences.range(0, 1000).map(n => Sequences.repeat("A").limit(n).join()).max(strLenComparator);
+		var max = Sequences.range(1000, 0, -1).map(n => Sequences.repeat("A").limit(n).join()).min(strLenComparator);
 		expect(max.isPresent()).toBe(true);
-		expect(max.get()).toBe(Sequences.repeat("A").limit(1000).join());
+		expect(max.get()).toBe("");
 	});
 })

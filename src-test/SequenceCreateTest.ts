@@ -1,7 +1,7 @@
 /// <reference path="jasmine.d.ts" />
 /// <reference path="../Sequences" />
 
-describe("Streams#create", () => {
+describe("Sequences#create", () => {
 	it("ofArray()", () => {
 		expect(Sequences.ofArray([]).toArray()).toEqual([]);
 		expect(Sequences.ofArray(["A"]).toArray()).toEqual(["A"]);

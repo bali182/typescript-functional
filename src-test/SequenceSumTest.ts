@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#sum", () => {
+describe("Sequence#sum", () => {
 	it("sum range", () => {
 		var sum = Sequences.range(1, 3).sum(n => n);
 		expect(sum).toBe(6);

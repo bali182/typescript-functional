@@ -1,7 +1,7 @@
 /// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
-describe("Stream#any", () => {
+describe("Sequence#any", () => {
 	it("Range", () => {
 		expect(Sequences.range(0, 10).any(n => n >= 0)).toEqual(true);
 		expect(Sequences.range(0, 10).any(n => n % 2 == 0)).toEqual(true);
