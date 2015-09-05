@@ -167,8 +167,8 @@ class Optional<T> implements Sequence<T> {
 		return this.filter(predicate);
 	}
 
-	flatten<R>(Sequenceify: (input: T) => Sequence<R>): Sequence<R> {
-		return null; //TODO
+	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
+		return this.isPresent() ? sequencify(this.get()) : Optional.empty<R>();
 	}
 
 	fold<R>(reducer: (left: R, right: T) => R, initial: R): R {
@@ -218,7 +218,7 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	partition(partitionSize: number): Sequence<Sequence<T>> {
-		return null; // TODO
+		return this.isPresent() ? Optional.of(this) : Optional.empty<Optional<T>>();
 	}
 
 	peek(consumer: (input: T) => void): Optional<T> {
@@ -237,7 +237,7 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	skipWhile(predicate: (input: T) => boolean): Optional<T> {
-		return null; // TODO
+		return this.isPresent() && predicate(this.get()) ? Optional.empty<T>() : this;
 	}
 
 	sum(mapper: (input: T) => number): number {

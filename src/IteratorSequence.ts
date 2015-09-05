@@ -117,10 +117,10 @@ class IteratorSequence<T> implements Sequence<T>{
 		return this.filter(predicate).last();
 	}
 
-	flatten<R>(Sequenceify: (input: T) => Sequence<R>): Sequence<R> {
+	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
 		return new IteratorSequence<R>(
 			new ConcatenatingIterator<R>(
-				this.map(Sequenceify).map(Sequence => Sequence.iterator()).iterator()
+				this.map(sequencify).map(Sequence => Sequence.iterator()).iterator()
 			), 
 			this.isConsumed()
 		);
