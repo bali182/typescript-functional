@@ -4,7 +4,7 @@
 
 describe("Collectors", () => {
 	it("SumCollector", () => {
-		expect(Sequences.ofValues(0, 1, 2, 3, 4, 5).collect(Collectors.sum())).toEqual(15);
+		expect(Sequences.ofValues(0, 1, 2, 3, 4, 5).collect(Collectors.sum())).toEqual(14);
 		expect(Sequences.range(0, 5).collect(Collectors.sum())).toEqual(15);
 	});
 
