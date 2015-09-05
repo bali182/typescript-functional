@@ -1,3 +1,5 @@
 *.js
 src-gen
+src-dist
 jasmine.json
+node_modules
