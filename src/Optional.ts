@@ -39,7 +39,7 @@ class Optional<T> implements Sequence<T> {
 	 */
 	public get(): T {
 		if (this.isAbsent()) {
-			throw new Error("The element is absent");
+			throw new Error('The element is absent');
 		}
 		return this.mReference;
 	}
@@ -51,7 +51,7 @@ class Optional<T> implements Sequence<T> {
 	 */
 	public getOr(fallback: T): T {
 		if (fallback === null || fallback === undefined) {
-			throw new Error("use orUndefined() or orNull() instead");
+			throw new Error('use orUndefined() or orNull() instead');
 		}
 		if (this.isPresent()) {
 			return this.mReference;
@@ -95,7 +95,7 @@ class Optional<T> implements Sequence<T> {
 	 */
 	public static of<T>(input: T): Optional<T> {
 		if (input === undefined || input === null) {
-			throw new Error("undefined or null");
+			throw new Error('undefined or null');
 		}
 		return new Optional<T>(input);
 	}
@@ -120,9 +120,9 @@ class Optional<T> implements Sequence<T> {
 
 	toString(): String {
 		if (this.isPresent()) {
-			return "Present { " + this.mReference.toString() + " }";
+			return `Present("${ this.mReference.toString() }`;
 		}
-		return "Absent {}";
+		return 'Absent()';
 	}
 
 	all(predicate: (input: T) => boolean): boolean {
@@ -138,7 +138,7 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	append(other: Sequence<T>): Sequence<T> {
-		return null; //TODO
+		throw new Error('Not implemented') // TODO
 	}
 
 	average(mapper: (input: T) => number): number {
@@ -222,12 +222,12 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	peek(consumer: (input: T) => void): Optional<T> {
-		return null; // TODO
+		throw new Error('Not implemented') // TODO
 	}
 
 	reduce(reducer: (left: T, right: T) => T): T {
 		if (!this.isPresent()) {
-			throw new Error('');
+			throw new Error('Empty');
 		}
 		return this.get();
 	}
@@ -249,7 +249,7 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	takeWhile(predicate: (input: T) => boolean): Optional<T> {
-		return this.filter(predicate); // TODO
+		return this.filter(predicate);
 	}
 
 	toArray(): Array<T> {
@@ -257,6 +257,6 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Optional<E> {
-		return null; // TODO
+		throw new Error('Not implemented') // TODO
 	}
 }
