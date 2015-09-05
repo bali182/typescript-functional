@@ -157,6 +157,12 @@ interface Sequence<T> {
 	skip(amount: number): Sequence<T>
 	
 	/**
+	 * Skips the contents of this Sequence, while the given predicate returns true.
+	 * @param predicate The predicate.
+	 */
+	skipWhile(predicate: (input: T) => boolean): Sequence<T>
+	
+	/**
 	 * Returns the sum of the elements in this Stream, by first calling the mapper function on each element, then 
 	 * accumulating every element using the + operator.
 	 * @param mapper The function, which maps each element to it's numeric representation.
@@ -168,6 +174,12 @@ interface Sequence<T> {
 	 * Stream has one or zero elements. 
 	 */
 	tail(): Sequence<T>
+	
+	/**
+	 * Takes the contents of this Sequence, while the given predicate returns true.
+	 * @param predicate The predicate.
+	 */
+	takeWhile(predicate: (input: T) => boolean): Sequence<T>
 	
 	/**
 	 * Returns an array containing the elements of this Stream.

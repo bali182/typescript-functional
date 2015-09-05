@@ -11,6 +11,9 @@
 /// <reference path="FilteringIterator" />
 /// <reference path="PeekingIterator" />
 /// <reference path="PartitioningIterator" />
+/// <reference path="SkipWhileIterator" />
+/// <reference path="TakeWhileIterator" />
+/// <reference path="ZipIterator" />
 
 /** Stream, which operates on an iterator. */
 class IteratorSequence<T> implements Sequence<T>{
@@ -212,6 +215,12 @@ class IteratorSequence<T> implements Sequence<T>{
 			new SkippingIterator(this.iterator(), amount), this.isConsumed()
 		);
 	}
+	
+	skipWhile(predicate: (input: T) => boolean): Sequence<T> {
+		return new IteratorSequence(
+			new SkipWhileIterator(this.iterator(), predicate)
+		);
+	}
 
 	sum(mapper: (input: T) => number): number {
 		return this.map(mapper).collect(Collectors.sum());
@@ -220,6 +229,12 @@ class IteratorSequence<T> implements Sequence<T>{
 	tail(): Sequence<T> {
 		return new IteratorSequence(
 			new SkippingIterator(this.iterator(), 1), this.isConsumed()
+		);
+	}
+
+	takeWhile(predicate: (input: T) => boolean): Sequence<T> {
+		return new IteratorSequence(
+			new TakeWhileIterator(this.iterator(), predicate)
 		);
 	}
 
