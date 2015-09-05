@@ -125,6 +125,16 @@ class IteratorSequence<T> implements Sequence<T>{
 			this.isConsumed()
 		);
 	}
+	
+	fold<R>(reducer: (left: R, right: T) => R, initial: R): R {
+		this.invalidate();
+		var iterator = this.iterator();
+		var current = initial;
+		while (iterator.hasNext()) {
+			current = reducer(current, iterator.next());
+		}
+		return current;
+	}
 
 	forEach(consumer: (input: T) => void): void {
 		this.invalidate();
@@ -200,10 +210,13 @@ class IteratorSequence<T> implements Sequence<T>{
 		);
 	}
 
-	reduce(reducer: (left: T, right: T) => T, initial?: T): T {
-		this.invalidate();
+	reduce(reducer: (left: T, right: T) => T): T {
 		var iterator = this.iterator();
-		var current = initial;
+		if (!iterator.hasNext()) {
+			throw new Error("Can't reduce an empty sequence");
+		}
+		this.invalidate();
+		var current = iterator.next();
 		while (iterator.hasNext()) {
 			current = reducer(current, iterator.next());
 		}

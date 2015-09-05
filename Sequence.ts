@@ -72,6 +72,13 @@ interface Sequence<T> {
 	 * @param Sequenceify The function, that transforms each element to a Sequence.
 	 */
 	flatten<R>(Sequenceify: (input: T) => Sequence<R>): Sequence<R>;
+
+	/**
+	 * Reduces the Sequence, using the binary function, and the initial value.
+	 * @param reducer The binary function.
+	 * @param initial The initial value.
+	 */
+	fold<R>(reducer: (left: R, right: T) => R, initial: R): R
 	
 	/**
 	 * Consumes all the elements of this Sequence using the parameter consumer function.
@@ -144,11 +151,10 @@ interface Sequence<T> {
 	peek(consumer: (input: T) => void): Sequence<T>
 	
 	/**
-	 * Performs a reduction on this Sequence using the parameter binary function.
+	 * Performs a reduction on this Sequence using the parameter binary function. If the collection is empty, this method throws an error.
 	 * @param reducer The binary function to calculate the accumulated value.
-	 * @param initial (Optional) The inital value.
 	 */
-	reduce(reducer: (left: T, right: T) => T, initial?: T): T
+	reduce(reducer: (left: T, right: T) => T): T
 	
 	/**
 	 * Returns a Sequence consisting of the remaining elements of this Sequence after discarding the first n elements of the Sequence.
