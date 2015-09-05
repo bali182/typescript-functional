@@ -1,5 +1,5 @@
 /// <reference path="jasmine.d.ts" />
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 /// <reference path="EmployeeModel" />
 
 describe("Stream test with simple model", () => {
@@ -31,7 +31,7 @@ describe("Stream test with simple model", () => {
 	// Better examples would require distinct() + Collectors#groupBy() - so a set and map datatype.
 	
 	it("Who earns more than 2800?", () => {
-		var earnsMoreThan2800 = Streams.ofArray(employees)
+		var earnsMoreThan2800 = Sequences.ofArray(employees)
 			.filter(e => e.salary > 2800)
 			.toArray();
 
@@ -39,7 +39,7 @@ describe("Stream test with simple model", () => {
 	});
 
 	it("Who earns the most?", () => {
-		var earnsMost = Streams.ofArray(employees)
+		var earnsMost = Sequences.ofArray(employees)
 			.max((e1, e2) => e1.salary - e2.salary);
 
 		expect(earnsMost.isPresent()).toBe(true);
@@ -47,7 +47,7 @@ describe("Stream test with simple model", () => {
 	});
 
 	it("Who earns more than his/her boss?", () => {
-		var earnsMoreThanTheBoss = Streams.ofArray(employees)
+		var earnsMoreThanTheBoss = Sequences.ofArray(employees)
 			.filter(e => !!e.boss)
 			.filter(e => e.salary > e.boss.salary)
 			.toArray();
@@ -56,7 +56,7 @@ describe("Stream test with simple model", () => {
 	});
 
 	it("Who is the best paid analyst?", () => {
-		var bestPaidAnalyst = Streams.ofArray(employees)
+		var bestPaidAnalyst = Sequences.ofArray(employees)
 			.filter(e => e.profession === Profession.ANALYST)
 			.max((e1, e2) => e1.salary - e2.salary);
 
@@ -65,7 +65,7 @@ describe("Stream test with simple model", () => {
 	});
 
 	it("What is the average salary for a manager (using the data available)?", () => {
-		var avgSalaryForManagers = Streams.ofArray(employees)
+		var avgSalaryForManagers = Sequences.ofArray(employees)
 			.filter(e => e.profession === Profession.MANAGER)
 			.average(e => e.salary);
 
@@ -73,14 +73,14 @@ describe("Stream test with simple model", () => {
 	});
 
 	it("What is the average salary in the company", () => {
-		var avgSalaryForManagers = Streams.ofArray(employees)
+		var avgSalaryForManagers = Sequences.ofArray(employees)
 			.average(e => e.salary);
 
 		expect(avgSalaryForManagers).toBe(2940);
 	});
 
 	it("Give a raise to all analyst of 300, the decrease it to their original", () => {
-		Streams.ofArray(employees)
+		Sequences.ofArray(employees)
 			.filter(e => e.profession === Profession.ANALYST)
 			.forEach(e => {
 				e.salary += 300
@@ -89,7 +89,7 @@ describe("Stream test with simple model", () => {
 		expect(leilaniChapman.salary).toBe(2900);
 		expect(josephineBeard.salary).toBe(3600);
 
-		Streams.ofArray(employees)
+		Sequences.ofArray(employees)
 			.filter(e => e.profession === Profession.ANALYST)
 			.forEach(e => {
 				e.salary -= 300

@@ -1,15 +1,15 @@
 /// <reference path="jasmine.d.ts" />
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 
 describe("Streams#average", () => {
 	it("average string length in array", () => {
-		var result = Streams.ofArray(["A", "BB", "CCC", "DDDD", "EEEEE"])
+		var result = Sequences.ofArray(["A", "BB", "CCC", "DDDD", "EEEEE"])
 			.average(s => s.length);
 		expect(result).toBe(3);
 	});
 
 	it("empty", () => {
-		var result = Streams.empty<string>()
+		var result = Sequences.empty<string>()
 			.average(s => s.length);
 		expect(result).toBe(0);
 	});
@@ -22,13 +22,13 @@ describe("Streams#average", () => {
 	];
 
 	it("average age", () => {
-		var result = Streams.ofArray(users)
+		var result = Sequences.ofArray(users)
 			.average(s => s.age);
 		expect(result).toBe(30);
 	});
 
 	it("average of 100000 elements", () => {
-		var result = Streams.range(0, 100000).average(n => n);
+		var result = Sequences.range(0, 100000).average(n => n);
 		expect(result).toBe(50000);
 	});
 });

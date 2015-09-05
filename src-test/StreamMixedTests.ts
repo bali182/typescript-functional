@@ -1,11 +1,11 @@
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Stream mixed examples", () => {
 	it("Multiply", () => {
 		var a = 6;
 		var b = 4;
-		var actual = Streams.repeat(a)
+		var actual = Sequences.repeat(a)
 			.limit(b)
 			.sum(n => n);
 		expect(actual).toEqual(a * b);
@@ -19,7 +19,7 @@ describe("Stream mixed examples", () => {
 	];
 
 	it("Join names of older than 20", () => {
-		var names = Streams.ofArray(users)
+		var names = Sequences.ofArray(users)
 			.filter(u => u.age > 20)
 			.map(u => u.name)
 			.join(" and ");
@@ -28,16 +28,16 @@ describe("Stream mixed examples", () => {
 	});
 
 	it("Add the ages", () => {
-		var ageSum = Streams.ofArray(users)
+		var ageSum = Sequences.ofArray(users)
 			.sum(u => u.age)
 		expect(ageSum).toEqual(120);
 	});
 
 	it("Generate sequence of 'A' as long as the names combined", () => {
-		var sequence = Streams.ofArray(users)
+		var sequence = Sequences.ofArray(users)
 			.map(u => u.name)
 			.map(name => name.length)
-			.map(length => Streams.repeat("A").limit(length).join())
+			.map(length => Sequences.repeat("A").limit(length).join())
 			.join(" ");
 
 		expect(sequence).toEqual("AAA AAAAAA AAAAAA AA");

@@ -1,4 +1,4 @@
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Stream#min", () => {
@@ -11,13 +11,13 @@ describe("Stream#min", () => {
 		a.age < b.age ? -1 : (a.age > b.age ? + 1 : 0);
 
 	it("min numbers in range", () => {
-		var result = Streams.range(0, 10).min(numComparator);
+		var result = Sequences.range(0, 10).min(numComparator);
 		expect(result.isPresent()).toBe(true);
 		expect(result.get()).toBe(0);
 	});
 
 	it("min length string", () => {
-		var result = Streams.ofValues("Apple", "Orange", "Dog", "Peach", "Berry").min(strLenComparator);
+		var result = Sequences.ofValues("Apple", "Orange", "Dog", "Peach", "Berry").min(strLenComparator);
 		expect(result.isPresent()).toBe(true);
 		expect(result.get()).toBe("Dog");
 	});
@@ -30,18 +30,18 @@ describe("Stream#min", () => {
 	];
 
 	it("min age person", () => {
-		var result = Streams.ofArray(users).min(ageComparator);
+		var result = Sequences.ofArray(users).min(ageComparator);
 		expect(result.isPresent()).toBe(true);
 		expect(result.get().name).toBe("Robert");
 	});
 
 	it("empty", () => {
-		var last = Streams.empty<string>().min(strLenComparator);
+		var last = Sequences.empty<string>().min(strLenComparator);
 		expect(last.isAbsent()).toBe(true);
 	});
 
 	it("max of 1000 elements", () => {
-		var max = Streams.range(1000, 0, -1).map(n => Streams.repeat("A").limit(n).join()).min(strLenComparator);
+		var max = Sequences.range(1000, 0, -1).map(n => Sequences.repeat("A").limit(n).join()).min(strLenComparator);
 		expect(max.isPresent()).toBe(true);
 		expect(max.get()).toBe("");
 	});

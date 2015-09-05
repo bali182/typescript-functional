@@ -1,16 +1,16 @@
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Stream#map", () => {
 	it("number to string", () => {
-		expect(Streams.ofValues(1, 2, 3)
+		expect(Sequences.ofValues(1, 2, 3)
 			.map(n => n.toString())
 			.toArray())
 			.toEqual(["1", "2", "3"]);
 	});
 
 	it("parseInt", () => {
-		expect(Streams.ofValues("1", "2", "3")
+		expect(Sequences.ofValues("1", "2", "3")
 			.map(s => parseInt(s))
 			.toArray())
 			.toEqual([1, 2, 3]);
@@ -24,20 +24,20 @@ describe("Stream#map", () => {
 	];
 
 	it("map people to their name", () => {
-		var result = Streams.ofArray(users).map(u => u.name);
+		var result = Sequences.ofArray(users).map(u => u.name);
 		expect(result.toArray()).toEqual(["Bob", "Ed", "Angela", "Robert"]);
 	});
 
 	it("empty", () => {
-		expect(Streams.empty<string>().map(s => parseInt(s)).toArray()).toEqual([]);
+		expect(Sequences.empty<string>().map(s => parseInt(s)).toArray()).toEqual([]);
 	});
 
 	it("mapping 100000 elements", () => {
-		expect(Streams.repeat(1)
+		expect(Sequences.repeat(1)
 			.limit(100000)
 			.map(n => n.toString())
 			.toArray()
-		).toEqual(Streams.repeat("1")
+		).toEqual(Sequences.repeat("1")
 			.limit(100000)
 			.toArray()
 		);

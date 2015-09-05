@@ -1,10 +1,10 @@
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Stream#peek", () => {
 	it("peek into array stream", () => {
 		var concatenated = "";
-		var stream = Streams.ofArray(["A", "B", "C"])
+		var stream = Sequences.ofArray(["A", "B", "C"])
 			.peek(s => concatenated += s)
 			.forEach(s => { });
 		expect(concatenated).toBe("ABC");
@@ -12,7 +12,7 @@ describe("Stream#peek", () => {
 
 	it("peek multiple times", () => {
 		var concatenated = "";
-		var stream = Streams.ofArray(["A", "B", "C"])
+		var stream = Sequences.ofArray(["A", "B", "C"])
 			.peek(s => concatenated += s)
 			.peek(s => concatenated += s)
 			.forEach(s => { });
@@ -23,7 +23,7 @@ describe("Stream#peek", () => {
 		var concatenated = "";
 		var summed = 0;
 
-		var stream = Streams.ofArray(["1", "2", "3"])
+		var stream = Sequences.ofArray(["1", "2", "3"])
 			.peek(s => concatenated += s)
 			.map(s => parseInt(s))
 			.peek(num => summed += num)
@@ -34,7 +34,7 @@ describe("Stream#peek", () => {
 
 	it("empty", () => {
 		var count = 0;
-		Streams.empty<number>().peek(n => count += n).forEach(n => { });
+		Sequences.empty<number>().peek(n => count += n).forEach(n => { });
 		expect(count).toBe(0);
 	});
 })

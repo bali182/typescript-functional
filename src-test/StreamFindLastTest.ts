@@ -1,4 +1,4 @@
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Stream#findLast", () => {
@@ -10,30 +10,30 @@ describe("Stream#findLast", () => {
 	];
 
 	it("last adult", () => {
-		var result = Streams.ofArray(users).findLast(u => u.age >= 21);
+		var result = Sequences.ofArray(users).findLast(u => u.age >= 21);
 		expect(result.isPresent()).toBe(true);
 		expect(result.get().name).toBe("Ed");
 	});
 
 	it("last even", () => {
-		var result = Streams.ofValues(1, 3, 5, 7, 4, 2, 1).findLast(n => n % 2 === 0);
+		var result = Sequences.ofValues(1, 3, 5, 7, 4, 2, 1).findLast(n => n % 2 === 0);
 		expect(result.isPresent()).toBe(true);
 		expect(result.get()).toBe(2);
 	});
 
 	it("last non empty", () => {
-		var result = Streams.ofValues("", null, undefined, "A", null, "B", "").findLast(s => !!s);
+		var result = Sequences.ofValues("", null, undefined, "A", null, "B", "").findLast(s => !!s);
 		expect(result.isPresent()).toBe(true);
 		expect(result.get()).toBe("B");
 	});
 
 	it("last in empty", () => {
-		var result = Streams.empty<any>().findLast(_ => true);
+		var result = Sequences.empty<any>().findLast(_ => true);
 		expect(result.isPresent()).toBe(false);
 	});
 
 	it("find between 100000 elements", () => {
-		var result = Streams.range(0, 110000).findLast(n => n > 99999);
+		var result = Sequences.range(0, 110000).findLast(n => n > 99999);
 		expect(result.isPresent()).toBe(true);
 		expect(result.get()).toBe(110000)
 	});

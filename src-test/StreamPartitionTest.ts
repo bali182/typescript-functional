@@ -1,16 +1,16 @@
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 /// <reference path="../Collectors" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Stream#partition", () => {
 	it("Count", () => {
-		var originalStream = Streams.repeat("A").limit(10);
+		var originalStream = Sequences.repeat("A").limit(10);
 		var partitionedStream = originalStream.partition(2);
 		expect(partitionedStream.count()).toBe(5);
 	});
 
 	it("Count substreams and check contents", () => {
-		var originalStream = Streams.repeat("A").limit(15);
+		var originalStream = Sequences.repeat("A").limit(15);
 		var partitionedStream = originalStream.partition(3);
 
 		partitionedStream.forEach(subStream => {
@@ -26,7 +26,7 @@ describe("Stream#partition", () => {
 	});
 
 	it("Count substreams and check contents of incomplete partition", () => {
-		var originalStream = Streams.repeat("A").limit(13);
+		var originalStream = Sequences.repeat("A").limit(13);
 		var partitionedStream = originalStream.partition(5);
 		var iterationCount = 0;
 
@@ -49,6 +49,6 @@ describe("Stream#partition", () => {
 	});
 
 	it("empty", () => {
-		expect(Streams.empty<any>().partition(2).toArray()).toEqual([]);
+		expect(Sequences.empty<any>().partition(2).toArray()).toEqual([]);
 	});
 })

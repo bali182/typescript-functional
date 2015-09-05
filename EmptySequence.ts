@@ -1,14 +1,14 @@
 /// <reference path="Iterator" />
-/// <reference path="IteratorStream" />
+/// <reference path="IteratorSequence" />
 
 /** Stream, which is built on top of an empty iterator. */
-class EmptyIteratorStream<T> extends IteratorStream<T> {
+class EmptySequence<T> extends IteratorSequence<T> {
 	/** The singleton instance. */
-	private static INSTANCE: EmptyIteratorStream<any> = new EmptyIteratorStream<any>();
+	private static INSTANCE: EmptySequence<any> = new EmptySequence<any>();
 	
 	/** Accessor for the singleton instance. */
-	public static instance<T>(): Stream<T> {
-		return EmptyIteratorStream.INSTANCE;
+	public static instance<T>(): Sequence<T> {
+		return EmptySequence.INSTANCE;
 	}
 	
 	/** Empty constructor. */

@@ -1,4 +1,4 @@
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Stream#reduce", () => {
@@ -7,16 +7,16 @@ describe("Stream#reduce", () => {
 	var emptyJoiner = (a: string, b: string) => a ? a + b : b;
 
 	it("Sum Ranges", () => {
-		expect(Streams.range(0, 10).reduce(sumReducer, 0)).toEqual(55);
-		expect(Streams.range(0, 10, 2).reduce(sumReducer, 0)).toEqual(30);
-		expect(Streams.range(10, 0, -2).reduce(sumReducer, 0)).toEqual(30)
+		expect(Sequences.range(0, 10).reduce(sumReducer, 0)).toEqual(55);
+		expect(Sequences.range(0, 10, 2).reduce(sumReducer, 0)).toEqual(30);
+		expect(Sequences.range(10, 0, -2).reduce(sumReducer, 0)).toEqual(30)
 	});
 
 	it("Join", () => {
-		expect(Streams.ofArray(["A", "B", "C", "D", "E"]).reduce(emptyJoiner)).toEqual("ABCDE");
+		expect(Sequences.ofArray(["A", "B", "C", "D", "E"]).reduce(emptyJoiner)).toEqual("ABCDE");
 	});
 
 	it("empty", () => {
-		expect(Streams.empty<number>().reduce(sumReducer, 0)).toBe(0);
+		expect(Sequences.empty<number>().reduce(sumReducer, 0)).toBe(0);
 	});
 })

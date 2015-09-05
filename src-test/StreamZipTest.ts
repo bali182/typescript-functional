@@ -1,42 +1,42 @@
-/// <reference path="../Streams" />
+/// <reference path="../Sequences" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Stream#zip", () => {
 	it("zip something with empty", () => {
-		var as = Streams.empty<string>();
-		var bs = Streams.ofValues("B", "B", "B");
+		var as = Sequences.empty<string>();
+		var bs = Sequences.ofValues("B", "B", "B");
 
 		var zipped = as.zip(bs, (a, b) => a + b);
 		expect(zipped.toArray()).toEqual([]);
 	});
 	it("zip arrays of equal length", () => {
-		var as = Streams.ofValues("A", "A", "A");
-		var bs = Streams.ofValues("B", "B", "B");
+		var as = Sequences.ofValues("A", "A", "A");
+		var bs = Sequences.ofValues("B", "B", "B");
 
 		var zipped = as.zip(bs, (a, b) => a + b);
 		expect(zipped.toArray()).toEqual(["AB", "AB", "AB"]);
 	});
 
 	it("zip arrays of different length", () => {
-		var as = Streams.ofValues("A", "A", "A", "B");
-		var bs = Streams.repeat("B").limit(2);
+		var as = Sequences.ofValues("A", "A", "A", "B");
+		var bs = Sequences.repeat("B").limit(2);
 
 		var zipped = as.zip(bs, (a, b) => a + b);
 		expect(zipped.toArray()).toEqual(["AB", "AB"]);
 	});
 
 	it("zip endless streams", () => {
-		var as = Streams.ofArray(["A", "A", "A"])
-		var bs = Streams.repeat("B")
+		var as = Sequences.ofArray(["A", "A", "A"])
+		var bs = Sequences.repeat("B")
 
 		var zipped = as.zip(bs, (a, b) => a + b).limit(3);
 		expect(zipped.toArray()).toEqual(["AB", "AB", "AB"]);
 	});
 
 	it("zip something zipped", () => {
-		var as = Streams.repeat("A")
-		var bs = Streams.repeat("B")
-		var cs = Streams.repeat("C");
+		var as = Sequences.repeat("A")
+		var bs = Sequences.repeat("B")
+		var cs = Sequences.repeat("C");
 
 		var zipped = as
 			.zip(bs, (a, b) => a + b)
@@ -46,8 +46,8 @@ describe("Stream#zip", () => {
 	});
 
 	it("empty", () => {
-		var empty = Streams.empty<string>()
-		var bs = Streams.repeat("B").limit(3);
+		var empty = Sequences.empty<string>()
+		var bs = Sequences.repeat("B").limit(3);
 		var zipped = empty.zip(bs, (a, b) => a + b).limit(3);
 		expect(zipped.toArray()).toEqual([]);
 	});
