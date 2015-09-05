@@ -48,15 +48,19 @@ gulp.task('test', function () {
 	return gulp.src([SRC_FILES_EXPR, TEST_JASMINE, TEST_FILES_EXPR])
 		.pipe(tsTestCompiler).js
 		.pipe(gulp.dest(DIST_FOLDER))
-		.pipe(jasmine({ verbose: true, showStackTrace: true }))
+		.pipe(jasmine({ verbose: true, showStackTrace: true }));
+})
+
+gulp.task('clean', function () {
+	return gulp.src([DIST_FOLDER])
 		.pipe(clean());
 })
 
 gulp.task('minify', ['compile-src'], function () {
-	return gulp.src(DIST_FOLDER + '/' + JS_TESTS_FILE)
+	return gulp.src(DIST_FOLDER + '/' + JS_SRC_FILE)
 		.pipe(concat(JS_MIN_SRC_FILE)) // to have the desired filename
 		.pipe(uglifiy())
 		.pipe(gulp.dest(DIST_FOLDER));
 })
 
-gulp.task('default', ['test', 'minify']);
+gulp.task('default', ['minify']);
