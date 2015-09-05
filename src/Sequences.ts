@@ -78,7 +78,7 @@ class Sequences {
 		if (sequences.length === 0) {
 			return Sequences.empty<T>();
 		} else if (Sequences.length === 1) {
-			return Sequences[0];
+			return sequences[0];
 		} else {
 			return Sequences.ofIterator(
 				new ConcatenatingIterator(

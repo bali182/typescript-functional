@@ -1,10 +1,10 @@
 /// <reference path="jasmine.d.ts" />
-/// <reference path="../MappingIterator" />
-/// <reference path="../ConcatenatingIterator" />
-/// <reference path="../LimitingIterator" />
-/// <reference path="../SkippingIterator" />
-/// <reference path="../FilteringIterator" />
-/// <reference path="../PeekingIterator" />
+/// <reference path="../src/MappingIterator" />
+/// <reference path="../src/ConcatenatingIterator" />
+/// <reference path="../src/LimitingIterator" />
+/// <reference path="../src/SkippingIterator" />
+/// <reference path="../src/FilteringIterator" />
+/// <reference path="../src/PeekingIterator" />
 
 describe("Iterators", () => {
 	it("ArrayIterator)", () => {

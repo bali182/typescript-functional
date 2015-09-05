@@ -1,5 +1,5 @@
-/// <reference path="../Sequences" />
-/// <reference path="../Collectors" />
+/// <reference path="../src/Sequences" />
+/// <reference path="../src/Collectors" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Collectors", () => {
