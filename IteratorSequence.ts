@@ -1,5 +1,6 @@
 /// <reference path="Iterator" />
 /// <reference path="Sequence" />
+/// <reference path="Sequences" />
 /// <reference path="Collector" />
 /// <reference path="Collectors" />
 /// <reference path="Optional" />
