@@ -14,6 +14,7 @@
 /// <reference path="SkipWhileIterator" />
 /// <reference path="TakeWhileIterator" />
 /// <reference path="ZipIterator" />
+/// <reference path="ChainableIterator" />
 
 /** Sequence, which operates on an iterator. */
 class IteratorSequence<T> implements Sequence<T>{
@@ -77,12 +78,12 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	append(other: Sequence<T>): Sequence<T> {
-		return new IteratorSequence(
-				new ConcatenatingIterator(new ArrayIterator([
-					this.iterator(), other.iterator()
-				])
-			), this.isConsumed() || other.isConsumed()
-		);
+		var iterator = this.iterator();
+		var otherIterator = other.iterator();
+		var chained: ChainableIterator<T> = iterator instanceof ChainableIterator
+			? (<ChainableIterator<T>>iterator).chain(otherIterator)
+			: new ChainableIterator<T>().chain(iterator).chain(otherIterator);
+		return new IteratorSequence(chained, this.isConsumed() || other.isConsumed());
 	}
 
 	average(mapper: (input: T) => number): number {
@@ -102,11 +103,11 @@ class IteratorSequence<T> implements Sequence<T>{
 	count(): number {
 		return this.collect(Collectors.count());
 	}
-	
+
 	filter(predicate: (input: T) => boolean): Sequence<T> {
 		return new IteratorSequence(
 			new FilteringIterator(this.iterator(), predicate), this.isConsumed()
-		);
+			);
 	}
 
 	findFirst(predicate: (input: T) => boolean): Optional<T> {
@@ -121,11 +122,11 @@ class IteratorSequence<T> implements Sequence<T>{
 		return new IteratorSequence<R>(
 			new ConcatenatingIterator<R>(
 				this.map(sequencify).map(Sequence => Sequence.iterator()).iterator()
-			), 
+				),
 			this.isConsumed()
-		);
+			);
 	}
-	
+
 	fold<R>(reducer: (left: R, right: T) => R, initial: R): R {
 		this.invalidate();
 		var iterator = this.iterator();
@@ -160,7 +161,7 @@ class IteratorSequence<T> implements Sequence<T>{
 	iterator(): Iterator<T> {
 		return this.mIterator;
 	}
-	
+
 	join(separator?: string, prefix?: string, suffix?: string): string {
 		return this.collect(Collectors.join(separator, prefix, suffix));
 	}
@@ -178,13 +179,13 @@ class IteratorSequence<T> implements Sequence<T>{
 	limit(limit: number): Sequence<T> {
 		return new IteratorSequence(
 			new LimitingIterator(this.iterator(), limit), this.isConsumed()
-		);
+			);
 	}
 
 	map<R>(mapper: (input: T) => R): Sequence<R> {
 		return new IteratorSequence(
 			new MappingIterator(this.iterator(), mapper), this.isConsumed()
-		);
+			);
 	}
 
 	max(comparator: (first: T, second: T) => number): Optional<T> {
@@ -200,14 +201,14 @@ class IteratorSequence<T> implements Sequence<T>{
 			new MappingIterator(
 				new PartitioningIterator(this.iterator(), partitionSize),
 				partition => Sequences.ofArray(partition)
-			)
-		);
+				)
+			);
 	}
 
 	peek(consumer: (input: T) => void): Sequence<T> {
 		return new IteratorSequence(
 			new PeekingIterator(this.iterator(), consumer), this.isConsumed()
-		);
+			);
 	}
 
 	reduce(reducer: (left: T, right: T) => T): T {
@@ -226,13 +227,13 @@ class IteratorSequence<T> implements Sequence<T>{
 	skip(amount: number): Sequence<T> {
 		return new IteratorSequence(
 			new SkippingIterator(this.iterator(), amount), this.isConsumed()
-		);
+			);
 	}
-	
+
 	skipWhile(predicate: (input: T) => boolean): Sequence<T> {
 		return new IteratorSequence(
 			new SkipWhileIterator(this.iterator(), predicate)
-		);
+			);
 	}
 
 	sum(mapper: (input: T) => number): number {
@@ -242,13 +243,13 @@ class IteratorSequence<T> implements Sequence<T>{
 	tail(): Sequence<T> {
 		return new IteratorSequence(
 			new SkippingIterator(this.iterator(), 1), this.isConsumed()
-		);
+			);
 	}
 
 	takeWhile(predicate: (input: T) => boolean): Sequence<T> {
 		return new IteratorSequence(
 			new TakeWhileIterator(this.iterator(), predicate)
-		);
+			);
 	}
 
 	toArray(): Array<T> {
@@ -262,6 +263,6 @@ class IteratorSequence<T> implements Sequence<T>{
 				tuple => combiner(tuple.first, tuple.second)
 				),
 			this.isConsumed() || other.isConsumed()
-		);
+			);
 	}
 }

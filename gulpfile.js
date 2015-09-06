@@ -48,7 +48,7 @@ gulp.task('test', function () {
 	return gulp.src([SRC_FILES_EXPR, TEST_JASMINE, TEST_FILES_EXPR])
 		.pipe(tsTestCompiler).js
 		.pipe(gulp.dest(DIST_FOLDER))
-		.pipe(jasmine({ verbose: true, showStackTrace: true }));
+		.pipe(jasmine({ verbose: true, includeStackTrace: true }));
 })
 
 gulp.task('clean', function () {
