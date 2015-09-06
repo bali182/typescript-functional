@@ -71,7 +71,7 @@ interface Sequence<T> {
 	 * Returns a Sequence consisting of the concatenated elements of the results of applying the Sequenceify function to each element.
 	 * @param Sequenceify The function, that transforms each element to a Sequence.
 	 */
-	flatten<R>(Sequenceify: (input: T) => Sequence<R>): Sequence<R>;
+	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R>;
 
 	/**
 	 * Reduces the Sequence, using the binary function, and the initial value.
