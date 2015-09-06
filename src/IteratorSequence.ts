@@ -81,8 +81,8 @@ class IteratorSequence<T> implements Sequence<T>{
 		var iterator = this.iterator();
 		var otherIterator = other.iterator();
 		var chained: ChainableIterator<T> = iterator instanceof ChainableIterator
-			? new ChainableIterator((<ChainableIterator<T>> iterator).chain().append(otherIterator))
-			: new ChainableIterator(IteratorChain.wrap(iterator).append(otherIterator));
+			? (<ChainableIterator<T>>iterator).chain(otherIterator)
+			: new ChainableIterator<T>().chain(iterator).chain(otherIterator);
 		return new IteratorSequence(chained, this.isConsumed() || other.isConsumed());
 	}
 

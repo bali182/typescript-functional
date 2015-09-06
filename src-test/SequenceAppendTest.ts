@@ -31,9 +31,10 @@ describe("Sequence#append", () => {
 	// Because iterators are deeply nested, this is slow, and memory consuming.
 	it("Appending 1000 elements", () => {
 		var appended = Sequences.empty<string>();
-		for (var i = 0; i < 1000; i++) {
+		var repeat = 10000;
+		for (var i = 0; i < repeat; i++) {
 			appended = appended.append(Sequences.ofValue("A"));
 		}
-		expect(appended.toArray()).toEqual(Sequences.repeat("A").limit(1000).toArray());
+		expect(appended.toArray()).toEqual(Sequences.repeat("A").limit(repeat).toArray());
 	});
 });

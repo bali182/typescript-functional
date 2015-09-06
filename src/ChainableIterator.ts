@@ -3,25 +3,29 @@
 /// <reference path="IteratorChain" />
 
 /**
- * Iterator, which concatenates more iterators.
+ * Iterator, which chains together multiple iterators.
  */
 class ChainableIterator<T> implements Iterator<T> {
 	
-	/** The iterators to concatenate. */
+	/** The iterator chain. */
 	private mChain: IteratorChain<T>;
 	/** The currently iterated iterator. */
 	private mCurrent: Iterator<T> = EmptyIterator.instance<T>()
 	
 	/**
 	 * Constructor.
-	 * @param iterators The iterators to concatenate.
+	 * @param chain The iterator chain.
 	 */
-	constructor(chain: IteratorChain<T>) {
-		this.mChain = chain;
+	constructor(chain?: IteratorChain<T>) {
+		this.mChain = chain || IteratorChain.empty<T>();
 	}
-
-	chain(): IteratorChain<T> {
-		return this.mChain;
+	
+	/**
+	 * Adds the given iterator to this chain. Does not modify this instance.
+	 * @param other The iterator to append to the chain.
+	 */
+	chain(other: Iterator<T>): ChainableIterator<T> {
+		return new ChainableIterator(this.mChain.append(other));
 	}
 
 	next(): T {
