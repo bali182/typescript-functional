@@ -1,6 +1,6 @@
 /// <reference path="Sequence" />
-/// <reference path="IteratorSequence" />
 /// <reference path="SingletonIterator" />
+/// <reference path="EmptyIterator" />
 
 /**
  * Container object, which may or may not contain a value.

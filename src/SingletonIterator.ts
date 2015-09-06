@@ -21,7 +21,7 @@ class SingletonIterator<T> implements Iterator<T> {
 		if (!this.hasNext()) {
 			throw new Error("Already iterated");
 		}
-		this.mHasNext = true;
+		this.mHasNext = false;
 		return this.mItem;
 	}
 
