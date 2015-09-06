@@ -2,6 +2,17 @@
 	"name": "typescript-functional",
 	"description": "Library for lazy collection manipulation in TypeScript and JavaScript",
 	"author": "Balázs Édes <edesbalazs@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bali182/typescript-functional.git"
+	},
+	"keywords": [
+		"typescript",
+		"javascript",
+		"functional",
+		"lazy",
+		"sequence"
+	],
 	"dependencies": {
 		"typescript": "*"
 	},
@@ -19,5 +30,7 @@
 		"build": "gulp",
 		"test": "gulp test",
 		"clean": "gulp clean"
-	}
+	},
+	"analyze": true,
+	"license": "MIT"
 }
