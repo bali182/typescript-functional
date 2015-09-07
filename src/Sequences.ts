@@ -15,7 +15,7 @@ class Sequences {
 	 * @param iterator The iterator.
 	 */
 	public static ofIterator<T>(iterator: Iterator<T>): Sequence<T> {
-		return new IteratorSequence(iterator);
+		return new IteratorSequence<T>(new IterableSequence<T>(() => iterator), false);
 	}
 	
 	/**
@@ -50,7 +50,7 @@ class Sequences {
 	 * @param values The values.
 	 */
 	public static ofValues<T>(...values: Array<T>): Sequence<T> {
-		switch(values.length) {
+		switch (values.length) {
 			case 0: return this.empty<T>();
 			case 1: return this.ofValue(values[0]);
 			default: return this.ofArray(values);
