@@ -1,11 +1,11 @@
 /// <reference path="Sequence" />
-/// <reference path="IteratorSequence" />
+/// <reference path="IterableSequence" />
 /// <reference path="ArrayIterator" />
 /// <reference path="EndlessIterator" />
 /// <reference path="EndlessRepeatingIterator" />
 /// <reference path="RangeIterator" />
 /// <reference path="EmptySequence" />
-/// <reference path="OnceIterableSequence" />
+/// <reference path="IteratorSequence" />
 
 /** Collection of static utility methods to work with Sequences. */
 class Sequences {
@@ -15,7 +15,7 @@ class Sequences {
 	 * @param iterator The iterator.
 	 */
 	public static ofIterator<T>(iterator: Iterator<T>): Sequence<T> {
-		return new OnceIterableSequence(iterator);
+		return new IteratorSequence(iterator);
 	}
 	
 	/**
@@ -23,7 +23,7 @@ class Sequences {
 	 * @param iterable The iterator generator function.
 	 */
 	public static ofIterable<T>(iterable: () => Iterator<T>): Sequence<T> {
-		return new IteratorSequence(iterable);
+		return new IterableSequence(iterable);
 	}
 	
 	/**

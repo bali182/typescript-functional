@@ -1,7 +1,7 @@
-/// <reference path="IteratorSequence" />
+/// <reference path="IterableSequence" />
 
 /** Sequence, which is built on top of an empty iterator. */
-class EmptySequence<T> extends IteratorSequence<T> {
+class EmptySequence<T> extends IterableSequence<T> {
 	/** The singleton instance. */
 	private static INSTANCE: EmptySequence<any> = new EmptySequence<any>();
 	
