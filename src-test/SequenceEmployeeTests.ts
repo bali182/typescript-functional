@@ -28,7 +28,7 @@ describe("Sequence test with simple model", () => {
 		illanaMiles
 	];
 
-	// Better examples would require distinct() + Collectors#groupBy() - so a set and map datatype.
+	// Better examples would require distinct() + groupBy() - so a set and map datatype.
 	
 	it("Who earns more than 2800?", () => {
 		var earnsMoreThan2800 = Sequences.ofArray(employees)

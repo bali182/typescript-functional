@@ -5,6 +5,7 @@
 /// <reference path="../src/SkippingIterator" />
 /// <reference path="../src/FilteringIterator" />
 /// <reference path="../src/PeekingIterator" />
+/// <reference path="../src/ArrayIterator" />
 
 describe("Iterators", () => {
 	it("ArrayIterator)", () => {

@@ -1,5 +1,4 @@
 /// <reference path="Optional" />
-/// <reference path="Collector" />
 
 /**
  * A Sequence is a (possibly endless) sequence of elements, providing a comfortable interface to manipulate it's elements.
@@ -35,12 +34,6 @@ interface Sequence<T> {
 	 * then calculating the sum of the numeric values, finally dividing them by the count of elements in the Sequence.
 	 */
 	average(mapper: (input: T) => number): number
-	
-	/**
-	 * Performs a reduction of this Sequence, using the parameter Collector.
-	 * @param collector The collector used to reduce the elements of this Sequence.
-	 */
-	collect<I, R>(collector: Collector<I, T, R>): R
 	
 	/**
 	 * Returns the amount of elements in this Sequence.
