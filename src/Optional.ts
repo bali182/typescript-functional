@@ -145,12 +145,6 @@ class Optional<T> implements Sequence<T> {
 		return this.isPresent() ? mapper(this.get()) : 0;
 	}
 
-	collect<I, R>(collector: Collector<I, T, R>): R {
-		return this.isPresent()
-			? collector.finish(collector.accumulate(collector.initial(), this.get()))
-			: collector.finish(collector.initial());
-	}
-
 	count(): number {
 		return this.isPresent() ? 1 : 0;
 	}

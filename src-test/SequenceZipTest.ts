@@ -42,7 +42,7 @@ describe("Sequence#zip", () => {
 			.zip(bs, (a, b) => a + b)
 			.zip(cs, (ab, c) => ab + c)
 			.limit(3);
-		expect(zipped.collect(Collectors.join())).toEqual("ABCABCABC");
+		expect(zipped.join()).toEqual("ABCABCABC");
 	});
 
 	it("empty", () => {
