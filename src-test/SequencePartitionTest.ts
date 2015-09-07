@@ -1,5 +1,4 @@
 /// <reference path="../src/Sequences" />
-/// <reference path="../src/Collectors" />
 /// <reference path="jasmine.d.ts" />
 
 describe("Sequence#partition", () => {

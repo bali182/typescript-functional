@@ -1,8 +1,6 @@
 /// <reference path="Iterator" />
 /// <reference path="Sequence" />
 /// <reference path="Sequences" />
-/// <reference path="Collector" />
-/// <reference path="Collectors" />
 /// <reference path="Optional" />
 /// <reference path="MappingIterator" />
 /// <reference path="ConcatenatingIterator" />
@@ -75,20 +73,16 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	average(mapper: (input: T) => number): number {
-		return this.map(mapper).collect(Collectors.average());
-	}
-
-	collect<I, R>(collector: Collector<I, T, R>): R {
-		var accumulated: I = collector.initial();
-		var iterator = this.iterator();
-		while (iterator.hasNext()) {
-			accumulated = collector.accumulate(accumulated, iterator.next());
-		}
-		return collector.finish(accumulated);
+		var length = 0;
+		var sum = this.map(mapper).fold((x, y) => {
+			length++;
+			return x + y;
+		}, 0);
+		return sum > 0 ? sum / length : sum;
 	}
 
 	count(): number {
-		return this.collect(Collectors.count());
+		return this.fold((length, item) => length + 1, 0);
 	}
 
 	filter(predicate: (input: T) => boolean): Sequence<T> {
@@ -140,7 +134,18 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	join(separator?: string, prefix?: string, suffix?: string): string {
-		return this.collect(Collectors.join(separator, prefix, suffix));
+		separator = separator || '';
+		var started = false;
+		var accumulator = (joined, s) => {
+			if (!started) {
+				started = true;
+				return s;
+			}
+			return joined + separator + s
+		};
+		var elementsJoined = this.map(e => '' + e)
+			.fold(accumulator, null);
+		return (prefix || '') + (started ? elementsJoined : '') + (suffix || '');
 	}
 
 	last(): Optional<T> {
@@ -165,11 +170,27 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	max(comparator: (first: T, second: T) => number): Optional<T> {
-		return this.collect(Collectors.max(comparator));
+		var started = false;
+		var maxValue = this.fold((f, s) => {
+			if (!started) {
+				started = true;
+				return s;
+			}
+			return comparator(f, s) > 0 ? f : s
+		}, null);
+		return started ? Optional.ofNullable(maxValue) : Optional.empty<T>();
 	}
 
 	min(comparator: (first: T, second: T) => number): Optional<T> {
-		return this.collect(Collectors.min(comparator));
+		var started = false;
+		var minValue = this.fold((f, s) => {
+			if (!started) {
+				started = true;
+				return s;
+			}
+			return comparator(f, s) < 0 ? f : s
+		}, null);
+		return started ? Optional.ofNullable(minValue) : Optional.empty<T>();
 	}
 
 	partition(partitionSize: number): Sequence<Sequence<T>> {
@@ -212,7 +233,7 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	sum(mapper: (input: T) => number): number {
-		return this.map(mapper).collect(Collectors.sum());
+		return this.map(mapper).fold((a, b) => a + b, 0)
 	}
 
 	tail(): Sequence<T> {
@@ -228,7 +249,7 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	toArray(): Array<T> {
-		return this.collect(Collectors.toArray<T>());
+		return this.fold((array, e) => { array.push(e); return array; }, []);
 	}
 
 	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Sequence<E> {
