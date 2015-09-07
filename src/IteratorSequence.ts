@@ -19,30 +19,18 @@
 /** Sequence, which operates on an iterator. */
 class IteratorSequence<T> implements Sequence<T>{
 	/** The delegeate iterator */
-	private mIterator: Iterator<T>
-	/** Flag indicating if the Sequence was already iterated or not. */
-	private mConsumed: boolean;
+	private mIterable: () => Iterator<T>
 	
 	/**
 	 * Constructor.
 	 * @param iterator The delegeate iterator
 	 * @param iterated Flag indicating if the Sequence was already iterated or not.
 	 */
-	constructor(iterator: Iterator<T>, iterated?: boolean) {
-		this.mIterator = iterator;
-		this.mConsumed = !!iterated;
-	}
-	
-	/** Throws an exception if the Sequence is already iterated, then sets the consumed flag to true. */
-	protected invalidate(): void {
-		if (this.isConsumed()) {
-			throw new Error("Already iterated");
-		}
-		this.mConsumed = true;
+	constructor(iterable: () => Iterator<T>) {
+		this.mIterable = iterable;
 	}
 
 	all(predicate: (input: T) => boolean): boolean {
-		this.invalidate();
 		var iterator = this.iterator();
 		while (iterator.hasNext()) {
 			if (!predicate(iterator.next())) {
@@ -53,7 +41,6 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	any(predicate: (input: T) => boolean): boolean {
-		this.invalidate();
 		var iterator = this.iterator();
 		while (iterator.hasNext()) {
 			if (predicate(iterator.next())) {
@@ -64,7 +51,6 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	at(index: number): Optional<T> {
-		this.invalidate();
 		var iterator = this.iterator();
 		var idx = 0;
 		while (iterator.hasNext() && idx < index) {
@@ -78,12 +64,14 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	append(other: Sequence<T>): Sequence<T> {
-		var iterator = this.iterator();
-		var otherIterator = other.iterator();
-		var chained: ChainableIterator<T> = iterator instanceof ChainableIterator
-			? (<ChainableIterator<T>>iterator).chain(otherIterator)
-			: new ChainableIterator<T>().chain(iterator).chain(otherIterator);
-		return new IteratorSequence(chained, this.isConsumed() || other.isConsumed());
+		var iterable: () => Iterator<T> = () => {
+			var iterator = this.iterator();
+			var otherIterator = other.iterator();
+			return iterator instanceof ChainableIterator
+				? (<ChainableIterator<T>>iterator).chain(otherIterator)
+				: new ChainableIterator<T>().chain(iterator).chain(otherIterator);
+		}
+		return new IteratorSequence(iterable);
 	}
 
 	average(mapper: (input: T) => number): number {
@@ -91,7 +79,6 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	collect<I, R>(collector: Collector<I, T, R>): R {
-		this.invalidate();
 		var accumulated: I = collector.initial();
 		var iterator = this.iterator();
 		while (iterator.hasNext()) {
@@ -105,9 +92,7 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	filter(predicate: (input: T) => boolean): Sequence<T> {
-		return new IteratorSequence(
-			new FilteringIterator(this.iterator(), predicate), this.isConsumed()
-			);
+		return new IteratorSequence(() => new FilteringIterator(this.iterator(), predicate));
 	}
 
 	findFirst(predicate: (input: T) => boolean): Optional<T> {
@@ -119,16 +104,14 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
-		return new IteratorSequence<R>(
+		return new IteratorSequence<R>(() =>
 			new ConcatenatingIterator<R>(
 				this.map(sequencify).map(Sequence => Sequence.iterator()).iterator()
-				),
-			this.isConsumed()
-			);
+			)
+		);
 	}
 
 	fold<R>(reducer: (left: R, right: T) => R, initial: R): R {
-		this.invalidate();
 		var iterator = this.iterator();
 		var current = initial;
 		while (iterator.hasNext()) {
@@ -138,7 +121,6 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	forEach(consumer: (input: T) => void): void {
-		this.invalidate();
 		var iterator = this.iterator();
 		while (iterator.hasNext()) {
 			consumer(iterator.next());
@@ -146,7 +128,6 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	head(): Optional<T> {
-		this.invalidate();
 		var iterator = this.iterator();
 		if (iterator.hasNext()) {
 			return Optional.of(iterator.next());
@@ -154,12 +135,8 @@ class IteratorSequence<T> implements Sequence<T>{
 		return Optional.empty<T>();
 	}
 
-	isConsumed(): boolean {
-		return this.mConsumed;
-	}
-
 	iterator(): Iterator<T> {
-		return this.mIterator;
+		return this.mIterable();
 	}
 
 	join(separator?: string, prefix?: string, suffix?: string): string {
@@ -167,7 +144,6 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	last(): Optional<T> {
-		this.invalidate();
 		var last: T = undefined;
 		var iterator = this.iterator();
 		while (iterator.hasNext()) {
@@ -178,14 +154,14 @@ class IteratorSequence<T> implements Sequence<T>{
 
 	limit(limit: number): Sequence<T> {
 		return new IteratorSequence(
-			new LimitingIterator(this.iterator(), limit), this.isConsumed()
-			);
+			() => new LimitingIterator(this.iterator(), limit)
+		);
 	}
 
 	map<R>(mapper: (input: T) => R): Sequence<R> {
 		return new IteratorSequence(
-			new MappingIterator(this.iterator(), mapper), this.isConsumed()
-			);
+			() => new MappingIterator(this.iterator(), mapper)
+		);
 	}
 
 	max(comparator: (first: T, second: T) => number): Optional<T> {
@@ -197,18 +173,18 @@ class IteratorSequence<T> implements Sequence<T>{
 	}
 
 	partition(partitionSize: number): Sequence<Sequence<T>> {
-		return new IteratorSequence(
+		return new IteratorSequence(() =>
 			new MappingIterator(
 				new PartitioningIterator(this.iterator(), partitionSize),
 				partition => Sequences.ofArray(partition)
-				)
-			);
+			)
+		);
 	}
 
 	peek(consumer: (input: T) => void): Sequence<T> {
 		return new IteratorSequence(
-			new PeekingIterator(this.iterator(), consumer), this.isConsumed()
-			);
+			() => new PeekingIterator(this.iterator(), consumer)
+		);
 	}
 
 	reduce(reducer: (left: T, right: T) => T): T {
@@ -216,7 +192,6 @@ class IteratorSequence<T> implements Sequence<T>{
 		if (!iterator.hasNext()) {
 			throw new Error("Can't reduce an empty sequence");
 		}
-		this.invalidate();
 		var current = iterator.next();
 		while (iterator.hasNext()) {
 			current = reducer(current, iterator.next());
@@ -226,14 +201,14 @@ class IteratorSequence<T> implements Sequence<T>{
 
 	skip(amount: number): Sequence<T> {
 		return new IteratorSequence(
-			new SkippingIterator(this.iterator(), amount), this.isConsumed()
-			);
+			() => new SkippingIterator(this.iterator(), amount)
+		);
 	}
 
 	skipWhile(predicate: (input: T) => boolean): Sequence<T> {
 		return new IteratorSequence(
-			new SkipWhileIterator(this.iterator(), predicate)
-			);
+			() => new SkipWhileIterator(this.iterator(), predicate)
+		);
 	}
 
 	sum(mapper: (input: T) => number): number {
@@ -242,14 +217,14 @@ class IteratorSequence<T> implements Sequence<T>{
 
 	tail(): Sequence<T> {
 		return new IteratorSequence(
-			new SkippingIterator(this.iterator(), 1), this.isConsumed()
-			);
+			() => new SkippingIterator(this.iterator(), 1)
+		);
 	}
 
 	takeWhile(predicate: (input: T) => boolean): Sequence<T> {
 		return new IteratorSequence(
-			new TakeWhileIterator(this.iterator(), predicate)
-			);
+			() => new TakeWhileIterator(this.iterator(), predicate)
+		);
 	}
 
 	toArray(): Array<T> {
@@ -258,11 +233,10 @@ class IteratorSequence<T> implements Sequence<T>{
 
 	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Sequence<E> {
 		return new IteratorSequence(
-			new MappingIterator(
+			() => new MappingIterator(
 				new ZipIterator(this.iterator(), other.iterator()),
 				tuple => combiner(tuple.first, tuple.second)
-				),
-			this.isConsumed() || other.isConsumed()
-			);
+			)
+		);
 	}
 }

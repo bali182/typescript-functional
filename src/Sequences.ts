@@ -5,6 +5,7 @@
 /// <reference path="EndlessRepeatingIterator" />
 /// <reference path="RangeIterator" />
 /// <reference path="EmptySequence" />
+/// <reference path="OnceIterableSequence" />
 
 /** Collection of static utility methods to work with Sequences. */
 class Sequences {
@@ -14,7 +15,15 @@ class Sequences {
 	 * @param iterator The iterator.
 	 */
 	public static ofIterator<T>(iterator: Iterator<T>): Sequence<T> {
-		return new IteratorSequence(iterator);
+		return new OnceIterableSequence(iterator);
+	}
+	
+	/**
+	 * Constructs a sequence from the given iterator generator (iterable)
+	 * @param iterable The iterator generator function.
+	 */
+	public static ofIterable<T>(iterable: () => Iterator<T>): Sequence<T> {
+		return new IteratorSequence(iterable);
 	}
 	
 	/**
@@ -25,7 +34,7 @@ class Sequences {
 		if (array.length == 0) {
 			return Sequences.empty<T>();
 		}
-		return Sequences.ofIterator(new ArrayIterator(array));
+		return Sequences.ofIterable(() => new ArrayIterator(array));
 	}
 	
 	/**
@@ -33,7 +42,7 @@ class Sequences {
 	 * @param value The value.
 	 */
 	public static ofValue<T>(value: T): Sequence<T> {
-		return Sequences.ofIterator(new SingletonIterator(value));
+		return Sequences.ofIterable(() => new SingletonIterator(value));
 	}
 
 	/**
@@ -41,7 +50,11 @@ class Sequences {
 	 * @param values The values.
 	 */
 	public static ofValues<T>(...values: Array<T>): Sequence<T> {
-		return values.length === 1 ? this.ofValue(values[0]) : Sequences.ofArray(values);
+		switch(values.length) {
+			case 0: return this.empty<T>();
+			case 1: return this.ofValue(values[0]);
+			default: return this.ofArray(values);
+		}
 	}
 	
 	/**
@@ -49,7 +62,7 @@ class Sequences {
 	 * @param supplier The supplier.
 	 */
 	public static generate<T>(supplier: () => T): Sequence<T> {
-		return Sequences.ofIterator(new EndlessIterator(supplier));
+		return Sequences.ofIterable(() => new EndlessIterator(supplier));
 	}
 	
 	/**
@@ -57,7 +70,7 @@ class Sequences {
 	 * @param value The repeated value.
 	 */
 	public static repeat<T>(value: T): Sequence<T> {
-		return Sequences.ofIterator(new EndlessRepeatingIterator(value));
+		return Sequences.ofIterable(() => new EndlessRepeatingIterator(value));
 	}
 	
 	/**
@@ -67,7 +80,7 @@ class Sequences {
 	 * @param (optional) The delta.
 	 */
 	public static range(from: number, to: number, delta?: number): Sequence<number> {
-		return Sequences.ofIterator(new RangeIterator(from, to, delta));
+		return Sequences.ofIterable(() => new RangeIterator(from, to, delta));
 	}
 	
 	/**
@@ -80,8 +93,8 @@ class Sequences {
 		} else if (Sequences.length === 1) {
 			return sequences[0];
 		} else {
-			return Sequences.ofIterator(
-				new ConcatenatingIterator(
+			return Sequences.ofIterable(
+				() => new ConcatenatingIterator(
 					new MappingIterator(
 						new ArrayIterator(sequences), s => s.iterator()
 						)
