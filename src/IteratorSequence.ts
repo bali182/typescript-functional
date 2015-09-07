@@ -1,7 +1,7 @@
 /// <reference path="Iterator" />
 /// <reference path="Sequence" />
-/// <reference path="Sequences" />
 /// <reference path="Optional" />
+/// <reference path="ArrayIterator" />
 /// <reference path="MappingIterator" />
 /// <reference path="ConcatenatingIterator" />
 /// <reference path="LimitingIterator" />
@@ -197,7 +197,8 @@ class IteratorSequence<T> implements Sequence<T>{
 		return new IteratorSequence(() =>
 			new MappingIterator(
 				new PartitioningIterator(this.iterator(), partitionSize),
-				partition => Sequences.ofArray(partition)
+				// Not using Sequences, since it would create cyclic dependency.
+				partition => new IteratorSequence(() => new ArrayIterator(partition))
 			)
 		);
 	}

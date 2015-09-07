@@ -1,4 +1,6 @@
+/// <reference path="Iterator" />
 /// <reference path="IteratorSequence" />
+/// <reference path="Optional" />
 
 class OnceIterableSequence<T> extends IteratorSequence<T> {
 
@@ -33,11 +35,6 @@ class OnceIterableSequence<T> extends IteratorSequence<T> {
 	average(mapper: (input: T) => number): number {
 		this.invalidate();
 		return super.average(mapper);
-	}
-
-	collect<I, R>(collector: Collector<I, T, R>): R {
-		this.invalidate();
-		return super.collect(collector);
 	}
 
 	count(): number {
