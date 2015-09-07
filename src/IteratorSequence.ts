@@ -167,7 +167,7 @@ class IteratorSequence<T> implements Sequence<T>{
 		};
 		var elementsJoined = this.map(e => '' + e)
 			.fold(accumulator, null);
-		return (prefix || '') + started ? elementsJoined : '' + (suffix || '');
+		return (prefix || '') + (started ? elementsJoined : '') + (suffix || '');
 	}
 
 	last(): Optional<T> {
