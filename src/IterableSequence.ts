@@ -100,7 +100,7 @@ class IterableSequence<T> implements Sequence<T>{
 	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
 		return new IterableSequence<R>(() =>
 			new ConcatenatingIterator<R>(
-				this.map(sequencify).map(Sequence => Sequence.iterator()).iterator()
+				this.map(sequencify).map(seq => seq.iterator()).iterator()
 			)
 		);
 	}
@@ -191,16 +191,6 @@ class IterableSequence<T> implements Sequence<T>{
 			return comparator(f, s) < 0 ? f : s
 		}, null);
 		return started ? Optional.ofNullable(minValue) : Optional.empty<T>();
-	}
-
-	partition(partitionSize: number): Sequence<Sequence<T>> {
-		return new IterableSequence(() =>
-			new MappingIterator(
-				new PartitioningIterator(this.iterator(), partitionSize),
-				// Not using Sequences, since it would create cyclic dependency.
-				partition => new IterableSequence(() => new ArrayIterator(partition))
-			)
-		);
 	}
 
 	peek(consumer: (input: T) => void): Sequence<T> {

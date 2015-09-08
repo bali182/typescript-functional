@@ -211,10 +211,6 @@ class Optional<T> implements Sequence<T> {
 		return this;
 	}
 
-	partition(partitionSize: number): Sequence<Sequence<T>> {
-		return this.isPresent() ? Optional.of(this) : Optional.empty<Optional<T>>();
-	}
-
 	peek(consumer: (input: T) => void): Optional<T> {
 		throw new Error('Not implemented') // TODO
 	}

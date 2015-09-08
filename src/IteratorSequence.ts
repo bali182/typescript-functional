@@ -1,16 +1,19 @@
 /// <reference path="Iterator" />
 /// <reference path="DelegateSequence" />
 /// <reference path="Optional" />
+/// <reference path="Iterators" />
 
-class IteratorSequence<T> extends DelegateSequence<T> {
+class IteratorSequence<T> implements Sequence<T> {
 	private mConsumed: boolean = false;
+	private mIterator: Iterator<T>;
 
-	constructor(delegate: Sequence<T>, consumed: boolean) {
-		super(delegate);
+	constructor(it: Iterator<T>, consumed: boolean) {
+		this.mIterator = it;
+		this.mConsumed = consumed;
 	}
 
 	protected invalidate() {
-		if (this.mConsumed) {
+		if (this.isConsumed()) {
 			throw new Error('Iterator already consumed');
 		}
 		this.mConsumed = false;
@@ -20,7 +23,7 @@ class IteratorSequence<T> extends DelegateSequence<T> {
 		return this.mConsumed;
 	}
 
-	protected status(sequence: Sequence<T>) {
+	protected status(sequence: Sequence<any>) {
 		if (sequence instanceof IteratorSequence) {
 			return (<IteratorSequence<any>> sequence).isConsumed();
 		}
@@ -29,138 +32,135 @@ class IteratorSequence<T> extends DelegateSequence<T> {
 
 	all(predicate: (input: T) => boolean): boolean {
 		this.invalidate();
-		return super.all(predicate);
+		return Iterators.all(this.iterator(), predicate);
 	}
 
 	any(predicate: (input: T) => boolean): boolean {
 		this.invalidate();
-		return super.any(predicate);
+		return Iterators.any(this.iterator(), predicate);
 	}
 
 	at(index: number): Optional<T> {
 		this.invalidate();
-		return super.at(index);
+		return Iterators.at(this.iterator(), index);
 	}
 
 	append(other: Sequence<T>): Sequence<T> {
-		return new IteratorSequence(super.append(other), this.isConsumed() || this.status(other));
+		return new IteratorSequence(Iterators.append(this.iterator(), other.iterator()), this.isConsumed() || this.status(other));
 	}
 
 	average(mapper: (input: T) => number): number {
 		this.invalidate();
-		return super.average(mapper);
+		return Iterators.average(this.map(mapper).iterator());
 	}
 
 	count(): number {
 		this.invalidate();
-		return super.count();
+		return Iterators.count(this.iterator());
 	}
 
 	filter(predicate: (input: T) => boolean): Sequence<T> {
-		return new IteratorSequence(super.filter(predicate), this.isConsumed());
+		return new IteratorSequence(Iterators.filter(this.iterator(), predicate), this.isConsumed());
 	}
 
 	findFirst(predicate: (input: T) => boolean): Optional<T> {
 		this.invalidate();
-		return super.findFirst(predicate);
+		return Iterators.findFirst(this.iterator(), predicate);
 	}
 
 	findLast(predicate: (input: T) => boolean): Optional<T> {
 		this.invalidate();
-		return super.findLast(predicate);
+		return Iterators.findLast(this.iterator(), predicate);
 	}
 
 	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
-		return new IteratorSequence(super.flatten(sequencify), this.isConsumed());
+		var flat = new ConcatenatingIterator<R>(this.map(sequencify).map(seq => seq.iterator()).iterator());
+		return new IteratorSequence(flat, this.isConsumed());
 	}
 
 	fold<R>(reducer: (left: R, right: T) => R, initial: R): R {
 		this.invalidate();
-		return super.fold(reducer, initial);
+		return Iterators.fold(this.iterator(), reducer, initial);
 	}
 
 	forEach(consumer: (input: T) => void): void {
 		this.invalidate();
-		return super.forEach(consumer);
+		Iterators.forEach(this.iterator(), consumer);
 	}
 
 	head(): Optional<T> {
 		this.invalidate();
-		return super.head();
+		return Iterators.head(this.iterator());
 	}
 
 	iterator(): Iterator<T> {
-		return super.iterator();
+		return this.mIterator;
 	}
 
 	join(separator?: string, prefix?: string, suffix?: string): string {
 		this.invalidate();
-		return super.join(separator, prefix, suffix);
+		return Iterators.join(this.map(e => "" + e).iterator(), separator, prefix, suffix);
 	}
 
 	last(): Optional<T> {
 		this.invalidate();
-		return super.last();
+		return Iterators.last(this.iterator());
 	}
 
 	limit(limit: number): Sequence<T> {
-		return new IteratorSequence(super.limit(limit), this.isConsumed());
+		return new IteratorSequence(Iterators.limit(this.iterator(), limit), this.isConsumed());
 	}
 
 	map<R>(mapper: (input: T) => R): Sequence<R> {
-		return new IteratorSequence(super.map(mapper), this.isConsumed());
+		return new IteratorSequence(Iterators.map(this.iterator(), mapper), this.isConsumed());
 	}
 
 	max(comparator: (first: T, second: T) => number): Optional<T> {
 		this.invalidate();
-		return super.max(comparator);
+		return Iterators.max(this.iterator(), comparator);
 	}
 
 	min(comparator: (first: T, second: T) => number): Optional<T> {
 		this.invalidate();
-		return super.min(comparator);
-	}
-
-	partition(partitionSize: number): Sequence<Sequence<T>> {
-		return new IteratorSequence(super.partition(partitionSize), this.isConsumed());
+		return Iterators.min(this.iterator(), comparator);
 	}
 
 	peek(consumer: (input: T) => void): Sequence<T> {
-		return new IteratorSequence(super.peek(consumer), this.isConsumed());
+		return new IteratorSequence(Iterators.peek(this.iterator(), consumer), this.isConsumed());
 	}
 
 	reduce(reducer: (left: T, right: T) => T): T {
 		this.invalidate();
-		return super.reduce(reducer);
+		return Iterators.reduce(this.iterator(), reducer);
 	}
 
 	skip(amount: number): Sequence<T> {
-		return new IteratorSequence(super.skip(amount), this.isConsumed());
+		return new IteratorSequence(Iterators.skip(this.iterator(), amount), this.isConsumed());
 	}
 
 	skipWhile(predicate: (input: T) => boolean): Sequence<T> {
-		return new IteratorSequence(super.skipWhile(predicate), this.isConsumed());
+		return new IteratorSequence(Iterators.skipWhile(this.iterator(), predicate), this.isConsumed());
 	}
 
 	sum(mapper: (input: T) => number): number {
 		this.invalidate();
-		return super.sum(mapper);
+		return Iterators.sum(this.map(mapper).iterator());
 	}
 
 	tail(): Sequence<T> {
-		return new IteratorSequence(super.tail(), this.isConsumed());
+		return new IteratorSequence(Iterators.tail(this.iterator()), this.isConsumed());
 	}
 
 	takeWhile(predicate: (input: T) => boolean): Sequence<T> {
-		return new IteratorSequence(super.takeWhile(predicate), this.isConsumed());
+		return new IteratorSequence(Iterators.takeWhile(this.iterator(), predicate), this.isConsumed());
 	}
 
 	toArray(): Array<T> {
 		this.invalidate();
-		return super.toArray();
+		return Iterators.toArray(this.iterator());
 	}
 
 	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Sequence<E> {
-		return new IteratorSequence(super.zip(other, combiner), this.isConsumed());
+		return new IteratorSequence(Iterators.zip(this.iterator(), other.iterator(), combiner), this.isConsumed() || this.status(other));
 	}
 }

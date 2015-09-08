@@ -21,7 +21,7 @@ interface Sequence<T> {
 	 * Returns the element of the underlying Iterator at the specified index, wrapped in an Optional, or Optional#empty() if the index doesn't exist.
 	 * @param index The index of the element to return to.
 	 */
-	at(index: number): Optional<T>;
+	at(index: number): Optional<T>
 	
 	/**
 	 * Creates a lazily concatenated Sequence whose elements are all the elements of this Sequence followed by all the elements of the other Sequence.
@@ -44,27 +44,27 @@ interface Sequence<T> {
 	 * Returns a Sequence, that contains only the elements of this Sequence, for which the parameter predicate returns true.
 	 * @param predicate The predicate, which is applied to all elements, and for which it returns true, will be included in the returned Sequence
 	 */
-	filter(predicate: (input: T) => boolean): Sequence<T>;
+	filter(predicate: (input: T) => boolean): Sequence<T>
 
 	/**
 	 * Returns the first element of this Sequence, that matches the given predicate, wrapped in an Optional. If there is no such element,
 	 * Optional#empty() will be returned.
 	 * @param predicate The predicate.
 	 */
-	findFirst(predicate: (input: T) => boolean): Optional<T>;
+	findFirst(predicate: (input: T) => boolean): Optional<T>
 	
 	/**
 	 * Returns the last element of this Sequence, that matches the given predicate, wrapped in an Optional. If there is no such element,
 	 * Optional#empty() will be returned.
 	 * @param predicate The predicate.
 	 */
-	findLast(predicate: (input: T) => boolean): Optional<T>;
+	findLast(predicate: (input: T) => boolean): Optional<T>
 	
 	/**
 	 * Returns a Sequence consisting of the concatenated elements of the results of applying the Sequenceify function to each element.
 	 * @param Sequenceify The function, that transforms each element to a Sequence.
 	 */
-	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R>;
+	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R>
 
 	/**
 	 * Reduces the Sequence, using the binary function, and the initial value.
@@ -127,12 +127,6 @@ interface Sequence<T> {
 	min(comparator: (first: T, second: T) => number): Optional<T>
 	
 	/**
-	 * Returns a Sequence, which consist of Sequences no longer than partitionSize.
-	 * @param partitionSize The maximum size of a sub-Sequence (a partition).
-	 */
-	partition(partitionSize: number): Sequence<Sequence<T>>;
-	
-	/**
 	 * Returns a Sequence, which will perform the parameter side effect (consumer) for each element, when the Sequence is consumed.
 	 * @param consumer The consumer function, to perform on each element.
 	 */
@@ -184,5 +178,5 @@ interface Sequence<T> {
 	 * Returns a new Sequence, which contains the combined result (calculated by the combiner function) of this Sequence and the parameter Sequence.
 	 * @param combiner The combiner function.
 	 */
-	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Sequence<E>;
+	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Sequence<E>
 }
