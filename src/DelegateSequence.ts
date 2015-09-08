@@ -92,10 +92,6 @@ class DelegateSequence<T> implements Sequence<T> {
 		return this.delegate().min(comparator);
 	}
 
-	partition(partitionSize: number): Sequence<Sequence<T>> {
-		return this.delegate().partition(partitionSize);
-	}
-
 	peek(consumer: (input: T) => void): Sequence<T> {
 		return this.delegate().peek(consumer);
 	}

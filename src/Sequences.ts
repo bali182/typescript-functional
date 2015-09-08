@@ -15,7 +15,7 @@ class Sequences {
 	 * @param iterator The iterator.
 	 */
 	public static ofIterator<T>(iterator: Iterator<T>): Sequence<T> {
-		return new IteratorSequence<T>(new IterableSequence<T>(() => iterator), false);
+		return new IteratorSequence<T>(iterator, false);
 	}
 	
 	/**
@@ -97,9 +97,9 @@ class Sequences {
 				() => new ConcatenatingIterator(
 					new MappingIterator(
 						new ArrayIterator(sequences), s => s.iterator()
-						)
 					)
-				);
+				)
+			);
 		}
 	}
 	
