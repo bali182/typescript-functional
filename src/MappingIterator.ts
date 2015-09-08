@@ -26,4 +26,8 @@ class MappingIterator<T, R> implements Iterator<R> {
 	hasNext(): boolean {
 		return this.mDelegate.hasNext();
 	}
+	
+	isFinite() {
+		return this.mDelegate.isFinite();
+	}
 }

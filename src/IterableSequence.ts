@@ -13,6 +13,8 @@
 /// <reference path="TakeWhileIterator" />
 /// <reference path="ZipIterator" />
 /// <reference path="ChainableIterator" />
+/// <reference path="Iterators" />
+
 
 /** Sequence, which operates on an iterator. */
 class IterableSequence<T> implements Sequence<T>{
@@ -29,60 +31,27 @@ class IterableSequence<T> implements Sequence<T>{
 	}
 
 	all(predicate: (input: T) => boolean): boolean {
-		var iterator = this.iterator();
-		while (iterator.hasNext()) {
-			if (!predicate(iterator.next())) {
-				return false;
-			}
-		}
-		return true;
+		return Iterators.all(this.iterator(), predicate);
 	}
 
 	any(predicate: (input: T) => boolean): boolean {
-		var iterator = this.iterator();
-		while (iterator.hasNext()) {
-			if (predicate(iterator.next())) {
-				return true;
-			}
-		}
-		return false;
+		return Iterators.any(this.iterator(), predicate);
 	}
 
 	at(index: number): Optional<T> {
-		var iterator = this.iterator();
-		var idx = 0;
-		while (iterator.hasNext() && idx < index) {
-			iterator.next();
-			idx++;
-		}
-		if (iterator.hasNext()) {
-			return Optional.ofNullable(iterator.next());
-		}
-		return Optional.empty<T>();
+		return Iterators.at(this.iterator(), index);
 	}
 
 	append(other: Sequence<T>): Sequence<T> {
-		var iterable: () => Iterator<T> = () => {
-			var iterator = this.iterator();
-			var otherIterator = other.iterator();
-			return iterator instanceof ChainableIterator
-				? (<ChainableIterator<T>>iterator).chain(otherIterator)
-				: new ChainableIterator<T>().chain(iterator).chain(otherIterator);
-		}
-		return new IterableSequence(iterable);
+		return new IterableSequence(() => Iterators.append(this.iterator(), other.iterator()));
 	}
 
 	average(mapper: (input: T) => number): number {
-		var length = 0;
-		var sum = this.map(mapper).fold((x, y) => {
-			length++;
-			return x + y;
-		}, 0);
-		return sum > 0 ? sum / length : sum;
+		return Iterators.average(this.map(mapper).iterator());
 	}
 
 	count(): number {
-		return this.fold((length, item) => length + 1, 0);
+		return Iterators.count(this.iterator());
 	}
 
 	filter(predicate: (input: T) => boolean): Sequence<T> {
@@ -100,33 +69,21 @@ class IterableSequence<T> implements Sequence<T>{
 	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
 		return new IterableSequence<R>(() =>
 			new ConcatenatingIterator<R>(
-				this.map(sequencify).map(Sequence => Sequence.iterator()).iterator()
+				this.map(sequencify).map(seq => seq.iterator()).iterator()
 			)
 		);
 	}
 
 	fold<R>(reducer: (left: R, right: T) => R, initial: R): R {
-		var iterator = this.iterator();
-		var current = initial;
-		while (iterator.hasNext()) {
-			current = reducer(current, iterator.next());
-		}
-		return current;
+		return Iterators.fold(this.iterator(), reducer, initial);
 	}
 
 	forEach(consumer: (input: T) => void): void {
-		var iterator = this.iterator();
-		while (iterator.hasNext()) {
-			consumer(iterator.next());
-		}
+		return Iterators.forEach(this.iterator(), consumer);
 	}
 
 	head(): Optional<T> {
-		var iterator = this.iterator();
-		if (iterator.hasNext()) {
-			return Optional.of(iterator.next());
-		}
-		return Optional.empty<T>();
+		return Iterators.head(this.iterator());
 	}
 
 	iterator(): Iterator<T> {
@@ -134,131 +91,62 @@ class IterableSequence<T> implements Sequence<T>{
 	}
 
 	join(separator?: string, prefix?: string, suffix?: string): string {
-		separator = separator || '';
-		var started = false;
-		var accumulator = (joined, s) => {
-			if (!started) {
-				started = true;
-				return s;
-			}
-			return joined + separator + s
-		};
-		var elementsJoined = this.map(e => '' + e)
-			.fold(accumulator, null);
-		return (prefix || '') + (started ? elementsJoined : '') + (suffix || '');
+		return Iterators.join(this.map(e => "" + e).iterator(), separator, prefix, suffix);
 	}
 
 	last(): Optional<T> {
-		var last: T = undefined;
-		var iterator = this.iterator();
-		while (iterator.hasNext()) {
-			last = iterator.next();
-		}
-		return Optional.ofNullable(last);
+		return Iterators.last(this.iterator());
 	}
 
 	limit(limit: number): Sequence<T> {
-		return new IterableSequence(
-			() => new LimitingIterator(this.iterator(), limit)
-		);
+		return new IterableSequence(() => Iterators.limit(this.iterator(), limit));
 	}
 
 	map<R>(mapper: (input: T) => R): Sequence<R> {
-		return new IterableSequence(
-			() => new MappingIterator(this.iterator(), mapper)
-		);
+		return new IterableSequence(() => Iterators.map(this.iterator(), mapper));
 	}
 
 	max(comparator: (first: T, second: T) => number): Optional<T> {
-		var started = false;
-		var maxValue = this.fold((f, s) => {
-			if (!started) {
-				started = true;
-				return s;
-			}
-			return comparator(f, s) > 0 ? f : s
-		}, null);
-		return started ? Optional.ofNullable(maxValue) : Optional.empty<T>();
+		return Iterators.max(this.iterator(), comparator);
 	}
 
 	min(comparator: (first: T, second: T) => number): Optional<T> {
-		var started = false;
-		var minValue = this.fold((f, s) => {
-			if (!started) {
-				started = true;
-				return s;
-			}
-			return comparator(f, s) < 0 ? f : s
-		}, null);
-		return started ? Optional.ofNullable(minValue) : Optional.empty<T>();
-	}
-
-	partition(partitionSize: number): Sequence<Sequence<T>> {
-		return new IterableSequence(() =>
-			new MappingIterator(
-				new PartitioningIterator(this.iterator(), partitionSize),
-				// Not using Sequences, since it would create cyclic dependency.
-				partition => new IterableSequence(() => new ArrayIterator(partition))
-			)
-		);
+		return Iterators.min(this.iterator(), comparator);
 	}
 
 	peek(consumer: (input: T) => void): Sequence<T> {
-		return new IterableSequence(
-			() => new PeekingIterator(this.iterator(), consumer)
-		);
+		return new IterableSequence(() => Iterators.peek(this.iterator(), consumer));
 	}
 
 	reduce(reducer: (left: T, right: T) => T): T {
-		var iterator = this.iterator();
-		if (!iterator.hasNext()) {
-			throw new Error("Can't reduce an empty sequence");
-		}
-		var current = iterator.next();
-		while (iterator.hasNext()) {
-			current = reducer(current, iterator.next());
-		}
-		return current;
+		return Iterators.reduce(this.iterator(), reducer);
 	}
 
 	skip(amount: number): Sequence<T> {
-		return new IterableSequence(
-			() => new SkippingIterator(this.iterator(), amount)
-		);
+		return new IterableSequence(() => Iterators.skip(this.iterator(), amount));
 	}
 
 	skipWhile(predicate: (input: T) => boolean): Sequence<T> {
-		return new IterableSequence(
-			() => new SkipWhileIterator(this.iterator(), predicate)
-		);
+		return new IterableSequence(() => Iterators.skipWhile(this.iterator(), predicate));
 	}
 
 	sum(mapper: (input: T) => number): number {
-		return this.map(mapper).fold((a, b) => a + b, 0)
+		return Iterators.sum(this.map(mapper).iterator());
 	}
 
 	tail(): Sequence<T> {
-		return new IterableSequence(
-			() => new SkippingIterator(this.iterator(), 1)
-		);
+		return new IterableSequence(() => Iterators.tail(this.iterator()));
 	}
 
 	takeWhile(predicate: (input: T) => boolean): Sequence<T> {
-		return new IterableSequence(
-			() => new TakeWhileIterator(this.iterator(), predicate)
-		);
+		return new IterableSequence(() => Iterators.takeWhile(this.iterator(), predicate));
 	}
 
 	toArray(): Array<T> {
-		return this.fold((array, e) => { array.push(e); return array; }, []);
+		return Iterators.toArray(this.iterator());
 	}
 
 	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Sequence<E> {
-		return new IterableSequence(
-			() => new MappingIterator(
-				new ZipIterator(this.iterator(), other.iterator()),
-				tuple => combiner(tuple.first, tuple.second)
-			)
-		);
+		return new IterableSequence(() => Iterators.zip(this.iterator(), other.iterator(), combiner));
 	}
 }

@@ -28,4 +28,8 @@ class SingletonIterator<T> implements Iterator<T> {
 	hasNext(): boolean {
 		return this.mHasNext;
 	}
+	
+	isFinite() {
+		return true;
+	}
 }

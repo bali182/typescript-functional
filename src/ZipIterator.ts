@@ -27,4 +27,8 @@ class ZipIterator<T, R> implements Iterator<{ first: T, second: R }>{
 		}
 		return { first: this.mFirst.next(), second: this.mSecond.next() };
 	}
+
+	isFinite() {
+		return this.mFirst.isFinite() || this.mSecond.isFinite();
+	}
 }

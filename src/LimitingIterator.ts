@@ -33,4 +33,8 @@ class LimitingIterator<T> extends DelegateIterator<T> {
 	hasNext(): boolean {
 		return this.mDelegate.hasNext() && this.mIteratedCount < this.mLimit;
 	}
+	
+	isFinite() {
+		return true;
+	}
 }

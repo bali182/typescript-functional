@@ -20,4 +20,8 @@ class EmptyIterator<T> implements Iterator<T> {
 	hasNext(): boolean {
 		return false;
 	}
+	
+	isFinite() {
+		return true;
+	}
 }
