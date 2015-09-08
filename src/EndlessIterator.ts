@@ -23,4 +23,8 @@ class EndlessIterator<T> implements Iterator<T> {
 	hasNext(): boolean {
 		return true;
 	}
+	
+	isFinite() {
+		return false;
+	}
 }

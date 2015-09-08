@@ -33,4 +33,8 @@ class ConcatenatingIterator<T> implements Iterator<T> {
 		}
 		return currentHasNext;
 	}
+
+	isFinite() {
+		return this.mIterators.isFinite();
+	}
 }

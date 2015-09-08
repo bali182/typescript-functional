@@ -48,4 +48,8 @@ class ChainableIterator<T> implements Iterator<T> {
 		}
 		return false;
 	}
+	
+	isFinite() {
+		return this.mChain.isFinite();
+	}
 }

@@ -35,4 +35,8 @@ class PartitioningIterator<T> implements Iterator<Array<T>> {
 	hasNext(): boolean {
 		return this.mDelegate.hasNext();
 	}
+	
+	isFinite() {
+		return true;
+	}
 }

@@ -23,4 +23,8 @@ class DelegateIterator<T> implements Iterator<T> {
 	next(): T {
 		return this.mDelegate.next();
 	}
+	
+	isFinite() {
+		return this.mDelegate.isFinite();
+	}
 }

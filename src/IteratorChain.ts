@@ -82,4 +82,8 @@ class IteratorChain<T> implements Iterator<Iterator<T>>  {
 	public static wrap<T>(iterator: Iterator<T>): IteratorChain<T> {
 		return new IteratorChain<T>(iterator);
 	}
+
+	isFinite() {
+		return this.head().isFinite() && this.tail().isFinite();
+	}
 }
