@@ -1,288 +1,166 @@
 /// <reference path="Iterator" />
-/// <reference path="Sequence" />
-/// <reference path="Sequences" />
+/// <reference path="DelegateSequence" />
 /// <reference path="Optional" />
-/// <reference path="MappingIterator" />
-/// <reference path="ConcatenatingIterator" />
-/// <reference path="LimitingIterator" />
-/// <reference path="SkippingIterator" />
-/// <reference path="FilteringIterator" />
-/// <reference path="PeekingIterator" />
-/// <reference path="PartitioningIterator" />
-/// <reference path="SkipWhileIterator" />
-/// <reference path="TakeWhileIterator" />
-/// <reference path="ZipIterator" />
-/// <reference path="ChainableIterator" />
 
-/** Sequence, which operates on an iterator. */
-class IteratorSequence<T> implements Sequence<T>{
-	/** The delegeate iterator */
-	private mIterator: Iterator<T>
-	/** Flag indicating if the Sequence was already iterated or not. */
-	private mConsumed: boolean;
-	
-	/**
-	 * Constructor.
-	 * @param iterator The delegeate iterator
-	 * @param iterated Flag indicating if the Sequence was already iterated or not.
-	 */
-	constructor(iterator: Iterator<T>, iterated?: boolean) {
-		this.mIterator = iterator;
-		this.mConsumed = !!iterated;
+class IteratorSequence<T> extends DelegateSequence<T> {
+	private mConsumed: boolean = false;
+
+	constructor(delegate: Sequence<T>, consumed: boolean) {
+		super(delegate);
 	}
-	
-	/** Throws an exception if the Sequence is already iterated, then sets the consumed flag to true. */
-	protected invalidate(): void {
-		if (this.isConsumed()) {
-			throw new Error("Already iterated");
+
+	protected invalidate() {
+		if (this.mConsumed) {
+			throw new Error('Iterator already consumed');
 		}
-		this.mConsumed = true;
+		this.mConsumed = false;
 	}
 
-	all(predicate: (input: T) => boolean): boolean {
-		this.invalidate();
-		var iterator = this.iterator();
-		while (iterator.hasNext()) {
-			if (!predicate(iterator.next())) {
-				return false;
-			}
-		}
-		return true;
+	protected isConsumed() {
+		return this.mConsumed;
 	}
 
-	any(predicate: (input: T) => boolean): boolean {
-		this.invalidate();
-		var iterator = this.iterator();
-		while (iterator.hasNext()) {
-			if (predicate(iterator.next())) {
-				return true;
-			}
+	protected status(sequence: Sequence<T>) {
+		if (sequence instanceof IteratorSequence) {
+			return (<IteratorSequence<any>> sequence).isConsumed();
 		}
 		return false;
 	}
 
+	all(predicate: (input: T) => boolean): boolean {
+		this.invalidate();
+		return super.all(predicate);
+	}
+
+	any(predicate: (input: T) => boolean): boolean {
+		this.invalidate();
+		return super.any(predicate);
+	}
+
 	at(index: number): Optional<T> {
 		this.invalidate();
-		var iterator = this.iterator();
-		var idx = 0;
-		while (iterator.hasNext() && idx < index) {
-			iterator.next();
-			idx++;
-		}
-		if (iterator.hasNext()) {
-			return Optional.ofNullable(iterator.next());
-		}
-		return Optional.empty<T>();
+		return super.at(index);
 	}
 
 	append(other: Sequence<T>): Sequence<T> {
-		var iterator = this.iterator();
-		var otherIterator = other.iterator();
-		var chained: ChainableIterator<T> = iterator instanceof ChainableIterator
-			? (<ChainableIterator<T>>iterator).chain(otherIterator)
-			: new ChainableIterator<T>().chain(iterator).chain(otherIterator);
-		return new IteratorSequence(chained, this.isConsumed() || other.isConsumed());
+		return new IteratorSequence(super.append(other), this.isConsumed() || this.status(other));
 	}
 
 	average(mapper: (input: T) => number): number {
-		var length = 0;
-		var sum = this.map(mapper).fold((x, y) => {
-			length++;
-			return x + y;
-		}, 0);
-		return sum > 0 ? sum / length : sum;
+		this.invalidate();
+		return super.average(mapper);
 	}
 
 	count(): number {
-		return this.fold((length, item) => length + 1, 0);
+		this.invalidate();
+		return super.count();
 	}
 
 	filter(predicate: (input: T) => boolean): Sequence<T> {
-		return new IteratorSequence(
-			new FilteringIterator(this.iterator(), predicate), this.isConsumed()
-		);
+		return new IteratorSequence(super.filter(predicate), this.isConsumed());
 	}
 
 	findFirst(predicate: (input: T) => boolean): Optional<T> {
-		return this.filter(predicate).head();
+		this.invalidate();
+		return super.findFirst(predicate);
 	}
 
 	findLast(predicate: (input: T) => boolean): Optional<T> {
-		return this.filter(predicate).last();
+		this.invalidate();
+		return super.findLast(predicate);
 	}
 
 	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
-		return new IteratorSequence<R>(
-			new ConcatenatingIterator<R>(
-				this.map(sequencify).map(Sequence => Sequence.iterator()).iterator()
-			),
-			this.isConsumed()
-		);
+		return new IteratorSequence(super.flatten(sequencify), this.isConsumed());
 	}
 
 	fold<R>(reducer: (left: R, right: T) => R, initial: R): R {
 		this.invalidate();
-		var iterator = this.iterator();
-		var current = initial;
-		while (iterator.hasNext()) {
-			current = reducer(current, iterator.next());
-		}
-		return current;
+		return super.fold(reducer, initial);
 	}
 
 	forEach(consumer: (input: T) => void): void {
 		this.invalidate();
-		var iterator = this.iterator();
-		while (iterator.hasNext()) {
-			consumer(iterator.next());
-		}
+		return super.forEach(consumer);
 	}
 
 	head(): Optional<T> {
 		this.invalidate();
-		var iterator = this.iterator();
-		if (iterator.hasNext()) {
-			return Optional.of(iterator.next());
-		}
-		return Optional.empty<T>();
-	}
-
-	isConsumed(): boolean {
-		return this.mConsumed;
+		return super.head();
 	}
 
 	iterator(): Iterator<T> {
-		return this.mIterator;
+		return super.iterator();
 	}
 
 	join(separator?: string, prefix?: string, suffix?: string): string {
-		separator = separator || '';
-		var started = false;
-		var accumulator = (joined, s) => {
-			if (!started) {
-				started = true;
-				return s;
-			}
-			return joined + separator + s
-		};
-		var elementsJoined = this.map(e => '' + e)
-			.fold(accumulator, null);
-		return (prefix || '') + (started ? elementsJoined : '') + (suffix || '');
+		this.invalidate();
+		return super.join(separator, prefix, suffix);
 	}
 
 	last(): Optional<T> {
 		this.invalidate();
-		var last: T = undefined;
-		var iterator = this.iterator();
-		while (iterator.hasNext()) {
-			last = iterator.next();
-		}
-		return Optional.ofNullable(last);
+		return super.last();
 	}
 
 	limit(limit: number): Sequence<T> {
-		return new IteratorSequence(
-			new LimitingIterator(this.iterator(), limit), this.isConsumed()
-		);
+		return new IteratorSequence(super.limit(limit), this.isConsumed());
 	}
 
 	map<R>(mapper: (input: T) => R): Sequence<R> {
-		return new IteratorSequence(
-			new MappingIterator(this.iterator(), mapper), this.isConsumed()
-		);
+		return new IteratorSequence(super.map(mapper), this.isConsumed());
 	}
 
 	max(comparator: (first: T, second: T) => number): Optional<T> {
-		var started = false;
-		var maxValue = this.fold((f, s) => {
-			if (!started) {
-				started = true;
-				return s;
-			}
-			return comparator(f, s) > 0 ? f : s
-		}, null);
-		return started ? Optional.ofNullable(maxValue) : Optional.empty<T>();
+		this.invalidate();
+		return super.max(comparator);
 	}
 
 	min(comparator: (first: T, second: T) => number): Optional<T> {
-		var started = false;
-		var minValue = this.fold((f, s) => {
-			if (!started) {
-				started = true;
-				return s;
-			}
-			return comparator(f, s) < 0 ? f : s
-		}, null);
-		return started ? Optional.ofNullable(minValue) : Optional.empty<T>();
+		this.invalidate();
+		return super.min(comparator);
 	}
 
 	partition(partitionSize: number): Sequence<Sequence<T>> {
-		return new IteratorSequence(
-			new MappingIterator(
-				new PartitioningIterator(this.iterator(), partitionSize),
-				partition => Sequences.ofArray(partition)
-			)
-		);
+		return new IteratorSequence(super.partition(partitionSize), this.isConsumed());
 	}
 
 	peek(consumer: (input: T) => void): Sequence<T> {
-		return new IteratorSequence(
-			new PeekingIterator(this.iterator(), consumer), this.isConsumed()
-		);
+		return new IteratorSequence(super.peek(consumer), this.isConsumed());
 	}
 
 	reduce(reducer: (left: T, right: T) => T): T {
-		var iterator = this.iterator();
-		if (!iterator.hasNext()) {
-			throw new Error("Can't reduce an empty sequence");
-		}
 		this.invalidate();
-		var current = iterator.next();
-		while (iterator.hasNext()) {
-			current = reducer(current, iterator.next());
-		}
-		return current;
+		return super.reduce(reducer);
 	}
 
 	skip(amount: number): Sequence<T> {
-		return new IteratorSequence(
-			new SkippingIterator(this.iterator(), amount), this.isConsumed()
-		);
+		return new IteratorSequence(super.skip(amount), this.isConsumed());
 	}
 
 	skipWhile(predicate: (input: T) => boolean): Sequence<T> {
-		return new IteratorSequence(
-			new SkipWhileIterator(this.iterator(), predicate)
-		);
+		return new IteratorSequence(super.skipWhile(predicate), this.isConsumed());
 	}
 
 	sum(mapper: (input: T) => number): number {
-		return this.map(mapper).fold((a, b) => a + b, 0)
+		this.invalidate();
+		return super.sum(mapper);
 	}
 
 	tail(): Sequence<T> {
-		return new IteratorSequence(
-			new SkippingIterator(this.iterator(), 1), this.isConsumed()
-		);
+		return new IteratorSequence(super.tail(), this.isConsumed());
 	}
 
 	takeWhile(predicate: (input: T) => boolean): Sequence<T> {
-		return new IteratorSequence(
-			new TakeWhileIterator(this.iterator(), predicate)
-		);
+		return new IteratorSequence(super.takeWhile(predicate), this.isConsumed());
 	}
 
 	toArray(): Array<T> {
-		return this.fold((array, e) => { array.push(e); return array; }, []);
+		this.invalidate();
+		return super.toArray();
 	}
 
 	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Sequence<E> {
-		return new IteratorSequence(
-			new MappingIterator(
-				new ZipIterator(this.iterator(), other.iterator()),
-				tuple => combiner(tuple.first, tuple.second)
-				),
-			this.isConsumed() || other.isConsumed()
-			);
+		return new IteratorSequence(super.zip(other, combiner), this.isConsumed());
 	}
 }

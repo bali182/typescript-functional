@@ -25,12 +25,14 @@ var JS_TESTS_FILE = 'tsf-tests.js'
 var tsSourceCompiler = ts({
 	noImplicitAny: true,
 	declaration: true,
+	sortOutput: true,
 	out: JS_SRC_FILE,
 	outFile: JS_SRC_FILE
 });
 
 var tsTestCompiler = ts({
 	removeComments: true,
+	sortOutput: true,
 	out: JS_TESTS_FILE,
 	outFile: JS_TESTS_FILE
 });
@@ -64,3 +66,7 @@ gulp.task('minify', ['compile-src'], function () {
 })
 
 gulp.task('default', ['minify']);
+
+gulp.on('err', function(e) {
+	console.log(e.err.stack)
+})

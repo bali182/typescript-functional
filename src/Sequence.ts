@@ -85,11 +85,6 @@ interface Sequence<T> {
 	head(): Optional<T>
 	
 	/**
-	 * Returns true, if the Sequence was already iterated, false otherwise.
-	 */
-	isConsumed(): boolean
-	
-	/**
 	 * Returns the Iterator, of this Sequence.
 	 */
 	iterator(): Iterator<T>
