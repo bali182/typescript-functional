@@ -36,6 +36,13 @@ interface Sequence<T> {
 	average(mapper: (input: T) => number): number
 	
 	/**
+	 * Returns true, if this sequence contains the given item, false otherwise.
+	 * @param The item you are looking for.
+	 * @param The equality comparer function. Uses === by default.
+	 */
+	contains(item: T, equality: (a: T, b: T) => boolean): boolean
+	
+	/**
 	 * Returns the amount of elements in this Sequence.
 	 */
 	count(): number
@@ -83,6 +90,13 @@ interface Sequence<T> {
 	 * Returns the first element in this Sequence, wrapped in an Optional. If the Sequence is empty, Optional#empty() is returned.
 	 */
 	head(): Optional<T>
+	
+	/**
+	 * Returns the index of the given elements, if present in the sequence, -1 if not.
+	 * @param The item you are looking for.
+	 * @param The equality comparer function. Uses === by default.
+	 */
+	indexOf(item: T, equality?: (a: T, b: T) => boolean): number
 	
 	/**
 	 * Returns the Iterator, of this Sequence.

@@ -31,6 +31,10 @@ class DelegateSequence<T> implements Sequence<T> {
 	average(mapper: (input: T) => number): number {
 		return this.delegate().average(mapper);
 	}
+	
+	contains(item: T, equality: (a: T, b: T) => boolean): boolean {
+		return this.delegate().contains(item, equality);
+	}
 
 	count(): number {
 		return this.delegate().count();
@@ -62,6 +66,10 @@ class DelegateSequence<T> implements Sequence<T> {
 
 	head(): Optional<T> {
 		return this.delegate().head();
+	}
+	
+	indexOf(item: T, equality?: (a: T, b: T) => boolean): number {
+		return this.delegate().indexOf(item, equality);
 	}
 
 	iterator(): Iterator<T> {

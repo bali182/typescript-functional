@@ -54,6 +54,10 @@ class IteratorSequence<T> implements Sequence<T> {
 		return Iterators.average(this.map(mapper).iterator());
 	}
 
+	contains(item: T, equality: (a: T, b: T) => boolean): boolean {
+		return this.indexOf(item, equality) >= 0;
+	}
+
 	count(): number {
 		this.invalidate();
 		return Iterators.count(this.iterator());
@@ -92,7 +96,12 @@ class IteratorSequence<T> implements Sequence<T> {
 		this.invalidate();
 		return Iterators.head(this.iterator());
 	}
-
+	
+	indexOf(item: T, equality?: (a: T, b: T) => boolean): number {
+		this.invalidate();
+		return Iterators.indexOf(this.iterator(), item, equality);
+	}
+	
 	iterator(): Iterator<T> {
 		return this.mIterator;
 	}
