@@ -98,6 +98,18 @@ class Iterators {
 		return it.hasNext() ? Optional.of(it.next()) : Optional.empty<T>();
 	}
 
+	static indexOf<T>(it: Iterator<T>, item: T, equality?: (a: T, b: T) => boolean): number {
+		var eq = equality || ((a, b) => a === b);
+		var index = -1;
+		while (it.hasNext()) {
+			if (eq(item, it.next())) {
+				return index;
+			}
+			index++;
+		}
+		return -1;
+	}
+
 	static join(it: Iterator<string>, separator?: string, prefix?: string, suffix?: string): string {
 		separator = separator || '';
 		var started = false;

@@ -49,6 +49,10 @@ class IterableSequence<T> implements Sequence<T>{
 	average(mapper: (input: T) => number): number {
 		return Iterators.average(this.map(mapper).iterator());
 	}
+	
+	contains(item: T, equality: (a: T, b: T) => boolean): boolean {
+		return this.indexOf(item, equality) >= 0;
+	}
 
 	count(): number {
 		return Iterators.count(this.iterator());
@@ -84,6 +88,10 @@ class IterableSequence<T> implements Sequence<T>{
 
 	head(): Optional<T> {
 		return Iterators.head(this.iterator());
+	}
+	
+	indexOf(item: T, equality?: (a: T, b: T) => boolean): number {
+		return Iterators.indexOf(this.iterator(), item, equality);
 	}
 
 	iterator(): Iterator<T> {

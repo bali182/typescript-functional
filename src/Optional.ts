@@ -144,6 +144,10 @@ class Optional<T> implements Sequence<T> {
 	average(mapper: (input: T) => number): number {
 		return this.isPresent() ? mapper(this.get()) : 0;
 	}
+	
+	contains(item: T, equality: (a: T, b: T) => boolean): boolean {
+		return this.indexOf(item, equality) >= 0;
+	}
 
 	count(): number {
 		return this.isPresent() ? 1 : 0;
@@ -177,6 +181,11 @@ class Optional<T> implements Sequence<T> {
 
 	head(): Optional<T> {
 		return this;
+	}
+	
+	indexOf(item: T, equality?: (a: T, b: T) => boolean): number {
+		var eq = equality || ((a, b) => a === b);
+		return this.isPresent() ? (eq(item, this.get()) ? 0 : -1) : -1
 	}
 
 	isConsumed(): boolean {
