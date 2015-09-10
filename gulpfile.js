@@ -33,7 +33,7 @@ var tsLintConfig = {
 			'max-line-length': 120,
 			'no-arg': true,
 			'no-conditional-assignment': true,
-			/*'no-console': [true,
+			'no-console': [true,
         'log',
 				'debug',
         'info',
@@ -42,7 +42,7 @@ var tsLintConfig = {
         'trace'
 			],
 			'no-consecutive-blank-lines': true,
-			'no-construct': true,
+			/*'no-construct': true,
 			'no-debugger': true,
 			'no-duplicate-key': true,
 			'no-duplicate-variable': true */

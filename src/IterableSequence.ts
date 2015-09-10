@@ -15,7 +15,6 @@
 /// <reference path="ChainableIterator" />
 /// <reference path="Iterators" />
 
-
 /** Sequence, which operates on an iterator. */
 class IterableSequence<T> implements Sequence<T>{
 	/** The delegeate iterator */
