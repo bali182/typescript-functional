@@ -27,9 +27,9 @@ var tsLintConfig = {
 	configuration: {
 		rules: {
 			'class-name': true,
-			/* 'curly': true,
 			'eofline': true,
-			'indent': [true, 'tabs'],
+			/*'indent': [true, 'tabs'],
+			'curly': true,
 			'max-line-length': 120,
 			'no-arg': true,
 			'no-conditional-assignment': true,
