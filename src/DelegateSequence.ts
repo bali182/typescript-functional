@@ -2,7 +2,7 @@
 
 class DelegateSequence<T> implements Sequence<T> {
 
-	private mDelegate: Sequence<T>
+	private mDelegate: Sequence<T>;
 
 	constructor(delegate: Sequence<T>) {
 		this.mDelegate = delegate;

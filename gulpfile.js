@@ -81,8 +81,8 @@ var tsLintConfig = {
 			'switch-default': true,
 			'triple-equals': true,
 			'variable-name': true,
+			'semicolon': true,
 			// 'no-var-keyword': true,
-			// 'semicolon': true,
 		}
 	}
 };

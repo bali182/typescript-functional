@@ -47,7 +47,7 @@ class IteratorChain<T> implements Iterator<Iterator<T>>  {
 	 */
 	append(iterator: Iterator<T>): IteratorChain<T> {
 		// TODO - recursive solution might not be the best for lots of append() calls, may need a rework in the future
-		return this.appendChain(IteratorChain.wrap(iterator))
+		return this.appendChain(IteratorChain.wrap(iterator));
 	}
 	
 	/** 
@@ -66,9 +66,9 @@ class IteratorChain<T> implements Iterator<Iterator<T>>  {
 				appendChain: (chain: IteratorChain<T>) => chain,
 				append: (iterator: Iterator<T>) => IteratorChain.wrap(iterator),
 				hasNext: () => false,
-				next: () => { throw new Error('No more elements') },
-				tail: () => { throw new Error('Has no tail') },
-				head: () => { return undefined },
+				next: () => { throw new Error('No more elements'); },
+				tail: () => { throw new Error('Has no tail'); },
+				head: () => { return undefined; },
 			};
 			IteratorChain.EMPTY_ITERATOR = <IteratorChain<any>> empty;
 		}

@@ -10,7 +10,7 @@ class ChainableIterator<T> implements Iterator<T> {
 	/** The iterator chain. */
 	private mChain: IteratorChain<T>;
 	/** The currently iterated iterator. */
-	private mCurrent: Iterator<T> = EmptyIterator.instance<T>()
+	private mCurrent: Iterator<T> = EmptyIterator.instance<T>();
 	
 	/**
 	 * Constructor.

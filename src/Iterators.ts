@@ -69,11 +69,11 @@ class Iterators {
 	}
 
 	static findFirst<T>(it: Iterator<T>, predicate: (input: T) => boolean): Optional<T> {
-		return Iterators.head(Iterators.filter(it, predicate))
+		return Iterators.head(Iterators.filter(it, predicate));
 	}
 
 	static findLast<T>(it: Iterator<T>, predicate: (input: T) => boolean): Optional<T> {
-		return Iterators.last(Iterators.filter(it, predicate))
+		return Iterators.last(Iterators.filter(it, predicate));
 	}
 
 	static flatten<T, R>(it: Iterator<T>, sequencify: (input: T) => Iterator<R>): Iterator<R> {
@@ -118,9 +118,9 @@ class Iterators {
 				started = true;
 				return s;
 			}
-			return joined + separator + s
+			return joined + separator + s;
 		};
-		var elementsJoined = Iterators.fold(it, accumulator, null)
+		var elementsJoined = Iterators.fold(it, accumulator, null);
 		return (prefix || '') + (started ? elementsJoined : '') + (suffix || '');
 	}
 
@@ -147,8 +147,8 @@ class Iterators {
 				started = true;
 				return s;
 			}
-			return comparator(f, s) > 0 ? f : s
-		}, null)
+			return comparator(f, s) > 0 ? f : s;
+		}, null);
 		return started ? Optional.ofNullable(maxValue) : Optional.empty<T>();
 	}
 
@@ -159,8 +159,8 @@ class Iterators {
 				started = true;
 				return s;
 			}
-			return comparator(f, s) < 0 ? f : s
-		}, null)
+			return comparator(f, s) < 0 ? f : s;
+		}, null);
 		return started ? Optional.ofNullable(minValue) : Optional.empty<T>();
 	}
 

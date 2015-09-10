@@ -14,7 +14,7 @@ class EmptyIterator<T> implements Iterator<T> {
 	}
 
 	next(): T {
-		throw new Error("No such element")
+		throw new Error("No such element");
 	}
 
 	hasNext(): boolean {
