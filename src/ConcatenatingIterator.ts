@@ -28,7 +28,12 @@ class ConcatenatingIterator<T> implements Iterator<T> {
 
 	hasNext(): boolean {
 		var currentHasNext: boolean = false;
-		while (!(currentHasNext = this.mCurrent.hasNext()) && this.mIterators.hasNext()) {
+		var guard = true;
+		while (guard) {
+			guard = !(currentHasNext = this.mCurrent.hasNext()) && this.mIterators.hasNext()
+			if (!guard) {
+				break;
+			}
 			this.mCurrent = this.mIterators.next();
 		}
 		return currentHasNext;
