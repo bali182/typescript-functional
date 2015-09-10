@@ -26,13 +26,12 @@ var JS_TESTS_FILE = 'tsf-tests.js'
 var tsLintConfig = {
 	configuration: {
 		rules: {
-			'class-name': true,
-			'eofline': true,
-			'curly': true,
-			'indent': [true, 'tabs'],
-			'max-line-length': 120,
-			'no-arg': true,
-			'no-conditional-assignment': true,
+			'one-line': [true,
+        'check-open-brace',
+        'check-catch',
+        'check-else',
+        'check-whitespace'
+			],
 			'no-console': [true,
         'log',
 				'debug',
@@ -41,11 +40,49 @@ var tsLintConfig = {
         'timeEnd',
         'trace'
 			],
+			'typedef': [true,
+        'property-declaration',
+        'member-variable-declaration'
+        // 'call-signature',
+        // 'parameter',
+        // 'variable-declaration',
+			],
+			'use-strict': [true,
+        'check-module',
+        'check-function'
+			],
+			'whitespace': [true,
+        'check-branch',
+        'check-decl',
+        'check-operator',
+        'check-separator',
+        'check-type'
+			],
+			'class-name': true,
+			'eofline': true,
+			'curly': true,
+			'indent': [true, 'tabs'],
+			'max-line-length': 120,
+			'no-arg': true,
+			'no-conditional-assignment': true,
 			'no-consecutive-blank-lines': true,
-			/*'no-construct': true,
+			'no-construct': true,
 			'no-debugger': true,
 			'no-duplicate-key': true,
-			'no-duplicate-variable': true */
+			'no-duplicate-variable': true,
+			'no-shadowed-variable': true,
+			'no-empty': true,
+			'no-eval': true,
+			'no-string-literal': true,
+			'no-switch-case-fall-through': true,
+			'no-unreachable': true,
+			'no-unused-expression': true,
+			'no-use-before-declare': true,
+			'switch-default': true,
+			'triple-equals': true,
+			'variable-name': true,
+			// 'no-var-keyword': true,
+			// 'semicolon': true,
 		}
 	}
 };

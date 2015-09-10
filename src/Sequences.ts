@@ -31,7 +31,7 @@ class Sequences {
 	 * @param array The array.
 	 */
 	public static ofArray<T>(array: Array<T>): Sequence<T> {
-		if (array.length == 0) {
+		if (array.length === 0) {
 			return Sequences.empty<T>();
 		}
 		return Sequences.ofIterable(() => new ArrayIterator(array));

@@ -39,7 +39,7 @@ class ArrayIterator<T> implements Iterator<T> {
 	hasNext(): boolean {
 		return this.mStep > 0 ? this.mIndex < this.mTo : this.mIndex >= this.mTo;
 	}
-	
+
 	isFinite() {
 		return true;
 	}
