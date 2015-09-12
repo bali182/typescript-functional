@@ -3,10 +3,11 @@
 /// <reference path="EmptyIterator" />
 
 module tsf {
-	const none: Optional<any> = {
+
+	const empty: Optional<any> = {
 		isPresent() { return false; },
 		isAbsent() { return true; },
-		get() { throw new Error('The element is absent'); },
+		get() { throw new Error(this.toString()); },
 		getOr(fallback: any) { return fallback; },
 		getOrUndefined() { return undefined; },
 		getOrNull() { return null; },
@@ -15,7 +16,7 @@ module tsf {
 		all(predicate: (input: any) => boolean) { return true; },
 		any(predicate: (input: any) => boolean) { return false; },
 		at() { return this; },
-		append(other: Sequence<any>): Sequence<any> { throw new Error('Not implemented'); /* TODO */ },
+		append(other: Sequence<any>): Sequence<any> { return other; },
 		average(mapper: (input: any) => number) { return 0; },
 		contains(item: any, equality: (a: any, b: any) => boolean) { return false; },
 		count() { return 0; },
@@ -34,7 +35,7 @@ module tsf {
 		map<R>(mapper: (input: any) => R) { return this; },
 		max(comparator: (first: any, second: any) => number) { return this; },
 		min(comparator: (first: any, second: any) => number) { return this; },
-		peek(consumer: (input: any) => void): Optional<any> { throw new Error('Not implemented'); /* TODO */ },
+		peek(consumer: (input: any) => void): Optional<any> { return this; },
 		reduce(reducer: (left: any, right: any) => any): any { throw new Error(this.toString()); },
 		skip(amount: number) { return this; },
 		skipWhile(predicate: (input: any) => boolean) { return this; },
@@ -106,7 +107,7 @@ module tsf {
 		 * @param input The referenced value. May not be null or undefined.
 		 */
 		public static of<T>(input: T): Optional<T> {
-			return new Some(input);
+			return new Present(input);
 		}
 		
 		/**
@@ -115,16 +116,16 @@ module tsf {
 		 */
 		public static ofNullable<T>(input: T): Optional<T> {
 			if (input === undefined || input === null) {
-				return none;
+				return empty;
 			}
-			return new Some(input);
+			return new Present(input);
 		}
 		
 		/**
 		 * Returns an empty optional (absent), which contains no reference.
 		 */
 		public static empty<T>(): Optional<T> {
-			return none;
+			return empty;
 		}
 
 		all(predicate: (input: T) => boolean): boolean {
@@ -252,7 +253,7 @@ module tsf {
 		}
 	}
 
-		class Some<T> extends Optional<T> {
+	class Present<T> extends Optional<T> {
 		/** The reference to the value. */
 		private mReferenced: T;
 		
@@ -268,22 +269,22 @@ module tsf {
 			this.mReferenced = reference;
 		}
 
-		public isPresent(): boolean { return true; }
-		public isAbsent(): boolean { return false; }
-		public get(): T { return this.mReferenced; }
-		public getOr(fallback: T): T { return this.get(); }
-		public getOrUndefined(): T { return this.get(); }
-		public getOrNull(): T { return this.get(); }
-		public getOrThrow(error: Error): T { return this.get(); }
+		isPresent(): boolean { return true; }
+		isAbsent(): boolean { return false; }
+		get(): T { return this.mReferenced; }
+		getOr(fallback: T): T { return this.get(); }
+		getOrUndefined(): T { return this.get(); }
+		getOrNull(): T { return this.get(); }
+		getOrThrow(error: Error): T { return this.get(); }
 		toString(): String { return `Present("${ this.get().toString() }`; }
 		all(predicate: (input: T) => boolean): boolean { return predicate(this.get()); }
 		any(predicate: (input: T) => boolean): boolean { return this.all(predicate); }
-		at(index: number): Optional<T> { return (index === 0) ? this : none; }
+		at(index: number): Optional<T> { return (index === 0) ? this : empty; }
 		append(other: Sequence<T>): Sequence<T> { throw new Error('Not implemented'); /* TODO */ }
 		average(mapper: (input: T) => number): number { return mapper(this.get()); }
 		contains(item: T, equality: (a: T, b: T) => boolean): boolean { return this.indexOf(item, equality) >= 0; }
 		count(): number { return 1; }
-		filter(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? this : none; }
+		filter(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? this : empty; }
 		findFirst(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
 		findLast(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
 		flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> { return sequencify(this.get()); }
@@ -292,12 +293,12 @@ module tsf {
 		indexOf(item: T, equality?: (a: T, b: T) => boolean): number { return (equality || ((a: T, b: T): boolean => a === b)(item, this.get()) ? 0 : -1); }
 		iterator(): Iterator<T> { return new SingletonIterator(this.get()); }
 		join(separator?: string, prefix?: string, suffix?: string): string { return (prefix || '') + this.get().toString() + (suffix || ''); }
-		limit(limit: number): Optional<T> { return limit > 0 ? this : none; }
+		limit(limit: number): Optional<T> { return limit > 0 ? this : empty; }
 		map<R>(mapper: (input: T) => R): Optional<R> { return Optional.ofNullable(mapper(this.get())); }
 		peek(consumer: (input: T) => void): Optional<T> { throw new Error('Not implemented'); /* TODO */ }
 		reduce(reducer: (left: T, right: T) => T): T { return this.get(); }
-		skip(amount: number): Optional<T> { return amount === 0 ? this : none; }
-		skipWhile(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? none : this; }
+		skip(amount: number): Optional<T> { return amount === 0 ? this : empty; }
+		skipWhile(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? empty : this; }
 		sum(mapper: (input: T) => number): number { return mapper(this.get()); }
 		takeWhile(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
 		toArray(): Array<T> { return [this.get()]; }
