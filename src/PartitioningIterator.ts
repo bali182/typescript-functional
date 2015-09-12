@@ -27,7 +27,7 @@ class PartitioningIterator<T> implements Iterator<Array<T>> {
 		var partitionSize = this.mChunkSize;
 		var delegate = this.mDelegate;
 		while (delegate.hasNext() && counter++ < partitionSize) {
-			array.push(delegate.next())
+			array.push(delegate.next());
 		}
 		return array;
 	}

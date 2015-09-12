@@ -138,7 +138,7 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	append(other: Sequence<T>): Sequence<T> {
-		throw new Error('Not implemented') // TODO
+		throw new Error('Not implemented'); // TODO
 	}
 
 	average(mapper: (input: T) => number): number {
@@ -154,7 +154,7 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	filter(predicate: (input: T) => boolean): Optional<T> {
-		return this.isPresent() && predicate(this.get()) ? this : Optional.empty<T>()
+		return this.isPresent() && predicate(this.get()) ? this : Optional.empty<T>();
 	}
 
 	findFirst(predicate: (input: T) => boolean): Optional<T> {
@@ -185,7 +185,7 @@ class Optional<T> implements Sequence<T> {
 	
 	indexOf(item: T, equality?: (a: T, b: T) => boolean): number {
 		var eq = equality || ((a, b) => a === b);
-		return this.isPresent() ? (eq(item, this.get()) ? 0 : -1) : -1
+		return this.isPresent() ? (eq(item, this.get()) ? 0 : -1) : -1;
 	}
 
 	isConsumed(): boolean {
@@ -197,7 +197,7 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	join(separator?: string, prefix?: string, suffix?: string): string {
-		return (prefix || '') + this.isPresent() ? this.get().toString() : '' + (suffix || '')
+		return (prefix || '') + this.isPresent() ? this.get().toString() : '' + (suffix || '');
 	}
 
 	last(): Optional<T> {
@@ -221,7 +221,7 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	peek(consumer: (input: T) => void): Optional<T> {
-		throw new Error('Not implemented') // TODO
+		throw new Error('Not implemented'); // TODO
 	}
 
 	reduce(reducer: (left: T, right: T) => T): T {
@@ -252,10 +252,10 @@ class Optional<T> implements Sequence<T> {
 	}
 
 	toArray(): Array<T> {
-		return this.isPresent() ? [this.get()] : []
+		return this.isPresent() ? [this.get()] : [];
 	}
 
 	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Optional<E> {
-		throw new Error('Not implemented') // TODO
+		throw new Error('Not implemented'); // TODO
 	}
 }

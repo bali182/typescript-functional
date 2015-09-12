@@ -9,7 +9,7 @@ class ConcatenatingIterator<T> implements Iterator<T> {
 	/** The iterators to concatenate. */
 	private mIterators: Iterator<Iterator<T>>;
 	/** The currently iterated iterator. */
-	private mCurrent: Iterator<T> = EmptyIterator.instance<T>()
+	private mCurrent: Iterator<T> = EmptyIterator.instance<T>();
 	
 	/**
 	 * Constructor.
@@ -28,7 +28,12 @@ class ConcatenatingIterator<T> implements Iterator<T> {
 
 	hasNext(): boolean {
 		var currentHasNext: boolean = false;
-		while (!(currentHasNext = this.mCurrent.hasNext()) && this.mIterators.hasNext()) {
+		var guard = true;
+		while (guard) {
+			guard = !(currentHasNext = this.mCurrent.hasNext()) && this.mIterators.hasNext();
+			if (!guard) {
+				break;
+			}
 			this.mCurrent = this.mIterators.next();
 		}
 		return currentHasNext;

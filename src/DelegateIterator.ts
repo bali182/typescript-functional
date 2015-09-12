@@ -6,7 +6,7 @@
 class DelegateIterator<T> implements Iterator<T> {
 	
 	/** The delegate. */
-	protected mDelegate: Iterator<T>
+	protected mDelegate: Iterator<T>;
 	
 	/**
 	 * Constructor.

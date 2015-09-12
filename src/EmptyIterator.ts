@@ -6,7 +6,7 @@
  */
 class EmptyIterator<T> implements Iterator<T> {
 	/** The singleton instance. */
-	private static INSTANCE = new EmptyIterator<any>();
+	private static INSTANCE: EmptyIterator<any> = new EmptyIterator<any>();
 	
 	/** Accessor method for the singleton instance. */
 	public static instance<T>(): Iterator<T> {
@@ -14,7 +14,7 @@ class EmptyIterator<T> implements Iterator<T> {
 	}
 
 	next(): T {
-		throw new Error("No such element")
+		throw new Error("No such element");
 	}
 
 	hasNext(): boolean {

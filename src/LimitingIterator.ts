@@ -16,7 +16,7 @@ class LimitingIterator<T> extends DelegateIterator<T> {
 	 * @param limit The maximum amount of emited elements.
 	 */
 	constructor(delegate: Iterator<T>, limit: number) {
-		super(delegate)
+		super(delegate);
 		this.mLimit = limit;
 		this.mIteratedCount = 0;
 	}

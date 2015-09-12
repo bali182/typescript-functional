@@ -10,7 +10,7 @@ class RangeIterator implements Iterator<number> {
 	/** The currently iterated element. */
 	private mCurrent: number;
 	/** The delta (increment or decrement value) */
-	private mDelta: number
+	private mDelta: number;
 	
 	/** 
 	 * Constructor.
