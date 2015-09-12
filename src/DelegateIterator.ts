@@ -1,30 +1,32 @@
 /// <reference path="Iterator" />
 
-/**
- * Iterator, which delegates next() and hasNext() to another iterator.
- */
-class DelegateIterator<T> implements Iterator<T> {
-	
-	/** The delegate. */
-	protected mDelegate: Iterator<T>;
-	
+module tsf {
 	/**
-	 * Constructor.
-	 * @param delegate The delegate.
+	 * Iterator, which delegates next() and hasNext() to another iterator.
 	 */
-	public constructor(delegate: Iterator<T>) {
-		this.mDelegate = delegate;
-	}
-
-	hasNext(): boolean {
-		return this.mDelegate.hasNext();
-	}
-
-	next(): T {
-		return this.mDelegate.next();
-	}
+	export class DelegateIterator<T> implements Iterator<T> {
+		
+		/** The delegate. */
+		protected mDelegate: Iterator<T>;
+		
+		/**
+		 * Constructor.
+		 * @param delegate The delegate.
+		 */
+		public constructor(delegate: Iterator<T>) {
+			this.mDelegate = delegate;
+		}
 	
-	isFinite() {
-		return this.mDelegate.isFinite();
+		hasNext(): boolean {
+			return this.mDelegate.hasNext();
+		}
+	
+		next(): T {
+			return this.mDelegate.next();
+		}
+		
+		isFinite() {
+			return this.mDelegate.isFinite();
+		}
 	}
 }

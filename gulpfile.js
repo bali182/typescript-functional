@@ -32,14 +32,14 @@ var tsLintConfig = {
         'check-else',
         'check-whitespace'
 			],
-			'no-console': [true,
+			/*'no-console': [true,
         'log',
 				'debug',
         'info',
         'time',
         'timeEnd',
         'trace'
-			],
+			],*/
 			'typedef': [true,
         'property-declaration',
         'member-variable-declaration'
@@ -47,10 +47,10 @@ var tsLintConfig = {
         // 'parameter',
         // 'variable-declaration',
 			],
-			'use-strict': [true,
+			/* 'use-strict': [true,
         'check-module',
         'check-function'
-			],
+			], */
 			'whitespace': [true,
         'check-branch',
         'check-decl',
