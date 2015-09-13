@@ -5,7 +5,7 @@
 
 module tsf {
 
-	const empty: Optional<any> = {
+	const absent: Optional<any> = {
 		isPresent() { return false; },
 		isAbsent() { return true; },
 		get() { throw new Error(this.toString()); },
@@ -13,7 +13,7 @@ module tsf {
 		getOrUndefined() { return undefined; },
 		getOrNull() { return null; },
 		getOrThrow(error: Error) { throw error; },
-		toString() { return 'Empty()'; },
+		toString() { return 'absent()'; },
 		all(predicate: (input: any) => boolean) { return true; },
 		any(predicate: (input: any) => boolean) { return false; },
 		at() { return this; },
@@ -117,7 +117,7 @@ module tsf {
 		 */
 		public static ofNullable<T>(input: T): Optional<T> {
 			if (input === undefined || input === null) {
-				return empty;
+				return absent;
 			}
 			return new Present(input);
 		}
@@ -126,7 +126,7 @@ module tsf {
 		 * Returns an empty optional (absent), which contains no reference.
 		 */
 		public static empty<T>(): Optional<T> {
-			return empty;
+			return absent;
 		}
 
 		all(predicate: (input: T) => boolean): boolean {
@@ -301,14 +301,14 @@ module tsf {
 		getOrUndefined(): T { return this.get(); }
 		getOrNull(): T { return this.get(); }
 		getOrThrow(error: Error): T { return this.get(); }
-		toString(): String { return `Present("${ this.get().toString() }`; }
+		toString(): String { return `present("${ this.get().toString() }`; }
 		all(predicate: (input: T) => boolean): boolean { return predicate(this.get()); }
 		any(predicate: (input: T) => boolean): boolean { return this.all(predicate); }
-		at(index: number): Optional<T> { return (index === 0) ? this : empty; }
+		at(index: number): Optional<T> { return (index === 0) ? this : absent; }
 		average(mapper: (input: T) => number): number { return mapper(this.get()); }
 		contains(item: T, equality: (a: T, b: T) => boolean): boolean { return this.indexOf(item, equality) >= 0; }
 		count(): number { return 1; }
-		filter(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? this : empty; }
+		filter(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? this : absent; }
 		findFirst(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
 		findLast(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
 		flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> { return sequencify(this.get()); }
@@ -317,19 +317,19 @@ module tsf {
 		indexOf(item: T, equality?: (a: T, b: T) => boolean): number { return (equality || ((a: T, b: T): boolean => a === b)(item, this.get()) ? 0 : -1); }
 		iterator(): Iterator<T> { return this.mIteratorFactory(); }
 		join(separator?: string, prefix?: string, suffix?: string): string { return (prefix || '') + this.get().toString() + (suffix || ''); }
-		limit(limit: number): Optional<T> { return limit > 0 ? this : empty; }
+		limit(limit: number): Optional<T> { return limit > 0 ? this : absent; }
 		map<R>(mapper: (input: T) => R): Optional<R> { return Optional.ofNullable(mapper(this.get())); }
 		peek(consumer: (input: T) => void): Optional<T> { throw new Present(this.get(), () => new PeekingIterator(this.iterator(), consumer)); }
 		reduce(reducer: (left: T, right: T) => T): T { return this.get(); }
-		skip(amount: number): Optional<T> { return amount === 0 ? this : empty; }
-		skipWhile(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? empty : this; }
+		skip(amount: number): Optional<T> { return amount === 0 ? this : absent; }
+		skipWhile(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? absent : this; }
 		sum(mapper: (input: T) => number): number { return mapper(this.get()); }
 		takeWhile(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
 		toArray(): Array<T> { return [this.get()]; }
 		append(other: Sequence<T>): Sequence<T> { return new IterableSequence(() => Iterators.append(this.iterator(), other.iterator())); }
 		zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Optional<E> {
 			var otherIt = other.iterator();
-			return otherIt.hasNext() ? Optional.ofNullable(combiner(this.get(), otherIt.next())) : empty;
+			return otherIt.hasNext() ? Optional.ofNullable(combiner(this.get(), otherIt.next())) : absent;
 		}
 	}
 }
