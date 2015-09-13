@@ -13,17 +13,21 @@ module tsf {
 		public static instance<T>(): Iterator<T> {
 			return EmptyIterator.INSTANCE;
 		}
-	
+
 		next(): T {
 			throw new Error("No such element");
 		}
-	
+
 		hasNext(): boolean {
 			return false;
 		}
-		
+
 		isFinite() {
 			return true;
+		}
+
+		toString() {
+			return 'empty()';
 		}
 	}
 }

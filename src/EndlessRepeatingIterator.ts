@@ -13,17 +13,21 @@ module tsf {
 		constructor(element: T) {
 			this.mElement = element;
 		}
-	
+
 		next(): T {
 			return this.mElement;
 		}
-	
+
 		hasNext(): boolean {
 			return true;
 		}
-		
+
 		isFinite() {
 			return false;
+		}
+
+		toString() {
+			return `repeating(${this.mElement})`;
 		}
 	}
 }

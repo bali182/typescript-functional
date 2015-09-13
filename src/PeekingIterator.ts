@@ -17,11 +17,15 @@ module tsf {
 			super(delegate);
 			this.mConsumer = consumer;
 		}
-	
+
 		next(): T {
 			var next = super.next();
 			this.mConsumer(next);
 			return next;
+		}
+
+		toString() {
+			return `peek(${this.mDelegate.toString() })`;
 		}
 	}
 }

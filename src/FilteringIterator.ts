@@ -22,7 +22,7 @@ module tsf {
 			super(delegate);
 			this.mPredicate = predicate;
 		}
-	
+
 		hasNext(): boolean {
 			var predicate = this.mPredicate;
 			var delegate = this.mDelegate;
@@ -39,13 +39,17 @@ module tsf {
 			}
 			return true;
 		}
-	
+
 		next(): T {
 			if (!this.hasNext()) {
 				throw new Error("No such element");
 			}
 			this.mConsumed = true;
 			return this.mCurrent;
+		}
+
+		toString() {
+			return `filter(${this.mDelegate.toString() })`;
 		}
 	}
 }

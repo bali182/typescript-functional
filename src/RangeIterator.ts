@@ -25,7 +25,7 @@ module tsf {
 			this.mDelta = delta ? delta : 1;
 			this.mCurrent = from;
 		}
-	
+
 		next(): number {
 			if (!this.hasNext()) {
 				throw new Error("No such element");
@@ -34,13 +34,17 @@ module tsf {
 			this.mCurrent += this.mDelta;
 			return current;
 		}
-	
+
 		hasNext(): boolean {
 			return this.mDelta > 0 ? this.mCurrent <= this.mTo : this.mCurrent >= this.mTo;
 		}
-		
+
 		isFinite() {
 			return true;
+		}
+
+		toString() {
+			return `range(from=${this.mFrom}, to=${this.mTo}, step=${this.mDelta})`;
 		}
 	}
 }

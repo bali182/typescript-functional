@@ -43,5 +43,9 @@ module tsf {
 			}
 			return this.mDelegate.next();
 		}
+
+		toString() {
+			return `skip(${this.mDelegate.toString() })`;
+		}
 	}
 }

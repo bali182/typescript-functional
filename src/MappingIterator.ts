@@ -19,17 +19,21 @@ module tsf {
 			this.mMapper = mapper;
 			this.mDelegate = delegate;
 		}
-	
+
 		next(): R {
 			return this.mMapper(this.mDelegate.next());
 		}
-	
+
 		hasNext(): boolean {
 			return this.mDelegate.hasNext();
 		}
-		
+
 		isFinite() {
 			return this.mDelegate.isFinite();
+		}
+
+		toString() {
+			return `map(${this.mDelegate.toString() })`;
 		}
 	}
 }

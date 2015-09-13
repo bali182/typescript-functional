@@ -16,17 +16,21 @@ module tsf {
 		public constructor(delegate: Iterator<T>) {
 			this.mDelegate = delegate;
 		}
-	
+
 		hasNext(): boolean {
 			return this.mDelegate.hasNext();
 		}
-	
+
 		next(): T {
 			return this.mDelegate.next();
 		}
-		
+
 		isFinite() {
 			return this.mDelegate.isFinite();
+		}
+
+		toString() {
+			return `delegate(${this.mDelegate.toString() })`;
 		}
 	}
 }

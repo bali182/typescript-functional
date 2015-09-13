@@ -16,17 +16,21 @@ module tsf {
 		constructor(supplier: () => T) {
 			this.mSupplier = supplier;
 		}
-	
+
 		next(): T {
 			return this.mSupplier();
 		}
-	
+
 		hasNext(): boolean {
 			return true;
 		}
-		
+
 		isFinite() {
 			return false;
+		}
+
+		toString() {
+			return 'endless()';
 		}
 	}
 }

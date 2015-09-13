@@ -21,7 +21,7 @@ module tsf {
 			this.mLimit = limit;
 			this.mIteratedCount = 0;
 		}
-	
+
 		next(): T {
 			if (!this.hasNext()) {
 				throw new Error("No such element");
@@ -30,13 +30,17 @@ module tsf {
 			this.mIteratedCount++;
 			return next;
 		}
-	
+
 		hasNext(): boolean {
 			return this.mDelegate.hasNext() && this.mIteratedCount < this.mLimit;
 		}
-		
+
 		isFinite() {
 			return true;
+		}
+
+		toString() {
+			return `limit(${this.mDelegate.toString() })`;
 		}
 	}
 }

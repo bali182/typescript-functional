@@ -7,7 +7,6 @@
 /// <reference path="SkippingIterator" />
 /// <reference path="FilteringIterator" />
 /// <reference path="PeekingIterator" />
-/// <reference path="PartitioningIterator" />
 /// <reference path="SkipWhileIterator" />
 /// <reference path="TakeWhileIterator" />
 /// <reference path="ZipIterator" />
