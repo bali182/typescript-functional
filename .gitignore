@@ -2,3 +2,4 @@ src-gen
 src-dist
 jasmine.json
 node_modules
+npm-debug.log

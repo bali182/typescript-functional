@@ -1,6 +1,7 @@
 /// <reference path="Sequence" />
 /// <reference path="SingletonIterator" />
 /// <reference path="EmptyIterator" />
+/// <reference path="IterableSequence" />
 
 module tsf {
 
@@ -253,20 +254,44 @@ module tsf {
 		}
 	}
 
+	class PresentIterator<T> implements Iterator<T> {
+		private mItem: Present<T>;
+		private mConsumed: boolean = false;
+
+		constructor(item: Present<T>) {
+			this.mItem = item;
+		}
+
+		next(): T {
+			if (this.hasNext()) {
+				throw new Error('Already iterated');
+			}
+			this.mConsumed = true;
+			return this.mItem.get();
+		}
+
+		hasNext(): boolean { return !this.mConsumed; }
+		isFinite(): boolean { return true; }
+	}
+
 	class Present<T> extends Optional<T> {
 		/** The reference to the value. */
 		private mReferenced: T;
+		
+		/** The iterator factory. */
+		private mIteratorFactory: () => Iterator<T>;
 		
 		/** 
 		 * Constructor.
 		 * @param reference The referenced object.
 		 */
-		constructor(reference: T) {
+		constructor(reference: T, iteratorFactory?: () => Iterator<T>) {
 			super();
 			if (reference === undefined || reference === null) {
-				throw new Error('undefined or null');
+				throw new Error('' + reference);
 			}
 			this.mReferenced = reference;
+			this.mIteratorFactory = iteratorFactory ? iteratorFactory : () => new PresentIterator(this);
 		}
 
 		isPresent(): boolean { return true; }
@@ -280,7 +305,6 @@ module tsf {
 		all(predicate: (input: T) => boolean): boolean { return predicate(this.get()); }
 		any(predicate: (input: T) => boolean): boolean { return this.all(predicate); }
 		at(index: number): Optional<T> { return (index === 0) ? this : empty; }
-		append(other: Sequence<T>): Sequence<T> { throw new Error('Not implemented'); /* TODO */ }
 		average(mapper: (input: T) => number): number { return mapper(this.get()); }
 		contains(item: T, equality: (a: T, b: T) => boolean): boolean { return this.indexOf(item, equality) >= 0; }
 		count(): number { return 1; }
@@ -291,17 +315,21 @@ module tsf {
 		fold<R>(reducer: (left: R, right: T) => R, initial: R): R { return reducer(initial, this.get()); }
 		forEach(consumer: (input: T) => void): void { consumer(this.get()); }
 		indexOf(item: T, equality?: (a: T, b: T) => boolean): number { return (equality || ((a: T, b: T): boolean => a === b)(item, this.get()) ? 0 : -1); }
-		iterator(): Iterator<T> { return new SingletonIterator(this.get()); }
+		iterator(): Iterator<T> { return this.mIteratorFactory(); }
 		join(separator?: string, prefix?: string, suffix?: string): string { return (prefix || '') + this.get().toString() + (suffix || ''); }
 		limit(limit: number): Optional<T> { return limit > 0 ? this : empty; }
 		map<R>(mapper: (input: T) => R): Optional<R> { return Optional.ofNullable(mapper(this.get())); }
-		peek(consumer: (input: T) => void): Optional<T> { throw new Error('Not implemented'); /* TODO */ }
+		peek(consumer: (input: T) => void): Optional<T> { throw new Present(this.get(), () => new PeekingIterator(this.iterator(), consumer)); }
 		reduce(reducer: (left: T, right: T) => T): T { return this.get(); }
 		skip(amount: number): Optional<T> { return amount === 0 ? this : empty; }
 		skipWhile(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? empty : this; }
 		sum(mapper: (input: T) => number): number { return mapper(this.get()); }
 		takeWhile(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
 		toArray(): Array<T> { return [this.get()]; }
-		zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Optional<E> { throw new Error('Not implemented'); /* TODO */ }
+		append(other: Sequence<T>): Sequence<T> { return new IterableSequence(() => Iterators.append(this.iterator(), other.iterator())); }
+		zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Optional<E> {
+			var otherIt = other.iterator();
+			return otherIt.hasNext() ? Optional.ofNullable(combiner(this.get(), otherIt.next())) : empty;
+		}
 	}
 }
