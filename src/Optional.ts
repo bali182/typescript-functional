@@ -3,46 +3,73 @@
 /// <reference path="EmptyIterator" />
 
 module tsf {
+
+	const empty: Optional<any> = {
+		isPresent() { return false; },
+		isAbsent() { return true; },
+		get() { throw new Error(this.toString()); },
+		getOr(fallback: any) { return fallback; },
+		getOrUndefined() { return undefined; },
+		getOrNull() { return null; },
+		getOrThrow(error: Error) { throw error; },
+		toString() { return 'Empty()'; },
+		all(predicate: (input: any) => boolean) { return true; },
+		any(predicate: (input: any) => boolean) { return false; },
+		at() { return this; },
+		append(other: Sequence<any>): Sequence<any> { return other; },
+		average(mapper: (input: any) => number) { return 0; },
+		contains(item: any, equality: (a: any, b: any) => boolean) { return false; },
+		count() { return 0; },
+		filter(predicate: (input: any) => boolean) { return this; },
+		findFirst(predicate: (input: any) => boolean) { return this; },
+		findLast(predicate: (input: any) => boolean) { return this; },
+		flatten<R>(sequencify: (input: any) => Sequence<R>) { return this; },
+		fold<R>(reducer: (left: R, right: any) => R, initial: R) { return initial; },
+		forEach(consumer: (input: any) => void): void { /* no operation */; },
+		head() { return this; },
+		indexOf(item: any, equality?: (a: any, b: any) => boolean) { return -1; },
+		iterator() { return EmptyIterator.instance<any>(); },
+		join(separator?: string, prefix?: string, suffix?: string) { return (prefix || '') + (suffix || ''); },
+		last() { return this; },
+		limit(limit: number) { return this; },
+		map<R>(mapper: (input: any) => R) { return this; },
+		max(comparator: (first: any, second: any) => number) { return this; },
+		min(comparator: (first: any, second: any) => number) { return this; },
+		peek(consumer: (input: any) => void): Optional<any> { return this; },
+		reduce(reducer: (left: any, right: any) => any): any { throw new Error(this.toString()); },
+		skip(amount: number) { return this; },
+		skipWhile(predicate: (input: any) => boolean) { return this; },
+		sum(mapper: (input: any) => number) { return 0; },
+		tail() { return this; },
+		takeWhile(predicate: (input: any) => boolean) { return this; },
+		toArray() { return []; },
+		zip<R, E>(other: Sequence<R>, combiner: (first: any, second: R) => E) { return this; }
+	};
+
 	/**
 	 * Container object, which may or may not contain a value.
 	 */
 	export class Optional<T> implements Sequence<T> {
-		
-		/** Empty optional, which contains no value. */
-		private static EMPTY: Optional<any> = new Optional(undefined);
-		/** The reference to the value. */
-		private mReference: T = undefined;
-		
-		/** 
-		 * Constructor.
-		 * @param reference The referenced object.
-		 */
-		constructor(reference: T) {
-			this.mReference = reference;
-		}
-		
+
 		/**
 		 * Returns true, if there is a non-null and non-undefined reference present, false otherwise.
 		 */
 		public isPresent(): boolean {
-			return !this.isAbsent();
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 		
 		/**
 		 * Returns true, if there is no non-null and non-undefined reference present, false otherwise.
 		 */
 		public isAbsent(): boolean {
-			return this.mReference === undefined;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 	
 		/**
 		 * Returns the referenced value, if present, otherwise throws an error.
 		 */
 		public get(): T {
-			if (this.isAbsent()) {
-				throw new Error('The element is absent');
-			}
-			return this.mReference;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 		
 		/**
@@ -51,43 +78,28 @@ module tsf {
 		 * @param fallback The fallback value to use, if the value is absent.
 		 */
 		public getOr(fallback: T): T {
-			if (fallback === null || fallback === undefined) {
-				throw new Error('use orUndefined() or orNull() instead');
-			}
-			if (this.isPresent()) {
-				return this.mReference;
-			}
-			return fallback;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 		
 		/**
 		 * Returns the referenced value if present, undefined otherwise.
 		 */
 		public getOrUndefined(): T {
-			if (this.isPresent()) {
-				return this.mReference;
-			}
-			return undefined;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 		
 		/**
 		 * Returns the referenced value if present, null otherwise.
 		 */
 		public getOrNull(): T {
-			if (this.isPresent()) {
-				return this.mReference;
-			}
-			return null;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 		
 		/**
 		 * Returns the referenced value if present, throws the given Error otherwise.
 		 */
 		public getOrThrow(error: Error): T {
-			if (this.isPresent()) {
-				return this.mReference;
-			}
-			throw error;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 		
 		/**
@@ -95,10 +107,7 @@ module tsf {
 		 * @param input The referenced value. May not be null or undefined.
 		 */
 		public static of<T>(input: T): Optional<T> {
-			if (input === undefined || input === null) {
-				throw new Error('undefined or null');
-			}
-			return new Optional<T>(input);
+			return new Present(input);
 		}
 		
 		/**
@@ -107,77 +116,68 @@ module tsf {
 		 */
 		public static ofNullable<T>(input: T): Optional<T> {
 			if (input === undefined || input === null) {
-				return Optional.EMPTY;
+				return empty;
 			}
-			return new Optional<T>(input);
+			return new Present(input);
 		}
 		
 		/**
 		 * Returns an empty optional (absent), which contains no reference.
 		 */
 		public static empty<T>(): Optional<T> {
-			return Optional.EMPTY;
-		}
-
-		toString(): String {
-			if (this.isPresent()) {
-				return `Present("${ this.mReference.toString() }`;
-			}
-			return 'Absent()';
+			return empty;
 		}
 
 		all(predicate: (input: T) => boolean): boolean {
-			return this.isPresent() ? predicate(this.get()) : true;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		any(predicate: (input: T) => boolean): boolean {
-			return this.isPresent() ? predicate(this.get()) : false;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		at(index: number): Optional<T> {
-			return (this.isPresent() && index === 0) ? this : Optional.empty<T>();
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		append(other: Sequence<T>): Sequence<T> {
-			throw new Error('Not implemented'); // TODO
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		average(mapper: (input: T) => number): number {
-			return this.isPresent() ? mapper(this.get()) : 0;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		contains(item: T, equality: (a: T, b: T) => boolean): boolean {
-			return this.indexOf(item, equality) >= 0;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		count(): number {
-			return this.isPresent() ? 1 : 0;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		filter(predicate: (input: T) => boolean): Optional<T> {
-			return this.isPresent() && predicate(this.get()) ? this : Optional.empty<T>();
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		findFirst(predicate: (input: T) => boolean): Optional<T> {
-			return this.filter(predicate);
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		findLast(predicate: (input: T) => boolean): Optional<T> {
-			return this.filter(predicate);
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
-			return this.isPresent() ? sequencify(this.get()) : Optional.empty<R>();
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		fold<R>(reducer: (left: R, right: T) => R, initial: R): R {
-			return this.isPresent() ? reducer(initial, this.get()) : initial;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		forEach(consumer: (input: T) => void): void {
-			if (this.isPresent) {
-				consumer(this.get());
-			}
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		head(): Optional<T> {
@@ -185,20 +185,15 @@ module tsf {
 		}
 
 		indexOf(item: T, equality?: (a: T, b: T) => boolean): number {
-			var eq = equality || ((a, b) => a === b);
-			return this.isPresent() ? (eq(item, this.get()) ? 0 : -1) : -1;
-		}
-
-		isConsumed(): boolean {
-			return false;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		iterator(): Iterator<T> {
-			return this.isPresent() ? new SingletonIterator(this.get()) : EmptyIterator.instance<T>();
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		join(separator?: string, prefix?: string, suffix?: string): string {
-			return (prefix || '') + this.isPresent() ? this.get().toString() : '' + (suffix || '');
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		last(): Optional<T> {
@@ -206,11 +201,11 @@ module tsf {
 		}
 
 		limit(limit: number): Optional<T> {
-			return this.isPresent() && limit > 0 ? this : Optional.empty<T>();
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		map<R>(mapper: (input: T) => R): Optional<R> {
-			return this.isPresent() ? Optional.ofNullable(mapper(this.get())) : Optional.empty<R>();
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		max(comparator: (first: T, second: T) => number): Optional<T> {
@@ -222,26 +217,23 @@ module tsf {
 		}
 
 		peek(consumer: (input: T) => void): Optional<T> {
-			throw new Error('Not implemented'); // TODO
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		reduce(reducer: (left: T, right: T) => T): T {
-			if (!this.isPresent()) {
-				throw new Error('Empty');
-			}
-			return this.get();
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		skip(amount: number): Optional<T> {
-			return amount === 0 ? this : Optional.empty<T>();
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		skipWhile(predicate: (input: T) => boolean): Optional<T> {
-			return this.isPresent() && predicate(this.get()) ? Optional.empty<T>() : this;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		sum(mapper: (input: T) => number): number {
-			return this.isPresent() ? mapper(this.get()) : 0;
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		tail(): Optional<T> {
@@ -249,15 +241,67 @@ module tsf {
 		}
 
 		takeWhile(predicate: (input: T) => boolean): Optional<T> {
-			return this.filter(predicate);
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		toArray(): Array<T> {
-			return this.isPresent() ? [this.get()] : [];
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
 		zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Optional<E> {
-			throw new Error('Not implemented'); // TODO
+			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
+	}
+
+	class Present<T> extends Optional<T> {
+		/** The reference to the value. */
+		private mReferenced: T;
+		
+		/** 
+		 * Constructor.
+		 * @param reference The referenced object.
+		 */
+		constructor(reference: T) {
+			super();
+			if (reference === undefined || reference === null) {
+				throw new Error('undefined or null');
+			}
+			this.mReferenced = reference;
+		}
+
+		isPresent(): boolean { return true; }
+		isAbsent(): boolean { return false; }
+		get(): T { return this.mReferenced; }
+		getOr(fallback: T): T { return this.get(); }
+		getOrUndefined(): T { return this.get(); }
+		getOrNull(): T { return this.get(); }
+		getOrThrow(error: Error): T { return this.get(); }
+		toString(): String { return `Present("${ this.get().toString() }`; }
+		all(predicate: (input: T) => boolean): boolean { return predicate(this.get()); }
+		any(predicate: (input: T) => boolean): boolean { return this.all(predicate); }
+		at(index: number): Optional<T> { return (index === 0) ? this : empty; }
+		append(other: Sequence<T>): Sequence<T> { throw new Error('Not implemented'); /* TODO */ }
+		average(mapper: (input: T) => number): number { return mapper(this.get()); }
+		contains(item: T, equality: (a: T, b: T) => boolean): boolean { return this.indexOf(item, equality) >= 0; }
+		count(): number { return 1; }
+		filter(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? this : empty; }
+		findFirst(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
+		findLast(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
+		flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> { return sequencify(this.get()); }
+		fold<R>(reducer: (left: R, right: T) => R, initial: R): R { return reducer(initial, this.get()); }
+		forEach(consumer: (input: T) => void): void { consumer(this.get()); }
+		indexOf(item: T, equality?: (a: T, b: T) => boolean): number { return (equality || ((a: T, b: T): boolean => a === b)(item, this.get()) ? 0 : -1); }
+		iterator(): Iterator<T> { return new SingletonIterator(this.get()); }
+		join(separator?: string, prefix?: string, suffix?: string): string { return (prefix || '') + this.get().toString() + (suffix || ''); }
+		limit(limit: number): Optional<T> { return limit > 0 ? this : empty; }
+		map<R>(mapper: (input: T) => R): Optional<R> { return Optional.ofNullable(mapper(this.get())); }
+		peek(consumer: (input: T) => void): Optional<T> { throw new Error('Not implemented'); /* TODO */ }
+		reduce(reducer: (left: T, right: T) => T): T { return this.get(); }
+		skip(amount: number): Optional<T> { return amount === 0 ? this : empty; }
+		skipWhile(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? empty : this; }
+		sum(mapper: (input: T) => number): number { return mapper(this.get()); }
+		takeWhile(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
+		toArray(): Array<T> { return [this.get()]; }
+		zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Optional<E> { throw new Error('Not implemented'); /* TODO */ }
 	}
 }
