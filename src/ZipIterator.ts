@@ -32,5 +32,9 @@ module tsf {
 		isFinite() {
 			return this.mFirst.isFinite() || this.mSecond.isFinite();
 		}
+
+		toString() {
+			return `ZippingIterator(first=${this.mFirst.toString() }, second=${this.mSecond.toString() })`;
+		}
 	}
 }

@@ -24,7 +24,7 @@ module tsf {
 			super(delegate);
 			this.mPredicate = predicate;
 		}
-	
+
 		hasNext(): boolean {
 			if (!this.mSkipped) {
 				var delegate = this.mDelegate;
@@ -41,7 +41,7 @@ module tsf {
 			}
 			return !this.mConsumed || this.mDelegate.hasNext();
 		}
-	
+
 		next(): T {
 			if (!this.hasNext()) {
 				throw new Error("No such element");
@@ -51,6 +51,10 @@ module tsf {
 				return this.mHead;
 			}
 			return this.mDelegate.next();
+		}
+
+		toString() {
+			return `SkipWhileIterator(${this.mDelegate.toString() })`;
 		}
 	}
 }

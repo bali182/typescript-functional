@@ -44,5 +44,9 @@ module tsf {
 		isFinite() {
 			return true;
 		}
+
+		toString() {
+			return `ArrayIterator(${this.mArray.join(', ') })`;
+		}
 	}
 }

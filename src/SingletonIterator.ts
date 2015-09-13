@@ -17,7 +17,7 @@ module tsf {
 		constructor(item: T) {
 			this.mItem = item;
 		}
-	
+
 		next(): T {
 			if (!this.hasNext()) {
 				throw new Error("Already iterated");
@@ -25,13 +25,17 @@ module tsf {
 			this.mHasNext = false;
 			return this.mItem;
 		}
-	
+
 		hasNext(): boolean {
 			return this.mHasNext;
 		}
-		
+
 		isFinite() {
 			return true;
+		}
+
+		toString() {
+			return `SingletonIterator(${this.mItem})`;
 		}
 	}
 }
