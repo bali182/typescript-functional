@@ -27,7 +27,7 @@ module tsf {
 		}
 
 		toString() {
-			return 'EmptyIterator()';
+			return 'empty()';
 		}
 	}
 }

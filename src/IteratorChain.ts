@@ -88,5 +88,9 @@ module tsf {
 		isFinite(): boolean {
 			return this.head().isFinite() && this.tail().isFinite();
 		}
+
+		toString() {
+			return `chain(head=${this.mHead.toString() }, tail=${this.mTail.toString() })`;
+		}
 	}
 }

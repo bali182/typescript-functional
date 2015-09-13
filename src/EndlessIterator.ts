@@ -30,7 +30,7 @@ module tsf {
 		}
 
 		toString() {
-			return 'EndlessIterator()';
+			return 'endless()';
 		}
 	}
 }

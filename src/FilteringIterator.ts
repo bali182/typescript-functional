@@ -49,7 +49,7 @@ module tsf {
 		}
 
 		toString() {
-			return `FilteringIterator(${this.mDelegate.toString() })`;
+			return `filter(${this.mDelegate.toString() })`;
 		}
 	}
 }

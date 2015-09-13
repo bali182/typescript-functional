@@ -40,7 +40,7 @@ module tsf {
 		}
 
 		toString() {
-			return `LimitingIterator(${this.mDelegate.toString() })`;
+			return `limit(${this.mDelegate.toString() })`;
 		}
 	}
 }

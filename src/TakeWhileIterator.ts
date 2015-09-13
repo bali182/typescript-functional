@@ -56,7 +56,7 @@ module tsf {
 		}
 
 		toString() {
-			return `TakeWhileIterator(${this.mDelegate.toString() })`;
+			return `takeWhile(${this.mDelegate.toString() })`;
 		}
 	}
 }

@@ -46,7 +46,7 @@ module tsf {
 		}
 
 		toString() {
-			return `ArrayIterator(${this.mArray.join(', ') })`;
+			return `array(${this.mArray.join(', ') })`;
 		}
 	}
 }

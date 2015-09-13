@@ -52,5 +52,9 @@ module tsf {
 		isFinite() {
 			return this.mChain.isFinite();
 		}
+
+		toString() {
+			return `chainable(${this.mChain.toString() })`;
+		}
 	}
 }

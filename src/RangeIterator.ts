@@ -44,7 +44,7 @@ module tsf {
 		}
 
 		toString() {
-			return `RangeIterator(from=${this.mFrom}, to=${this.mTo}, step=${this.mDelta})`;
+			return `range(from=${this.mFrom}, to=${this.mTo}, step=${this.mDelta})`;
 		}
 	}
 }

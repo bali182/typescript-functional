@@ -35,7 +35,7 @@ module tsf {
 		}
 
 		toString() {
-			return `SingletonIterator(${this.mItem})`;
+			return `singleton(${this.mItem})`;
 		}
 	}
 }

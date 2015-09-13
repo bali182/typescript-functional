@@ -42,5 +42,9 @@ module tsf {
 		isFinite() {
 			return this.mIterators.isFinite();
 		}
+		
+		toString() {
+			return `concatenate(${this.mIterators.toString()})`;
+		}
 	}
 }

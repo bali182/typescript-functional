@@ -33,7 +33,7 @@ module tsf {
 		}
 
 		toString() {
-			return `MappingIterator(${this.mDelegate.toString() })`
+			return `map(${this.mDelegate.toString() })`;
 		}
 	}
 }

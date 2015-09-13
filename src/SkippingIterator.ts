@@ -45,7 +45,7 @@ module tsf {
 		}
 
 		toString() {
-			return `SkippingIterator(${this.mDelegate.toString() })`;
+			return `skip(${this.mDelegate.toString() })`;
 		}
 	}
 }

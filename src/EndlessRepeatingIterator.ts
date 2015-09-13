@@ -27,7 +27,7 @@ module tsf {
 		}
 
 		toString() {
-			return `EndlessRepeatingIterator(${this.mElement})`;
+			return `repeating(${this.mElement})`;
 		}
 	}
 }

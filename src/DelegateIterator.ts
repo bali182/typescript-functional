@@ -30,7 +30,7 @@ module tsf {
 		}
 
 		toString() {
-			return `DelegateIterator(${this.mDelegate.toString() })`;
+			return `delegate(${this.mDelegate.toString() })`;
 		}
 	}
 }

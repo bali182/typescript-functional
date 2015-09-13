@@ -25,7 +25,7 @@ module tsf {
 		}
 
 		toString() {
-			return `PeekingIterator(${this.mDelegate.toString() })`;
+			return `peek(${this.mDelegate.toString() })`;
 		}
 	}
 }

@@ -34,7 +34,7 @@ module tsf {
 		}
 
 		toString() {
-			return `ZippingIterator(first=${this.mFirst.toString() }, second=${this.mSecond.toString() })`;
+			return `zip(first=${this.mFirst.toString() }, second=${this.mSecond.toString() })`;
 		}
 	}
 }
