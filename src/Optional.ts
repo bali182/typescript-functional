@@ -263,7 +263,7 @@ module tsf {
 		}
 
 		next(): T {
-			if (this.hasNext()) {
+			if (!this.hasNext()) {
 				throw new Error('Already iterated');
 			}
 			this.mConsumed = true;
@@ -319,7 +319,7 @@ module tsf {
 		join(separator?: string, prefix?: string, suffix?: string): string { return (prefix || '') + this.get().toString() + (suffix || ''); }
 		limit(limit: number): Optional<T> { return limit > 0 ? this : absent; }
 		map<R>(mapper: (input: T) => R): Optional<R> { return Optional.ofNullable(mapper(this.get())); }
-		peek(consumer: (input: T) => void): Optional<T> { throw new Present(this.get(), () => new PeekingIterator(this.iterator(), consumer)); }
+		peek(consumer: (input: T) => void): Optional<T> { return new Present(this.get(), () => new PeekingIterator(this.iterator(), consumer)); }
 		reduce(reducer: (left: T, right: T) => T): T { return this.get(); }
 		skip(amount: number): Optional<T> { return amount === 0 ? this : absent; }
 		skipWhile(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? absent : this; }

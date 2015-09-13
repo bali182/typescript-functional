@@ -38,5 +38,22 @@ module tsf.test {
 			Sequences.empty<number>().peek(n => count += n).forEach(n => { });
 			expect(count).toBe(0);
 		});
+
+		it("should have no effect, when used on empty", () => {
+			var guard = 0;
+			Optional.empty<number>().peek(e => guard++)
+			expect(guard).toBe(0);
+		});
+
+		// This doesn't work yet
+		/* it("should work with multiple peeking on non empty", () => {
+			var guard = 0;
+			var o = Optional.of('o')
+			Sequences.range(1, 10).forEach(i => {
+				o = o.peek(e => guard++);
+			});
+			o.forEach(e => { });
+			expect(guard).toBe(10);
+		}); */
 	});
 }

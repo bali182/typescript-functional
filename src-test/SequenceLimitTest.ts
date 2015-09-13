@@ -40,5 +40,19 @@ module tsf.test {
 			}
 			expect(joined).toBe(reference);
 		});
+
+		it("should be empty on empty", () => {
+			expect(Optional.empty<any>().limit(4)).toEqual(Optional.empty<any>());
+		});
+
+		it("should be empty on limiting non-empty to 0", () => {
+			expect(Optional.of('a').limit(0)).toEqual(Optional.empty<any>());
+		});
+
+		it("should be itself on limiting non-empty to > 0", () => {
+			var a = Optional.of('a');
+			expect(a.limit(1)).toEqual(a);
+			expect(a.limit(100)).toEqual(a);
+		});
 	});
 }
