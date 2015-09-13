@@ -73,8 +73,8 @@ module tsf {
 			return new IterableSequence<R>(() =>
 				new ConcatenatingIterator<R>(
 					this.map(sequencify).map(seq => seq.iterator()).iterator()
-					)
-				);
+				)
+			);
 		}
 
 		fold<R>(reducer: (left: R, right: T) => R, initial: R): R {
