@@ -38,5 +38,18 @@ module tsf.test {
 			expect(result.isPresent()).toBe(true);
 			expect(result.get()).toBe(110000)
 		});
+
+		it("should be empty on empty", () => {
+			expect(Optional.empty<any>().findLast(e => true)).toBe(Optional.empty<any>());
+		});
+
+		it("should be empty on non matching filter", () => {
+			expect(Optional.of('').findLast(e => e.length > 0)).toBe(Optional.empty<any>());
+		});
+
+		it("should be empty on empty", () => {
+			var a = Optional.of('a')
+			expect(a.findLast(e => e.length > 0)).toBe(a);
+		});
 	});
 }

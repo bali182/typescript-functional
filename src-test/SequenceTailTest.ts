@@ -21,5 +21,10 @@ module tsf.test {
 		it("empty", () => {
 			expect(Sequences.empty<any>().tail().toArray()).toEqual([]);
 		});
+
+		it("should always be empty", () => {
+			expect(Optional.empty<any>().tail()).toBe(Optional.empty<any>());
+			expect(Optional.of('a').tail()).toBe(Optional.empty<any>());
+		});
 	});
 }

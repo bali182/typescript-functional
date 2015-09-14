@@ -5,20 +5,10 @@
 /// <reference path="EndlessRepeatingIterator" />
 /// <reference path="RangeIterator" />
 /// <reference path="EmptySequence" />
-/// <reference path="IteratorSequence" />
 
 module tsf {
 	/** Collection of static utility methods to work with Sequences. */
 	export class Sequences {
-		
-		/** 
-		 * Constructs a Sequence from the given iterator.
-		 * @param iterator The iterator.
-		 */
-		public static ofIterator<T>(iterator: Iterator<T>): Sequence<T> {
-			return new IteratorSequence<T>(iterator, false);
-		}
-		
 		/**
 		 * Constructs a sequence from the given iterator generator (iterable)
 		 * @param iterable The iterator generator function.

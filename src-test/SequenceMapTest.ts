@@ -38,10 +38,26 @@ module tsf.test {
 				.limit(100000)
 				.map(n => n.toString())
 				.toArray()
-				).toEqual(Sequences.repeat("1")
-					.limit(100000)
-					.toArray()
-					);
+			).toEqual(Sequences.repeat("1")
+				.limit(100000)
+				.toArray()
+			);
+		});
+
+		it("should be empty on empty", () => {
+			expect(Optional.empty<string>().map(e => e.length)).toEqual(Optional.empty<number>());
+		});
+
+		// This needs revision, might not be what is expected.
+		it("should be empty on mapping to null or undefined", () => {
+			var a = Optional.of('a');
+			expect(a.map(e => <any>null)).toEqual(Optional.empty<any>());
+			expect(a.map(e => <any>undefined)).toEqual(Optional.empty<any>());
+		});
+
+		it("should be itself on limiting non-empty to > 0", () => {
+			var a = Optional.of('a');
+			expect(a.map(e => e.length).get()).toEqual(1);
 		});
 	});
 }

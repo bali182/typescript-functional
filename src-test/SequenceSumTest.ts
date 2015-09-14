@@ -37,5 +37,13 @@ module tsf.test {
 			var sum = Sequences.empty<number>().sum(n => n);
 			expect(sum).toBe(0);
 		});
+
+		it("should be 0 when empty", () => {
+			expect(Optional.empty<any>().sum(e => 100)).toBe(0);
+		});
+
+		it("should be the mapped value when non-empty", () => {
+			expect(Optional.of('test').sum(e => e.length)).toBe(4);
+		});
 	});
 }

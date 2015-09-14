@@ -27,5 +27,14 @@ module tsf.test {
 			expect(last.isPresent()).toBe(true);
 			expect(last.get()).toBe(100000);
 		});
+
+		it("should be empty on empty", () => {
+			expect(Optional.empty<any>().last()).toEqual(Optional.empty<any>());
+		});
+
+		it("should be itself on non-empty", () => {
+			var a = Optional.of('a');
+			expect(a.last()).toEqual(a);
+		});
 	});
 }

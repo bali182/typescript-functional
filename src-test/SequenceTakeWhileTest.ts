@@ -16,5 +16,19 @@ module tsf.test {
 			var counter = 0;
 			expect(Sequences.repeat("A").takeWhile(a => ++counter <= 3).toArray()).toEqual(["A", "A", "A"]);
 		});
+
+		it("should be empty when taking from empty", () => {
+			expect(Optional.empty<any>().takeWhile(e => true)).toBe(Optional.empty<any>());
+		});
+
+		it("should be empty when taking from non-empty, with false condition", () => {
+			var a = Optional.of('a');
+			expect(a.takeWhile(e => false)).toBe(Optional.empty<any>());
+		});
+
+		it("should be itself when taking from non-empty", () => {
+			var a = Optional.of('a');
+			expect(a.takeWhile(e => true)).toBe(a);
+		});
 	});
 }

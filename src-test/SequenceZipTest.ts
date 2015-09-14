@@ -52,5 +52,19 @@ module tsf.test {
 			var zipped = empty.zip(bs, (a, b) => a + b).limit(3);
 			expect(zipped.toArray()).toEqual([]);
 		});
+
+		it("should be empty when one Optional is empty", () => {
+			var empty = Optional.empty<string>();
+			var bs = Sequences.repeat("B").limit(3);
+			var zipped = empty.zip(bs, (a, b) => a + b);
+			expect(zipped).toEqual(Optional.empty<string>());
+		});
+
+		it("should be a single value when none is empty", () => {
+			var a = Optional.of('A');
+			var b = Optional.of('B');
+			var zipped = a.zip(b, (letterA, letterB) => letterA + letterB);
+			expect(zipped.get()).toEqual('AB');
+		});
 	});
 }

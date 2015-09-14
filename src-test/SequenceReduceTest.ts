@@ -20,5 +20,13 @@ module tsf.test {
 		it("empty", () => {
 			expect(() => Sequences.empty<number>().reduce(sumReducer)).toThrow();
 		});
+
+		it("should throw on empty", () => {
+			expect(() => Optional.empty<any>().reduce(sumReducer)).toThrow();
+		});
+
+		it("should be the first element on non-empty", () => {
+			expect(Optional.of(1).reduce(sumReducer)).toBe(1);
+		});
 	});
 }

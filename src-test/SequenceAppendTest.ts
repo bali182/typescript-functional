@@ -12,7 +12,7 @@ module tsf.test {
 				.append(Sequences.ofArray(third))
 			expect(complete.toArray()).toEqual(["A", "B", "C", "D", "E"]);
 		});
-	
+
 		it("Append limited endless", () => {
 			var first = Sequences.repeat("A").limit(2)
 			var second = Sequences.generate(() => "B").limit(3);
@@ -20,7 +20,7 @@ module tsf.test {
 			var complete = first.append(second).append(third);
 			expect(complete.toArray()).toEqual(["A", "A", "B", "B", "B", "C"]);
 		});
-	
+
 		it("Append ranges", () => {
 			var first = Sequences.range(0, 3);
 			var second = Sequences.range(4, 5);
@@ -38,5 +38,15 @@ module tsf.test {
 			}
 			expect(appended.toArray()).toEqual(Sequences.repeat("A").limit(repeat).toArray());
 		});
+
+		it("should be a, b, c, d, e, when appending to empty optional", () => {
+			var elements = Optional.empty<string>()
+				.append(Sequences.ofValue('a'))
+				.append(Optional.of('b'))
+				.append(Sequences.ofArray(['c']))
+				.append(Sequences.ofValues('d', 'e'))
+				.toArray();
+			expect(elements).toEqual(["a", "b", "c", "d", "e"])
+		})
 	});
 }

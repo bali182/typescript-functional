@@ -46,5 +46,12 @@ module tsf.test {
 			expect(max.isPresent()).toBe(true);
 			expect(max.get()).toBe(Sequences.repeat("A").limit(1000).join());
 		});
+
+		it("should always be itself", () => {
+			expect(Optional.empty<any>().max((a, b) => 0)).toEqual(Optional.empty<any>());
+
+			var a = Optional.of('a');
+			expect(a.max((a, b) => a.length - b.length)).toEqual(a);
+		});
 	});
 }

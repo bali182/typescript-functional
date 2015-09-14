@@ -32,6 +32,20 @@ module tsf.test {
 			expect(Sequences.ofArray(array).join(",")).toBe(array.join(","));
 			expect(Sequences.ofArray(array).join(",", "[")).toBe("[" + array.join(","));
 			expect(Sequences.ofArray(array).join(",", "[", "]")).toBe("[" + array.join(",") + "]");
-		})
+		});
+
+		it("should add prefix and suffix only, when empty", () => {
+			expect(Optional.empty<any>().join()).toBe('');
+			expect(Optional.empty<any>().join(',')).toBe('');
+			expect(Optional.empty<any>().join(',', '[')).toBe('[');
+			expect(Optional.empty<any>().join(',', '[', '}')).toBe('[}');
+		});
+
+		it("should add prefix, element, and suffix only, when non empty", () => {
+			expect(Optional.of('a').join()).toBe('a');
+			expect(Optional.of('a').join(',')).toBe('a');
+			expect(Optional.of('a').join(',', '[')).toBe('[a');
+			expect(Optional.of('a').join(',', '[', '}')).toBe('[a}');
+		});
 	});
 }
