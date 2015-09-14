@@ -19,5 +19,19 @@ module tsf.test {
 		it("empty", () => {
 			expect(Sequences.empty<string>().skipWhile(s => true).toArray()).toEqual([]);
 		});
+
+		it("should be empty, when skipping in empty", () => {
+			expect(Optional.empty<any>().skipWhile(e => false)).toEqual(Optional.empty<any>());
+			expect(Optional.empty<any>().skipWhile(e => true)).toEqual(Optional.empty<any>());
+		});
+
+		it("should be empty when skipping in non empty", () => {
+			expect(Optional.of('a').skipWhile(e => true)).toEqual(Optional.empty<any>());
+		});
+
+		it("should be itself when skipping in non empty & false condition", () => {
+			var a = Optional.of('a');
+			expect(a.skipWhile(e => false)).toEqual(a);
+		});
 	});
 }

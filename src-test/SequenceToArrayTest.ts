@@ -26,5 +26,13 @@ module tsf.test {
 		it("endless & limit", () => {
 			expect(Sequences.generate(() => 5).limit(4).toArray()).toEqual([5, 5, 5, 5]);
 		});
+
+		it("should be empty array when empty", () => {
+			expect(Optional.empty<any>().toArray()).toEqual([]);
+		});
+
+		it("should have a single element, when non-empty", () => {
+			expect(Optional.of('a').toArray()).toEqual(['a']);
+		});
 	});
 }
