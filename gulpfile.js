@@ -11,18 +11,18 @@ var gulp = require('gulp'),
 
 var REFERENCE_REPLACE_REGEX = /^\s*\/\/\/\s*<\s*reference\s*path\s*=\s*".*"\s*\/>\s*/mg;
 
-var DIST_FOLDER = 'src-dist'
-var SRC_FILES_EXPR = 'src/*.ts'
-var TEST_FILES_EXPR = 'src-test/*.ts'
-var TEST_JASMINE = 'src-test/jasmine.d.ts'
+var DIST_FOLDER = 'src-dist';
+var SRC_FILES_EXPR = 'src/*.ts';
+var TEST_FILES_EXPR = 'src-test/*.ts';
+var TEST_JASMINE = 'src-test/jasmine.d.ts';
 
-var TS_CONCAT_SRC_FILE = 'tsf.ts'
-var TS_CONCAT_DEF_SRC_FILE = 'tsf.d.ts'
-var TS_CONCAT_TESTS_FILE = 'tsf-tests.ts'
+var TS_CONCAT_SRC_FILE = 'tsf.ts';
+var TS_CONCAT_DEF_SRC_FILE = 'tsf.d.ts';
+var TS_CONCAT_TESTS_FILE = 'tsf-tests.ts';
 
-var JS_MIN_SRC_FILE = 'tsf-min.js'
-var JS_SRC_FILE = 'tsf.js'
-var JS_TESTS_FILE = 'tsf-tests.js'
+var JS_MIN_SRC_FILE = 'tsf-min.js';
+var JS_SRC_FILE = 'tsf.js';
+var JS_TESTS_FILE = 'tsf-tests.js';
 
 var tsLintConfig = {
 	configuration: {
