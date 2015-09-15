@@ -6,7 +6,8 @@ var gulp = require('gulp'),
 	jasmine = require('gulp-jasmine'),
 	clean = require('gulp-clean'),
 	ts = require('gulp-typescript'),
-	tsLint = require('gulp-tslint');
+	tsLint = require('gulp-tslint'),
+	ast = require('gulp-transform-js-ast');
 
 var REFERENCE_REPLACE_REGEX = /^\s*\/\/\/\s*<\s*reference\s*path\s*=\s*".*"\s*\/>\s*/mg;
 
@@ -32,25 +33,10 @@ var tsLintConfig = {
         'check-else',
         'check-whitespace'
 			],
-			/*'no-console': [true,
-        'log',
-				'debug',
-        'info',
-        'time',
-        'timeEnd',
-        'trace'
-			],*/
 			'typedef': [true,
         'property-declaration',
         'member-variable-declaration'
-        // 'call-signature',
-        // 'parameter',
-        // 'variable-declaration',
 			],
-			/* 'use-strict': [true,
-        'check-module',
-        'check-function'
-			], */
 			'whitespace': [true,
         'check-branch',
         'check-decl',
@@ -82,7 +68,6 @@ var tsLintConfig = {
 			'triple-equals': true,
 			'variable-name': true,
 			'semicolon': true,
-			// 'no-var-keyword': true,
 		}
 	}
 };

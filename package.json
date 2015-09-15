@@ -25,6 +25,7 @@
 		"gulp-jasmine": "2.0.1",
 		"gulp-clean": "0.3.1",
 		"gulp-tslint": "3.2.0",
+		"gulp-transform-js-ast": "1.0.2",
 		"merge2": "0.3.6"
 	},
 	"scripts": {
