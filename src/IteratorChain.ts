@@ -65,12 +65,13 @@ module tsf {
 			// TODO - this looks very hacky. When 1.6 is released, it could be rewritten
 			if (IteratorChain.EMPTY_ITERATOR === undefined) {
 				var empty: any = {
-					appendChain: (chain: IteratorChain<T>) => chain,
-					append: (iterator: Iterator<T>) => IteratorChain.wrap(iterator),
-					hasNext: () => false,
-					next: () => { throw new Error('No more elements'); },
-					tail: () => { throw new Error('Has no tail'); },
-					head: () => { return <Iterator<T>> undefined; },
+					appendChain(chain: IteratorChain<any>): IteratorChain<any> { return chain; },
+					append(iterator: Iterator<any>): IteratorChain<any> { return IteratorChain.wrap(iterator); },
+					hasNext(): boolean { return false; },
+					next(): Iterator<any> { throw new Error('No more elements'); },
+					tail(): IteratorChain<any> { throw new Error('Has no tail'); },
+					head(): Iterator<any> { return undefined; },
+					toString(): string { return 'chain()'; }
 				};
 				IteratorChain.EMPTY_ITERATOR = <IteratorChain<any>> empty;
 			}
@@ -89,7 +90,7 @@ module tsf {
 			return this.head().isFinite() && this.tail().isFinite();
 		}
 
-		toString() {
+		toString(): string {
 			return `chain(head=${this.mHead.toString() }, tail=${this.mTail.toString() })`;
 		}
 	}
