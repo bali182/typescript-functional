@@ -3,27 +3,27 @@
 
 module tsf.test {
 	describe("Sequence#toArray", () => {
-		it("array", () => {
+		it("should convert array sequences back to the same structure", () => {
 			expect(Sequences.ofArray(["A", "B", "C"]).toArray()).toEqual(["A", "B", "C"]);
 		});
 
-		it("values", () => {
+		it("should convert varargs values to the equivalent array", () => {
 			expect(Sequences.ofValues("A", "B", "C").toArray()).toEqual(["A", "B", "C"]);
 		});
 
-		it("value", () => {
+		it("should convert single value to an 1 length array", () => {
 			expect(Sequences.ofValue("A").toArray()).toEqual(["A"]);
 		});
 
-		it("range", () => {
+		it("should convert range", () => {
 			expect(Sequences.range(1, 5).toArray()).toEqual([1, 2, 3, 4, 5]);
 		});
 
-		it("endless & limit", () => {
+		it("should convert endless & limited sequence", () => {
 			expect(Sequences.repeat(1).limit(3).toArray()).toEqual([1, 1, 1]);
 		});
 
-		it("endless & limit", () => {
+		it("should convert endless & limited sequence 2", () => {
 			expect(Sequences.generate(() => 5).limit(4).toArray()).toEqual([5, 5, 5, 5]);
 		});
 

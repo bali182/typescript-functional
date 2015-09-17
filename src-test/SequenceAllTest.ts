@@ -3,17 +3,23 @@
 
 module tsf.test {
 	describe("Sequence#all", () => {
-		it("Ranges", () => {
+		it("should be true, because all elements are > 0", () => {
 			expect(Sequences.range(0, 10).all(n => n >= 0)).toEqual(true);
+		});
+		it("should be false, because not all elements are even", () => {
 			expect(Sequences.range(0, 10).all(n => n % 2 == 0)).toEqual(false);
 		});
 
-		it("Array", () => {
+		it("should be true, because all elements are non-empty strings", () => {
 			expect(Sequences.ofArray(["A", "B", "C", "D", "E"]).all(s => s.length > 0)).toEqual(true);
 			expect(Sequences.ofArray(["A", "B", "", "D", "E"]).all(s => s.length > 0)).toEqual(false);
 		});
+		
+		it("should be false, because not all elements are non-empty strings", () => {
+			expect(Sequences.ofArray(["A", "B", "", "D", "E"]).all(s => s.length > 0)).toEqual(false);
+		});
 
-		it("After transformation and filter", () => {
+		it("should be true, because all elements are odd", () => {
 			var result = Sequences.range(0, 20)
 				.filter(n => n % 2 == 0)
 				.map(n => n + 1)
@@ -22,13 +28,17 @@ module tsf.test {
 			expect(result).toEqual(true);
 		});
 
-		it("Empty", () => {
+		it("should be true, because all elements match the condition in an empty sequence", () => {
 			expect(Sequences.empty<any>().all(e => e === "A")).toBe(true);
 		});
 
-		it("all for 100000 elements", () => {
+		it("should be true, because the range is incremented by 2 so all elements are even", () => {
 			var elements = Sequences.range(2, 100000, 2).toArray();
 			expect(Sequences.ofArray(elements).all(n => n % 2 == 0)).toBe(true);
+		});
+		
+		it("should be false, because the range is incremented by 2 so no elements are odd", () => {
+			var elements = Sequences.range(2, 100000, 2).toArray();
 			expect(Sequences.ofArray(elements).all(n => n % 2 != 0)).toBe(false);
 		});
 

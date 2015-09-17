@@ -3,13 +3,13 @@
 
 module tsf.test {
 	describe("Sequences#average", () => {
-		it("average string length in array", () => {
+		it("should be the 3 (average length)", () => {
 			var result = Sequences.ofArray(["A", "BB", "CCC", "DDDD", "EEEEE"])
 				.average(s => s.length);
 			expect(result).toBe(3);
 		});
 
-		it("empty", () => {
+		it("should be 0 (average of empty)", () => {
 			var result = Sequences.empty<string>()
 				.average(s => s.length);
 			expect(result).toBe(0);
@@ -22,13 +22,13 @@ module tsf.test {
 			{ name: "Ed", age: 50 },
 		];
 
-		it("average age", () => {
+		it("should be 30 (average age)", () => {
 			var result = Sequences.ofArray(users)
 				.average(s => s.age);
 			expect(result).toBe(30);
 		});
 
-		it("average of 100000 elements", () => {
+		it("should be 50000 (average of range)", () => {
 			var result = Sequences.range(0, 100000).average(n => n);
 			expect(result).toBe(50000);
 		});

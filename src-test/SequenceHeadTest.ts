@@ -3,7 +3,7 @@
 
 module tsf.test {
 	describe("Sequence#head", () => {
-		it("Head of non empty", () => {
+		it("should be the first element wrapped in an Optional", () => {
 			expect(Sequences.ofValues("A").head().get()).toEqual("A");
 			expect(Sequences.ofValues("A").head().isPresent()).toEqual(true);
 			expect(Sequences.ofValues("A").head().isAbsent()).toEqual(false);
@@ -13,7 +13,7 @@ module tsf.test {
 			expect(Sequences.ofValues("A", "B", "C").head().isAbsent()).toEqual(false);
 		});
 
-		it("Head of empty", () => {
+		it("should be empty", () => {
 			expect(Sequences.empty().head().isPresent()).toEqual(false);
 		});
 

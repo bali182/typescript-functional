@@ -3,32 +3,32 @@
 
 module tsf.test {
 	describe("Sequences#at", () => {
-		it("array", () => {
+		it("should be present & B", () => {
 			var result = Sequences.ofArray(["A", "B", "C"]).at(1);
 			expect(result.isPresent()).toBe(true);
 			expect(result.get()).toBe("B");
 		});
 
-		it("endless", () => {
+		it("should be present & 5", () => {
 			var index = 0;
 			var result = Sequences.generate(() => index++).at(5);
 			expect(result.isPresent()).toBe(true);
 			expect(result.get()).toBe(5);
 		});
 
-		it("repeat", () => {
+		it("should be present & A", () => {
 			var result = Sequences.repeat("A").at(5);
 			expect(result.isPresent()).toBe(true);
 			expect(result.get()).toBe("A");
 		});
 
-		it("range", () => {
+		it("should be present & 3", () => {
 			var result = Sequences.range(1, 5).at(2);
 			expect(result.isPresent()).toBe(true);
 			expect(result.get()).toBe(3);
 		});
 
-		it("out of range", () => {
+		it("should be absent, because index is out of range", () => {
 			var result = Sequences.ofArray(["A", "B", "C"]).at(3);
 			expect(result.isAbsent()).toBe(true);
 
@@ -36,12 +36,12 @@ module tsf.test {
 			expect(result.isAbsent()).toBe(true);
 		});
 
-		it("empty", () => {
+		it("should be absent", () => {
 			var result = Sequences.empty<any>().at(2);
 			expect(result.isAbsent()).toBe(true);
 		});
 
-		it("At 100000 th position", () => {
+		it("should be present & A", () => {
 			var result = Sequences.repeat("A").at(100000);
 			expect(result.isPresent()).toBe(true);
 			expect(result.get()).toBe("A");

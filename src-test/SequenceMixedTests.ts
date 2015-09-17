@@ -3,7 +3,7 @@
 
 module tsf.test {
 	describe("Sequence mixed examples", () => {
-		it("Multiply", () => {
+		it("should work the same way as the * operator", () => {
 			var a = 6;
 			var b = 4;
 			var actual = Sequences.repeat(a)
@@ -19,7 +19,7 @@ module tsf.test {
 			{ name: "Ed", age: 50 },
 		];
 
-		it("Join names of older than 20", () => {
+		it("should join the names of people older than 20", () => {
 			var names = Sequences.ofArray(users)
 				.filter(u => u.age > 20)
 				.map(u => u.name)
@@ -28,13 +28,13 @@ module tsf.test {
 			expect(names).toEqual("Bob and Ed");
 		});
 
-		it("Add the ages", () => {
+		it("should add the ages", () => {
 			var ageSum = Sequences.ofArray(users)
 				.sum(u => u.age)
 			expect(ageSum).toEqual(120);
 		});
 
-		it("Generate sequence of 'A' as long as the names combined", () => {
+		it("should generate a sequence of 'A' as long as the names combined", () => {
 			var sequence = Sequences.ofArray(users)
 				.map(u => u.name)
 				.map(name => name.length)

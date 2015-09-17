@@ -3,20 +3,20 @@
 
 module tsf.test {
 	describe("Sequence#filter", () => {
-		it("Filter even / odd", () => {
+		it("should filter even and odd numbers", () => {
 			expect(Sequences.ofValues(1, 2, 3, 4, 5).filter(n => n % 2 == 0).toArray()).toEqual([2, 4]);
 			expect(Sequences.ofValues(1, 2, 3, 4, 5).filter(n => n % 2 != 0).toArray()).toEqual([1, 3, 5]);
 		});
 
-		it("Filter that starts with A", () => {
+		it("should filter words, that start with an 'A'", () => {
 			expect(Sequences.ofValues("Apple", "Pear", "Astronaut", "Dog").filter(s => s.charAt(0) == 'A').toArray()).toEqual(["Apple", "Astronaut"]);
 		});
 
-		it("empty", () => {
+		it("should filter empty", () => {
 			expect(Sequences.empty<string>().filter(s => s.length > 0).toArray()).toEqual([])
 		});
 
-		it("filtering 100000 elements", () => {
+		it("should filter a large amount of elements", () => {
 			var elements = Sequences.range(1, 100000).toArray();
 			var even = Sequences.ofArray(elements).filter(n => n % 2 == 0).toArray();
 			expect(even).toEqual(Sequences.range(2, 100000, 2).toArray());
