@@ -3,18 +3,18 @@
 
 module tsf.test {
 	describe("Sequence#sum", () => {
-		it("sum range", () => {
+		it("should sum a range", () => {
 			var sum = Sequences.range(1, 3).sum(n => n);
 			expect(sum).toBe(6);
 		});
 
-		it("sum length of strings", () => {
+		it("should sum the length of strings", () => {
 			var sum = Sequences.ofValues("", "A", "BB", "CCC", "", "D")
 				.sum(s => s.length);
 			expect(sum).toBe(7);
 		});
 
-		it("sum length of strings", () => {
+		it("should sum the length of strings", () => {
 			var sum = Sequences.ofValues("", "A", "BB", "CCC", "", "D")
 				.sum(s => s.length);
 			expect(sum).toBe(7);
@@ -27,13 +27,13 @@ module tsf.test {
 			{ name: "Robert", age: 19 }
 		];
 
-		it("sum ages of people", () => {
+		it("should sum the ages of people", () => {
 			var sum = Sequences.ofArray(users)
 				.sum(s => s.age);
 			expect(sum).toBe(120);
 		});
 
-		it("sum empty", () => {
+		it("should(nt) sum empty", () => {
 			var sum = Sequences.empty<number>().sum(n => n);
 			expect(sum).toBe(0);
 		});

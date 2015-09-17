@@ -7,16 +7,16 @@ module tsf.test {
 		var sumReducer = (a: number, b: number) => a + b;
 		var emptyJoiner = (a: string, b: string) => a + b;
 
-		it("Sum Ranges", () => {
+		it("should fold the range producing the sum of numbers", () => {
 			expect(Sequences.range(0, 10).fold(sumReducer, 5)).toEqual(60);
 			expect(Sequences.range(0, 10, 2).fold(sumReducer, 0)).toEqual(30);
 		});
 
-		it("Join", () => {
+		it("should fold the strings producing a joined string", () => {
 			expect(Sequences.ofArray(["A", "B", "C", "D", "E"]).fold(emptyJoiner, "")).toEqual("ABCDE");
 		});
 
-		it("empty", () => {
+		it("should be the initial value", () => {
 			expect(Sequences.empty<number>().fold(sumReducer, 0)).toBe(0);
 		});
 

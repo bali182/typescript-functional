@@ -3,14 +3,14 @@
 
 module tsf.test {
 	describe("Sequence#map", () => {
-		it("number to string", () => {
+		it("should number to string", () => {
 			expect(Sequences.ofValues(1, 2, 3)
 				.map(n => n.toString())
 				.toArray())
 				.toEqual(["1", "2", "3"]);
 		});
 
-		it("parseInt", () => {
+		it("should map using parseInt", () => {
 			expect(Sequences.ofValues("1", "2", "3")
 				.map(s => parseInt(s))
 				.toArray())
@@ -24,16 +24,16 @@ module tsf.test {
 			{ name: "Robert", age: 19 }
 		];
 
-		it("map people to their name", () => {
+		it("should map people to their name", () => {
 			var result = Sequences.ofArray(users).map(u => u.name);
 			expect(result.toArray()).toEqual(["Bob", "Ed", "Angela", "Robert"]);
 		});
 
-		it("empty", () => {
+		it("should(nt) map empty", () => {
 			expect(Sequences.empty<string>().map(s => parseInt(s)).toArray()).toEqual([]);
 		});
 
-		it("mapping 100000 elements", () => {
+		it("should map a large amount of elements", () => {
 			expect(Sequences.repeat(1)
 				.limit(100000)
 				.map(n => n.toString())

@@ -3,7 +3,7 @@
 
 module tsf.test {
 	describe("Sequence#flatten", () => {
-		it("Flatten array of array", () => {
+		it("should correctly flatten a sequence of sequences composed from arrays", () => {
 			expect(Sequences.ofValues([1, 2], [3], [4, 5]).flatten(a => Sequences.ofArray(a)).toArray()).toEqual([1, 2, 3, 4, 5]);
 		});
 
@@ -14,7 +14,7 @@ module tsf.test {
 			{ name: "Ed", age: 50, children: 5 },
 		];
 
-		it("Flatten mapped values", () => {
+		it("should flatten mapped values", () => {
 			var array = Sequences.ofArray(users)
 				.map(u => u.children)
 				.flatten(ch => Sequences.repeat("a").limit(ch))
@@ -22,14 +22,14 @@ module tsf.test {
 			expect(array).toEqual(["a", "a", "a", "a", "a", "a", "a", "a", ]);
 		});
 
-		it("Flatten empties", () => {
+		it("should flatten empties", () => {
 			var Sequence = Sequences.repeat(undefined)
 				.limit(5)
 				.flatten(n => Sequences.empty<string>());
 			expect(Sequence.toArray()).toEqual([]);
 		});
 
-		it("Flatten 100000 Sequences", () => {
+		it("should flatten 100000 Sequences, that have a single element", () => {
 			var Sequence = Sequences.repeat(undefined)
 				.limit(100000)
 				.flatten(n => Sequences.ofValue("A"));

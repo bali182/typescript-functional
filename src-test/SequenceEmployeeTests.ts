@@ -31,7 +31,7 @@ module tsf.test {
 	
 		// Better examples would require distinct() + groupBy() - so a set and map datatype.
 		
-		it("Who earns more than 2800?", () => {
+		it("should be the people who earn more than 2800 (Hector Harrison, Josephine Beard, Illana Miles)", () => {
 			var earnsMoreThan2800 = Sequences.ofArray(employees)
 				.filter(e => e.salary > 2800)
 				.toArray();
@@ -39,7 +39,7 @@ module tsf.test {
 			expect(earnsMoreThan2800).toEqual([hectorHarrison, josephineBeard, illanaMiles]);
 		});
 	
-		it("Who earns the most?", () => {
+		it("should be the person, who earns the most, Hector Harrison", () => {
 			var earnsMost = Sequences.ofArray(employees)
 				.max((e1, e2) => e1.salary - e2.salary);
 	
@@ -47,7 +47,7 @@ module tsf.test {
 			expect(earnsMost.get()).toBe(hectorHarrison);
 		});
 	
-		it("Who earns more than his/her boss?", () => {
+		it("should be the people, who earn more than their bosses (Hector Harrison, Josephine Beard)", () => {
 			var earnsMoreThanTheBoss = Sequences.ofArray(employees)
 				.filter(e => !!e.boss)
 				.filter(e => e.salary > e.boss.salary)
@@ -56,7 +56,7 @@ module tsf.test {
 			expect(earnsMoreThanTheBoss).toEqual([hectorHarrison, josephineBeard])
 		});
 	
-		it("Who is the best paid analyst?", () => {
+		it("should be the best paid analyst, Josephine Beard", () => {
 			var bestPaidAnalyst = Sequences.ofArray(employees)
 				.filter(e => e.profession === Profession.ANALYST)
 				.max((e1, e2) => e1.salary - e2.salary);
@@ -65,7 +65,7 @@ module tsf.test {
 			expect(bestPaidAnalyst.get()).toBe(josephineBeard);
 		});
 	
-		it("What is the average salary for a manager (using the data available)?", () => {
+		it("should be the average manager-salary (3300)", () => {
 			var avgSalaryForManagers = Sequences.ofArray(employees)
 				.filter(e => e.profession === Profession.MANAGER)
 				.average(e => e.salary);
@@ -73,14 +73,14 @@ module tsf.test {
 			expect(avgSalaryForManagers).toBe(3300);
 		});
 	
-		it("What is the average salary in the company", () => {
+		it("should be the average salary in the company (2940)", () => {
 			var avgSalaryForManagers = Sequences.ofArray(employees)
 				.average(e => e.salary);
 	
 			expect(avgSalaryForManagers).toBe(2940);
 		});
 	
-		it("Give a raise to all analyst of 300, the decrease it to their original", () => {
+		it("should give a raise of 300 to all analysts, then decrease their salary to the original value", () => {
 			Sequences.ofArray(employees)
 				.filter(e => e.profession === Profession.ANALYST)
 				.forEach(e => {

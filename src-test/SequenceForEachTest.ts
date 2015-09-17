@@ -3,7 +3,7 @@
 
 module tsf.test {
 	describe("Sequence#forEach", () => {
-		it("Range", () => {
+		it("should iterate on a range", () => {
 			var counter = 0;
 			Sequences.range(0, 10).forEach(n => {
 				expect(n).toBe(counter++);
@@ -11,7 +11,7 @@ module tsf.test {
 			expect(counter).toBe(11);
 		});
 
-		it("Endless", () => {
+		it("should iterate limited endless sequence", () => {
 			var counter = 0
 			Sequences.repeat("A").limit(3).forEach(str => {
 				expect(str).toBe("A");
@@ -20,7 +20,7 @@ module tsf.test {
 			expect(counter).toBe(3);
 		});
 
-		it("Array", () => {
+		it("should iterate on a sequence composed from an array", () => {
 			var array = ["A", "B", "C"];
 			var index = 0;
 			Sequences.ofArray(["A", "B", "C"]).forEach(str => {
@@ -28,13 +28,13 @@ module tsf.test {
 			});
 		});
 
-		it("Value", () => {
+		it("should iterate on a sequence composed of a single element", () => {
 			Sequences.ofValue("A").forEach(str => {
 				expect(str).toBe("A");
 			});
 		});
 
-		it("Values", () => {
+		it("should iterate on a sequence composed by varargs", () => {
 			var array = ["A", "B", "C"];
 			var index = 0;
 			Sequences.ofValues("A", "B", "C").forEach(str => {
@@ -42,13 +42,13 @@ module tsf.test {
 			});
 		});
 
-		it("empty", () => {
+		it("should(nt) iterate an empty sequence", () => {
 			var sum = 0;
 			Sequences.empty<number>().forEach(n => sum += n);
 			expect(sum).toBe(0);
 		});
 
-		it("forEach 100000 elements", () => {
+		it("should correctly iterate 100000 elements", () => {
 			var sum = 0;
 			Sequences.repeat(1).limit(100000).forEach(n => sum += n);
 			expect(sum).toBe(100000);

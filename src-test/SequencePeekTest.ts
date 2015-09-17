@@ -3,7 +3,7 @@
 
 module tsf.test {
 	describe("Sequence#peek", () => {
-		it("peek into array Sequence", () => {
+		it("should peek into array Sequence", () => {
 			var concatenated = "";
 			var Sequence = Sequences.ofArray(["A", "B", "C"])
 				.peek(s => concatenated += s)
@@ -11,7 +11,7 @@ module tsf.test {
 			expect(concatenated).toBe("ABC");
 		});
 
-		it("peek multiple times", () => {
+		it("should peek multiple times", () => {
 			var concatenated = "";
 			var Sequence = Sequences.ofArray(["A", "B", "C"])
 				.peek(s => concatenated += s)
@@ -20,7 +20,7 @@ module tsf.test {
 			expect(concatenated).toBe("AABBCC");
 		});
 
-		it("peek into transformed", () => {
+		it("should peek into transformed", () => {
 			var concatenated = "";
 			var summed = 0;
 
@@ -33,7 +33,7 @@ module tsf.test {
 			expect(summed).toBe(6);
 		});
 
-		it("empty", () => {
+		it("should(nt) peek into  empty", () => {
 			var count = 0;
 			Sequences.empty<number>().peek(n => count += n).forEach(n => { });
 			expect(count).toBe(0);

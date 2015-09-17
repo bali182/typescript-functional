@@ -7,21 +7,21 @@ module tsf.test {
 		var sumReducer = (a: number, b: number) => a + b;
 		var emptyJoiner = (a: string, b: string) => a ? a + b : b;
 
-		it("Sum Ranges", () => {
+		it("should sum ranges", () => {
 			expect(Sequences.range(0, 10).reduce(sumReducer)).toEqual(55);
 			expect(Sequences.range(0, 10, 2).reduce(sumReducer)).toEqual(30);
 			expect(Sequences.range(10, 0, -2).reduce(sumReducer)).toEqual(30)
 		});
 
-		it("Join", () => {
+		it("should join array sequence", () => {
 			expect(Sequences.ofArray(["A", "B", "C", "D", "E"]).reduce(emptyJoiner)).toEqual("ABCDE");
 		});
 
-		it("empty", () => {
+		it("should throw on empty sequence", () => {
 			expect(() => Sequences.empty<number>().reduce(sumReducer)).toThrow();
 		});
 
-		it("should throw on empty", () => {
+		it("should throw on empty optional", () => {
 			expect(() => Optional.empty<any>().reduce(sumReducer)).toThrow();
 		});
 

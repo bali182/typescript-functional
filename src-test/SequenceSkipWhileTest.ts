@@ -3,11 +3,11 @@
 
 module tsf.test {
 	describe("Sequence#skipWhile", () => {
-		it("SkipWhile ranges", () => {
+		it("should skip while values are < 5 ranges", () => {
 			expect(Sequences.range(0, 10).skipWhile(i => i < 5).toArray()).toEqual([5, 6, 7, 8, 9, 10]);
 		});
 
-		it("SkipWhile after transformation and filter", () => {
+		it("should skip while length < 6 after transformation and filter", () => {
 			var result = Sequences.range(0, 10)
 				.filter(n => n % 2 == 0)
 				.map(n => Sequences.repeat("A").limit(n).join())
@@ -16,7 +16,7 @@ module tsf.test {
 			expect(result).toEqual(["AAAAAA", "AAAAAAAA", "AAAAAAAAAA"]);
 		});
 
-		it("empty", () => {
+		it("should be empty", () => {
 			expect(Sequences.empty<string>().skipWhile(s => true).toArray()).toEqual([]);
 		});
 
