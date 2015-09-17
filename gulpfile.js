@@ -7,7 +7,11 @@ var gulp = require('gulp'),
 	clean = require('gulp-clean'),
 	ts = require('gulp-typescript'),
 	tsLint = require('gulp-tslint'),
-	ast = require('gulp-transform-js-ast');
+	ast = require('gulp-transform-js-ast'),
+	file = require('gulp-file'),
+	fs = require("fs"),
+	recast = require('recast'),
+	normalize = require('E:\\typescript-functional\\normalize.js');
 
 var REFERENCE_REPLACE_REGEX = /^\s*\/\/\/\s*<\s*reference\s*path\s*=\s*".*"\s*\/>\s*/mg;
 
@@ -87,6 +91,37 @@ var tsTestCompilerConfig = {
 	outFile: JS_TESTS_FILE
 };
 
+gulp.task('write-ast', ['compile-src'], function () {
+	var file = fs.readFileSync(DIST_FOLDER + '/' + JS_SRC_FILE, 'utf8');
+	var jsAst = recast.parse(file);
+	var jsonData = JSON.stringify(jsAst, null, '  ');
+	fs.writeFile(DIST_FOLDER + '/' + 'ast.json', jsonData);
+});
+
+gulp.task('ast-transform', ['compile-src'], function () {
+		normalize({
+		source: DIST_FOLDER + '/' + JS_SRC_FILE,
+		target: DIST_FOLDER + '/' + 'doge.js',
+		'namespace': 'tsf'
+		})();
+});
+/*gulp.task('ast-transform', ['compile-src'], function () {
+	var file = fs.readFileSync(DIST_FOLDER + '/' + JS_SRC_FILE, 'utf8');
+	var jsAst = recast.parse(file);
+	var program = jsAst.program;
+	var tsfDeclared = false;
+	program.body = program.body.filter(function (e) {
+		if (e.type === 'VariableDeclaration') {
+			if (e.declarations[0].id.name === 'tsf') {
+				return tsfDeclared ? false : (tsfDeclared = true);
+			}
+		}
+		return true;
+	});
+	var output = recast.print(jsAst).code;
+	fs.writeFile(DIST_FOLDER + '/' + 'doge.js', output);
+});*/
+
 gulp.task('lint', function () {
 	return gulp.src(SRC_FILES_EXPR)
 		.pipe(tsLint(tsLintConfig))
@@ -123,7 +158,7 @@ gulp.task('minify', ['compile-src'], function () {
 		.pipe(gulp.dest(DIST_FOLDER));
 });
 
-gulp.task('default', ['minify']);
+gulp.task('default', ['ast-transform']);
 
 gulp.on('err', function (e) {
 	console.log(e.err.stack)

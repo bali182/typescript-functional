@@ -26,6 +26,8 @@
 		"gulp-clean": "0.3.1",
 		"gulp-tslint": "3.2.0",
 		"gulp-transform-js-ast": "1.0.2",
+		"gulp-file": "0.2.0",
+		"recast": "0.10.32",
 		"merge2": "0.3.6"
 	},
 	"scripts": {
