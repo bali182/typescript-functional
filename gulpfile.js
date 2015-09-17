@@ -27,36 +27,21 @@ var tsLintConfig = {
 	configuration: {
 		rules: {
 			'one-line': [true,
-        'check-open-brace',
-        'check-catch',
-        'check-else',
-        'check-whitespace'
+				'check-open-brace',
+				'check-catch',
+				'check-else',
+				'check-whitespace'
 			],
-			/*'no-console': [true,
-        'log',
-				'debug',
-        'info',
-        'time',
-        'timeEnd',
-        'trace'
-			],*/
 			'typedef': [true,
-        'property-declaration',
-        'member-variable-declaration'
-        // 'call-signature',
-        // 'parameter',
-        // 'variable-declaration',
+				'property-declaration',
+				'member-variable-declaration'
 			],
-			/* 'use-strict': [true,
-        'check-module',
-        'check-function'
-			], */
 			'whitespace': [true,
-        'check-branch',
-        'check-decl',
-        'check-operator',
-        'check-separator',
-        'check-type'
+				'check-branch',
+				'check-decl',
+				'check-operator',
+				'check-separator',
+				'check-type'
 			],
 			'class-name': true,
 			'eofline': true,
@@ -82,7 +67,6 @@ var tsLintConfig = {
 			'triple-equals': true,
 			'variable-name': true,
 			'semicolon': true,
-			// 'no-var-keyword': true,
 		}
 	}
 };
