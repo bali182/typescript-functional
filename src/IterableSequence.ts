@@ -49,7 +49,7 @@ module tsf {
 			return Iterators.average(this.map(mapper).iterator());
 		}
 
-		contains(item: T, equality: (a: T, b: T) => boolean): boolean {
+		contains(item: T, equality?: (a: T, b: T) => boolean): boolean {
 			return this.indexOf(item, equality) >= 0;
 		}
 

@@ -41,7 +41,7 @@ module tsf {
 		 * @param The item you are looking for.
 		 * @param The equality comparer function. Uses === by default.
 		 */
-		contains(item: T, equality: (a: T, b: T) => boolean): boolean;
+		contains(item: T, equality?: (a: T, b: T) => boolean): boolean;
 		
 		/**
 		 * Returns the amount of elements in this Sequence.
