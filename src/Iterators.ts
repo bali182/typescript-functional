@@ -101,7 +101,7 @@ module tsf {
 
 		static indexOf<T>(it: Iterator<T>, item: T, equality?: (a: T, b: T) => boolean): number {
 			var eq = equality || ((a, b) => a === b);
-			var index = -1;
+			var index = 0;
 			while (it.hasNext()) {
 				if (eq(item, it.next())) {
 					return index;
