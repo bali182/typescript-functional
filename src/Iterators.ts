@@ -99,16 +99,16 @@ module tsf {
 			return it.hasNext() ? Optional.of(it.next()) : Optional.empty<T>();
 		}
 
-		static indexOf<T>(it: Iterator<T>, item: T, equality?: (a: T, b: T) => boolean): number {
+		static indexOf<T>(it: Iterator<T>, item: T, equality?: (a: T, b: T) => boolean): Optional<number> {
 			var eq = equality || ((a, b) => a === b);
 			var index = 0;
 			while (it.hasNext()) {
 				if (eq(item, it.next())) {
-					return index;
+					return Optional.of(index);
 				}
 				index++;
 			}
-			return -1;
+			return Optional.empty<number>();
 		}
 
 		static join(it: Iterator<string>, separator?: string, prefix?: string, suffix?: string): string {
@@ -169,15 +169,15 @@ module tsf {
 			return new PeekingIterator(it, consumer);
 		}
 
-		static reduce<T>(it: Iterator<T>, reducer: (left: T, right: T) => T): T {
+		static reduce<T>(it: Iterator<T>, reducer: (left: T, right: T) => T): Optional<T> {
 			if (!it.hasNext()) {
-				throw new Error("Can't reduce an empty sequence");
+				return Optional.empty<T>();
 			}
 			var current = it.next();
 			while (it.hasNext()) {
 				current = reducer(current, it.next());
 			}
-			return current;
+			return Optional.of(current);
 		}
 
 		static skip<T>(it: Iterator<T>, amount: number): Iterator<T> {

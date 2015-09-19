@@ -97,7 +97,7 @@ module tsf {
 		 * @param The item you are looking for.
 		 * @param The equality comparer function. Uses === by default.
 		 */
-		indexOf(item: T, equality?: (a: T, b: T) => boolean): number;
+		indexOf(item: T, equality?: (a: T, b: T) => boolean): Optional<number>;
 		
 		/**
 		 * Returns the Iterator, of this Sequence.
@@ -151,7 +151,7 @@ module tsf {
 		 * Performs a reduction on this Sequence using the parameter binary function. If the collection is empty, this method throws an error.
 		 * @param reducer The binary function to calculate the accumulated value.
 		 */
-		reduce(reducer: (left: T, right: T) => T): T;
+		reduce(reducer: (left: T, right: T) => T): Optional<T>;
 		
 		/**
 		 * Returns a Sequence consisting of the remaining elements of this Sequence after discarding the first n elements of the Sequence.

@@ -19,7 +19,7 @@ module tsf {
 		at(): any { return this; },
 		append(other: Sequence<any>): Sequence<any> { return other; },
 		average(mapper: (input: any) => number): number { return 0; },
-		contains(item: any, equality: (a: any, b: any) => boolean): boolean { return false; },
+		contains(item: any, equality?: (a: any, b: any) => boolean): boolean { return false; },
 		count(): number { return 0; },
 		filter(predicate: (input: any) => boolean): Optional<any> { return this; },
 		findFirst(predicate: (input: any) => boolean): Optional<any> { return this; },
@@ -28,7 +28,7 @@ module tsf {
 		fold<R>(reducer: (left: R, right: any) => R, initial: R): R { return initial; },
 		forEach(consumer: (input: any) => void): void { /* no operation */; },
 		head(): Optional<any> { return this; },
-		indexOf(item: any, equality?: (a: any, b: any) => boolean): number { return -1; },
+		indexOf(item: any, equality?: (a: any, b: any) => boolean): Optional<number> { return this; },
 		iterator(): Iterator<any> { return EmptyIterator.instance<any>(); },
 		join(separator?: string, prefix?: string, suffix?: string): string { return (prefix || '') + (suffix || ''); },
 		last(): Optional<any> { return this; },
@@ -37,7 +37,7 @@ module tsf {
 		max(comparator: (first: any, second: any) => number): Optional<any> { return this; },
 		min(comparator: (first: any, second: any) => number): Optional<any> { return this; },
 		peek(consumer: (input: any) => void): Optional<any> { return this; },
-		reduce(reducer: (left: any, right: any) => any): any { throw new Error(this.toString()); },
+		reduce(reducer: (left: any, right: any) => any): Optional<any> { return this; },
 		skip(amount: number): Optional<any> { return this; },
 		skipWhile(predicate: (input: any) => boolean): Optional<any> { return this; },
 		sum(mapper: (input: any) => number): number { return 0; },
@@ -185,7 +185,7 @@ module tsf {
 			return this;
 		}
 
-		indexOf(item: T, equality?: (a: T, b: T) => boolean): number {
+		indexOf(item: T, equality?: (a: T, b: T) => boolean): Optional<number> {
 			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
@@ -221,7 +221,7 @@ module tsf {
 			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
-		reduce(reducer: (left: T, right: T) => T): T {
+		reduce(reducer: (left: T, right: T) => T): Optional<T> {
 			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
 		}
 
@@ -306,7 +306,7 @@ module tsf {
 		any(predicate: (input: T) => boolean): boolean { return this.all(predicate); }
 		at(index: number): Optional<T> { return (index === 0) ? this : absent; }
 		average(mapper: (input: T) => number): number { return mapper(this.get()); }
-		contains(item: T, equality: (a: T, b: T) => boolean): boolean { return this.indexOf(item, equality) >= 0; }
+		contains(item: T, equality: (a: T, b: T) => boolean): boolean { return this.indexOf(item, equality).isPresent(); }
 		count(): number { return 1; }
 		filter(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? this : absent; }
 		findFirst(predicate: (input: T) => boolean): Optional<T> { return this.filter(predicate); }
@@ -314,13 +314,13 @@ module tsf {
 		flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> { return sequencify(this.get()); }
 		fold<R>(reducer: (left: R, right: T) => R, initial: R): R { return reducer(initial, this.get()); }
 		forEach(consumer: (input: T) => void): void { consumer(this.get()); }
-		indexOf(item: T, equality?: (a: T, b: T) => boolean): number { return (equality || ((a: T, b: T): boolean => a === b)(item, this.get()) ? 0 : -1); }
+		indexOf(item: T, equality?: (a: T, b: T) => boolean): Optional<number> { return (equality || ((a: T, b: T): boolean => a === b)(item, this.get()) ? new Present(0) : absent); }
 		iterator(): Iterator<T> { return this.mIteratorFactory(); }
 		join(separator?: string, prefix?: string, suffix?: string): string { return (prefix || '') + this.get().toString() + (suffix || ''); }
 		limit(limit: number): Optional<T> { return limit > 0 ? this : absent; }
 		map<R>(mapper: (input: T) => R): Optional<R> { return Optional.ofNullable(mapper(this.get())); }
 		peek(consumer: (input: T) => void): Optional<T> { return new Present(this.get(), () => new PeekingIterator(this.iterator(), consumer)); }
-		reduce(reducer: (left: T, right: T) => T): T { return this.get(); }
+		reduce(reducer: (left: T, right: T) => T): Optional<T> { return this; }
 		skip(amount: number): Optional<T> { return amount === 0 ? this : absent; }
 		skipWhile(predicate: (input: T) => boolean): Optional<T> { return predicate(this.get()) ? absent : this; }
 		sum(mapper: (input: T) => number): number { return mapper(this.get()); }

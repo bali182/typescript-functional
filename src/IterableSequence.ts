@@ -50,7 +50,7 @@ module tsf {
 		}
 
 		contains(item: T, equality?: (a: T, b: T) => boolean): boolean {
-			return this.indexOf(item, equality) >= 0;
+			return this.indexOf(item, equality).isPresent();
 		}
 
 		count(): number {
@@ -89,7 +89,7 @@ module tsf {
 			return Iterators.head(this.iterator());
 		}
 
-		indexOf(item: T, equality?: (a: T, b: T) => boolean): number {
+		indexOf(item: T, equality?: (a: T, b: T) => boolean): Optional<number> {
 			return Iterators.indexOf(this.iterator(), item, equality);
 		}
 
@@ -125,7 +125,7 @@ module tsf {
 			return new IterableSequence(() => Iterators.peek(this.iterator(), consumer));
 		}
 
-		reduce(reducer: (left: T, right: T) => T): T {
+		reduce(reducer: (left: T, right: T) => T): Optional<T> {
 			return Iterators.reduce(this.iterator(), reducer);
 		}
 
