@@ -2,10 +2,17 @@
 	"name": "typescript-functional",
 	"description": "Library for lazy collection manipulation in TypeScript and JavaScript",
 	"author": "Balázs Édes <edesbalazs@gmail.com>",
+	"version": "0.0.1",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/bali182/typescript-functional.git"
 	},
+	"files": [
+		"src-bin/tsf-node-min.js",
+		"src-bin/tsf-node.js",
+		"src-bin/tsf.d.ts"
+	],
+	"main": "tsf-node-min.js",
 	"keywords": [
 		"typescript",
 		"javascript",
@@ -13,9 +20,6 @@
 		"lazy",
 		"sequence"
 	],
-	"dependencies": {
-		"typescript": "*"
-	},
 	"devDependencies": {
 		"gulp": "3.9.0",
 		"gulp-concat": "2.6.0",
@@ -25,6 +29,8 @@
 		"gulp-jasmine": "2.0.1",
 		"gulp-clean": "0.3.1",
 		"gulp-tslint": "3.2.0",
+		"gulp-insert": "0.5.0",
+		"gulp-remove-empty-lines": "0.0.2",
 		"merge2": "0.3.6"
 	},
 	"scripts": {
