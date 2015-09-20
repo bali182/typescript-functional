@@ -6,12 +6,14 @@ var gulp = require('gulp'),
 	jasmine = require('gulp-jasmine'),
 	clean = require('gulp-clean'),
 	ts = require('gulp-typescript'),
-	tsLint = require('gulp-tslint');
+	tsLint = require('gulp-tslint'),
+	removeEmptyLines = require('gulp-remove-empty-lines'),
+	insert = require('gulp-insert');
 
 var REFERENCE_REPLACE_REGEX = /^\s*\/\/\/\s*<\s*reference\s*path\s*=\s*".*"\s*\/>\s*/mg;
 var MODULE_REDECLARATION_REPLACE = /^var tsf;$/mg;
 
-var DIST_FOLDER = 'src-dist'
+var BIN_FOLDER = 'src-bin'
 var SRC_FILES_EXPR = 'src/*.ts'
 var TEST_FILES_EXPR = 'src-test/*.ts'
 var TEST_JASMINE = 'src-test/jasmine.d.ts'
@@ -22,6 +24,8 @@ var TS_CONCAT_TESTS_FILE = 'tsf-tests.ts'
 
 var JS_MIN_SRC_FILE = 'tsf-min.js'
 var JS_SRC_FILE = 'tsf.js'
+var JS_NODE_MIN_SRC_FILE = 'tsf-node-min.js'
+var JS_NODE_SRC_FILE = 'tsf-node.js'
 var JS_TESTS_FILE = 'tsf-tests.js'
 
 var tsLintConfig = {
@@ -95,7 +99,7 @@ gulp.task('lint', function () {
 		}));
 });
 
-gulp.task('compile-src', function () {
+gulp.task('build-browser', ['lint'], function () {
 	var createReplacer = function () {
 		var declared = false;
 		return function (match) {
@@ -103,39 +107,45 @@ gulp.task('compile-src', function () {
 			declared = true;
 			return match;
 		}
-	}
-
+	};
 	var result = gulp.src(SRC_FILES_EXPR)
 		.pipe(ts(tsSourceCompilerConfig));
 	return merge([
 		result.js.pipe(replace(REFERENCE_REPLACE_REGEX, ''))
 			.pipe(replace(MODULE_REDECLARATION_REPLACE, createReplacer()))
-			.pipe(gulp.dest(DIST_FOLDER)),
+			.pipe(replace('', createReplacer()))
+			.pipe(gulp.dest(BIN_FOLDER))
+			.pipe(concat(JS_MIN_SRC_FILE)) // to have the desired filename
+			.pipe(uglifiy())
+			.pipe(gulp.dest(BIN_FOLDER)),
 		result.dts.pipe(replace(REFERENCE_REPLACE_REGEX, ''))
-			.pipe(gulp.dest(DIST_FOLDER))
+			.pipe(gulp.dest(BIN_FOLDER))
 	]);
+});
+
+gulp.task('build-node', ['lint', 'build-browser'], function () {
+	return gulp.src(BIN_FOLDER + '/' + JS_SRC_FILE)
+		.pipe(concat(JS_NODE_SRC_FILE)) // to have the desired filename
+		.pipe(insert.append('module.exports = tsf;')) // add module.exports
+		.pipe(gulp.dest(BIN_FOLDER))
+		.pipe(concat(JS_NODE_MIN_SRC_FILE)) // to have the desired filename
+		.pipe(uglifiy())
+		.pipe(gulp.dest(BIN_FOLDER));
 });
 
 gulp.task('test', ['lint'], function () {
 	return gulp.src([SRC_FILES_EXPR, TEST_JASMINE, TEST_FILES_EXPR])
 		.pipe(ts(tsTestCompilerConfig)).js
-		.pipe(gulp.dest(DIST_FOLDER))
+		.pipe(gulp.dest(BIN_FOLDER))
 		.pipe(jasmine({ verbose: true, includeStackTrace: true }));
 });
 
 gulp.task('clean', function () {
-	return gulp.src([DIST_FOLDER])
+	return gulp.src([BIN_FOLDER])
 		.pipe(clean());
 });
 
-gulp.task('minify', ['compile-src'], function () {
-	return gulp.src(DIST_FOLDER + '/' + JS_SRC_FILE)
-		.pipe(concat(JS_MIN_SRC_FILE)) // to have the desired filename
-		.pipe(uglifiy())
-		.pipe(gulp.dest(DIST_FOLDER));
-});
-
-gulp.task('default', ['minify']);
+gulp.task('default', ['build-node']);
 
 gulp.on('err', function (e) {
 	console.log(e.err.stack)

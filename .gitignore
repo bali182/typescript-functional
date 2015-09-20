@@ -1,5 +1,5 @@
 src-gen
-src-dist
+src-bin
 jasmine.json
 node_modules
 npm-debug.log
