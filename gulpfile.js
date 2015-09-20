@@ -9,6 +9,7 @@ var gulp = require('gulp'),
 	tsLint = require('gulp-tslint');
 
 var REFERENCE_REPLACE_REGEX = /^\s*\/\/\/\s*<\s*reference\s*path\s*=\s*".*"\s*\/>\s*/mg;
+var MODULE_REDECLARATION_REPLACE = /^var tsf;$/mg;
 
 var DIST_FOLDER = 'src-dist'
 var SRC_FILES_EXPR = 'src/*.ts'
@@ -95,11 +96,23 @@ gulp.task('lint', function () {
 });
 
 gulp.task('compile-src', function () {
+	var createReplacer = function () {
+		var declared = false;
+		return function (match) {
+			if (declared) { return ''; }
+			declared = true;
+			return match;
+		}
+	}
+
 	var result = gulp.src(SRC_FILES_EXPR)
 		.pipe(ts(tsSourceCompilerConfig));
 	return merge([
-		result.js.pipe(replace(REFERENCE_REPLACE_REGEX, '')).pipe(gulp.dest(DIST_FOLDER)),
-		result.dts.pipe(replace(REFERENCE_REPLACE_REGEX, '')).pipe(gulp.dest(DIST_FOLDER)),
+		result.js.pipe(replace(REFERENCE_REPLACE_REGEX, ''))
+			.pipe(replace(MODULE_REDECLARATION_REPLACE, createReplacer()))
+			.pipe(gulp.dest(DIST_FOLDER)),
+		result.dts.pipe(replace(REFERENCE_REPLACE_REGEX, ''))
+			.pipe(gulp.dest(DIST_FOLDER))
 	]);
 });
 
