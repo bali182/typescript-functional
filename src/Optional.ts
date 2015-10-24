@@ -60,7 +60,6 @@ module tsf {
 		/** Returns the referenced value, if present, otherwise throws an error. */
 		abstract get(): T;
 		
-		
 		/** Returns the referenced value if present, undefined otherwise. */
 		abstract getOrUndefined(): T;
 		
@@ -117,7 +116,7 @@ module tsf {
 		abstract average(mapper: (input: T) => number): number;
 		abstract contains(item: T, equality?: (a: T, b: T) => boolean): boolean;
 		abstract count(): number;
-		abstract filter(predicate: (input: T) => boolean): Sequence<T>;
+		abstract filter(predicate: (input: T) => boolean): Optional<T>;
 		abstract findFirst(predicate: (input: T) => boolean): Optional<T>;
 		abstract findLast(predicate: (input: T) => boolean): Optional<T>;
 		abstract flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R>;
@@ -126,16 +125,16 @@ module tsf {
 		abstract indexOf(item: T, equality?: (a: T, b: T) => boolean): Optional<number>;
 		abstract iterator(): Iterator<T>;
 		abstract join(separator?: string, prefix?: string, suffix?: string): string;
-		abstract limit(limit: number): Sequence<T>;
-		abstract map<R>(mapper: (input: T) => R): Sequence<R>;
-		abstract peek(consumer: (input: T) => void): Sequence<T>;
+		abstract limit(limit: number): Optional<T>;
+		abstract map<R>(mapper: (input: T) => R): Optional<R>;
+		abstract peek(consumer: (input: T) => void): Optional<T>;
 		abstract reduce(reducer: (left: T, right: T) => T): Optional<T>;
-		abstract skip(amount: number): Sequence<T>;
+		abstract skip(amount: number): Optional<T>;
 		abstract skipWhile(predicate: (input: T) => boolean): Sequence<T>;
 		abstract sum(mapper: (input: T) => number): number;
 		abstract takeWhile(predicate: (input: T) => boolean): Sequence<T>;
 		abstract toArray(): Array<T>;
-		abstract zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Sequence<E>;
+		abstract zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Optional<E>;
 	}
 	
 	/** This class is supposed to be package private. Helps iterating a Present value. */

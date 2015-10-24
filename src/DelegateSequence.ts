@@ -70,7 +70,7 @@ module tsf {
 			return this.delegate().head();
 		}
 		
-		indexOf(item: T, equality?: (a: T, b: T) => boolean): number {
+		indexOf(item: T, equality?: (a: T, b: T) => boolean): Optional<number> {
 			return this.delegate().indexOf(item, equality);
 		}
 	
@@ -106,7 +106,7 @@ module tsf {
 			return this.delegate().peek(consumer);
 		}
 	
-		reduce(reducer: (left: T, right: T) => T): T {
+		reduce(reducer: (left: T, right: T) => T): Optional<T> {
 			return this.delegate().reduce(reducer);
 		}
 	
