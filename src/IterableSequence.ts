@@ -16,7 +16,7 @@
 
 module tsf {
 	/** Sequence, which operates on an iterator. */
-	export class IterableSequence<T> implements Sequence<T>{
+	export class IterableSequence<T> implements Sequence<T> {
 		/** The delegeate iterator */
 		private mIterable: () => Iterator<T>;
 		
