@@ -14,17 +14,17 @@
 		"sequence"
 	],
 	"dependencies": {
-		"typescript": "*"
+		"typescript": "1.6.2"
 	},
 	"devDependencies": {
 		"gulp": "3.9.0",
 		"gulp-concat": "2.6.0",
 		"gulp-replace": "0.5.4",
-		"gulp-typescript": "2.8.2",
+		"gulp-typescript": "2.9.2",
 		"gulp-uglify": "1.4.0",
 		"gulp-jasmine": "2.0.1",
 		"gulp-clean": "0.3.1",
-		"gulp-tslint": "3.2.0",
+		"gulp-tslint": "3.4.0",
 		"merge2": "0.3.6"
 	},
 	"scripts": {

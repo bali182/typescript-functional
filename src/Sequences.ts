@@ -4,6 +4,7 @@
 /// <reference path="EndlessIterator" />
 /// <reference path="EndlessRepeatingIterator" />
 /// <reference path="RangeIterator" />
+/// <reference path="SingletonIterator" />
 /// <reference path="EmptySequence" />
 
 module tsf {
@@ -33,7 +34,7 @@ module tsf {
 		 * @param value The value.
 		 */
 		public static ofValue<T>(value: T): Sequence<T> {
-			return Sequences.ofIterable(() => new SingletonIterator(value));
+			return Sequences.ofIterable<T>(() => new SingletonIterator(value));
 		}
 	
 		/**

@@ -1,10 +1,12 @@
 /// <reference path="Sequence" />
-/// <reference path="SingletonIterator" />
+/// <reference path="Iterator" />
 /// <reference path="EmptyIterator" />
+/// <reference path="PeekingIterator" />
 /// <reference path="IterableSequence" />
+/// <reference path="Iterators" />
 
 module tsf {
-
+	/** Absent singleton optional. Shouldn't be used/changed from outside of this context directly. */
 	const absent: Optional<any> = {
 		isPresent(): boolean { return false; },
 		isAbsent(): boolean { return true; },
@@ -46,62 +48,33 @@ module tsf {
 		toArray(): Array<any> { return []; },
 		zip<R, E>(other: Sequence<R>, combiner: (first: any, second: R) => E): Optional<E> { return this; }
 	};
-
-	/**
-	 * Container object, which may or may not contain a value.
-	 */
-	export class Optional<T> implements Sequence<T> {
-
-		/**
-		 * Returns true, if there is a non-null and non-undefined reference present, false otherwise.
-		 */
-		public isPresent(): boolean {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-		
-		/**
-		 * Returns true, if there is no non-null and non-undefined reference present, false otherwise.
-		 */
-		public isAbsent(): boolean {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
 	
-		/**
-		 * Returns the referenced value, if present, otherwise throws an error.
-		 */
-		public get(): T {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
+	export abstract class Optional<T> implements Sequence<T>  {
+		
+		/** Returns true, if there is a non-null and non-undefined reference present, false otherwise. */
+		abstract isPresent(): boolean;
+		
+		/** Returns true, if there is no non-null and non-undefined reference present, false otherwise. */
+		abstract isAbsent(): boolean;
+	
+		/** Returns the referenced value, if present, otherwise throws an error. */
+		abstract get(): T;
+		
+		/** Returns the referenced value if present, undefined otherwise. */
+		abstract getOrUndefined(): T;
+		
+		/** Returns the referenced value if present, null otherwise. */
+		abstract getOrNull(): T;
+		
+		/** Returns the referenced value if present, throws the given Error otherwise. */
+		abstract getOrThrow(error: Error): T;
 		
 		/**
 		 * Returns the referenced value if present, otherwise returns the fallback value.
 		 * null or undefined is not acceptable as fallback value, use orNull() or orUndefined() instead.
 		 * @param fallback The fallback value to use, if the value is absent.
 		 */
-		public getOr(fallback: T): T {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-		
-		/**
-		 * Returns the referenced value if present, undefined otherwise.
-		 */
-		public getOrUndefined(): T {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-		
-		/**
-		 * Returns the referenced value if present, null otherwise.
-		 */
-		public getOrNull(): T {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-		
-		/**
-		 * Returns the referenced value if present, throws the given Error otherwise.
-		 */
-		public getOrThrow(error: Error): T {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
+		abstract getOr(fallback: T): T;
 		
 		/**
 		 * Constructs an optional with a non-null and non-undefined value. If null or undefined is supplied, an error will be thrown.
@@ -122,138 +95,49 @@ module tsf {
 			return new Present(input);
 		}
 		
-		/**
-		 * Returns an empty optional (absent), which contains no reference.
-		 */
+		/** Returns an empty optional (absent), which contains no reference. */
 		public static empty<T>(): Optional<T> {
 			return absent;
 		}
-
-		all(predicate: (input: T) => boolean): boolean {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		any(predicate: (input: T) => boolean): boolean {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		at(index: number): Optional<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		append(other: Sequence<T>): Sequence<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		average(mapper: (input: T) => number): number {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		contains(item: T, equality: (a: T, b: T) => boolean): boolean {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		count(): number {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		filter(predicate: (input: T) => boolean): Optional<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		findFirst(predicate: (input: T) => boolean): Optional<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		findLast(predicate: (input: T) => boolean): Optional<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		fold<R>(reducer: (left: R, right: T) => R, initial: R): R {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		forEach(consumer: (input: T) => void): void {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		head(): Optional<T> {
-			return this;
-		}
-
-		indexOf(item: T, equality?: (a: T, b: T) => boolean): Optional<number> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		iterator(): Iterator<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		join(separator?: string, prefix?: string, suffix?: string): string {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		last(): Optional<T> {
-			return this;
-		}
-
-		limit(limit: number): Optional<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		map<R>(mapper: (input: T) => R): Optional<R> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		max(comparator: (first: T, second: T) => number): Optional<T> {
-			return this;
-		}
-
-		min(comparator: (first: T, second: T) => number): Optional<T> {
-			return this;
-		}
-
-		peek(consumer: (input: T) => void): Optional<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		reduce(reducer: (left: T, right: T) => T): Optional<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		skip(amount: number): Optional<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		skipWhile(predicate: (input: T) => boolean): Optional<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		sum(mapper: (input: T) => number): number {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		tail(): Optional<T> {
-			return Optional.empty<T>();
-		}
-
-		takeWhile(predicate: (input: T) => boolean): Optional<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		toArray(): Array<T> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
-
-		zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Optional<E> {
-			throw new Error('Not implemented, will be removed, once abstract keyword is available.');
-		}
+		
+		// These work for any Optional<T>, since value presence doesn't matter.
+		max(comparator: (first: T, second: T) => number): Optional<T> { return this; }
+		min(comparator: (first: T, second: T) => number): Optional<T> { return this; }
+		head(): Optional<T> { return this; }
+		last(): Optional<T> { return this; }
+		tail(): Sequence<T> { return absent; }
+		
+		// Sadly abstract classes still won't allow to implement an interface, 
+		// without redeclaring all the methods the interface has.
+		abstract all(predicate: (input: T) => boolean): boolean;
+		abstract any(predicate: (input: T) => boolean): boolean;
+		abstract at(index: number): Optional<T>;
+		abstract append(other: Sequence<T>): Sequence<T>;
+		abstract average(mapper: (input: T) => number): number;
+		abstract contains(item: T, equality?: (a: T, b: T) => boolean): boolean;
+		abstract count(): number;
+		abstract filter(predicate: (input: T) => boolean): Optional<T>;
+		abstract findFirst(predicate: (input: T) => boolean): Optional<T>;
+		abstract findLast(predicate: (input: T) => boolean): Optional<T>;
+		abstract flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R>;
+		abstract fold<R>(reducer: (left: R, right: T) => R, initial: R): R;
+		abstract forEach(consumer: (input: T) => void): void;
+		abstract indexOf(item: T, equality?: (a: T, b: T) => boolean): Optional<number>;
+		abstract iterator(): Iterator<T>;
+		abstract join(separator?: string, prefix?: string, suffix?: string): string;
+		abstract limit(limit: number): Optional<T>;
+		abstract map<R>(mapper: (input: T) => R): Optional<R>;
+		abstract peek(consumer: (input: T) => void): Optional<T>;
+		abstract reduce(reducer: (left: T, right: T) => T): Optional<T>;
+		abstract skip(amount: number): Optional<T>;
+		abstract skipWhile(predicate: (input: T) => boolean): Sequence<T>;
+		abstract sum(mapper: (input: T) => number): number;
+		abstract takeWhile(predicate: (input: T) => boolean): Sequence<T>;
+		abstract toArray(): Array<T>;
+		abstract zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Optional<E>;
 	}
-
+	
+	/** This class is supposed to be package private. Helps iterating a Present value. */
 	class PresentIterator<T> implements Iterator<T> {
 		private mItem: Present<T>;
 		private mConsumed: boolean = false;
@@ -273,7 +157,8 @@ module tsf {
 		hasNext(): boolean { return !this.mConsumed; }
 		isFinite(): boolean { return true; }
 	}
-
+	
+	/** Optional with a present value. */
 	class Present<T> extends Optional<T> {
 		/** The reference to the value. */
 		private mReferenced: T;

@@ -2,7 +2,7 @@
 
 module tsf {
 	/** Iterator, that combines the elements of two Iterators. */
-	export class ZipIterator<T, R> implements Iterator<{ first: T, second: R }>{
+	export class ZipIterator<T, R> implements Iterator<{ first: T, second: R }> {
 		/** The first iterator. */
 		private mFirst: Iterator<T>;
 		/** The second iterator. */
