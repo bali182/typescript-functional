@@ -1,37 +1,29 @@
 {
-	"name": "typescript-functional",
-	"description": "Library for lazy collection manipulation in TypeScript and JavaScript",
-	"author": "Balázs Édes <edesbalazs@gmail.com>",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/bali182/typescript-functional.git"
-	},
-	"keywords": [
-		"typescript",
-		"javascript",
-		"functional",
-		"lazy",
-		"sequence"
-	],
-	"dependencies": {
-		"typescript": "1.6.2"
-	},
-	"devDependencies": {
-		"gulp": "3.9.0",
-		"gulp-concat": "2.6.0",
-		"gulp-replace": "0.5.4",
-		"gulp-typescript": "2.9.2",
-		"gulp-uglify": "1.4.0",
-		"gulp-jasmine": "2.0.1",
-		"gulp-clean": "0.3.1",
-		"gulp-tslint": "3.4.0",
-		"merge2": "0.3.6"
-	},
-	"scripts": {
-		"build": "gulp",
-		"test": "gulp test",
-		"clean": "gulp clean"
-	},
-	"analyze": true,
-	"license": "MIT"
+  "name": "typescript-functional",
+  "version": "0.0.1",
+  "description": "Library for lazy collection manipulation in TypeScript and JavaScript",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bali182/typescript-functional.git"
+  },
+  "keywords": [
+    "typescript",
+    "javascript",
+    "functional",
+    "lazy",
+    "sequence"
+  ],
+  "devDependencies": {
+    "rollup": "^0.41.4",
+    "rollup-plugin-typescript": "^0.8.1",
+    "typescript": "^2.1.6"
+  },
+  "scripts": {
+    "build": "rollup -c rollup.config.js --verbose",
+    "roll": "rollup",
+    "test": "gulp test"
+  },
+  "analyze": true,
+  "license": "MIT"
 }

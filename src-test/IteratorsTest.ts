@@ -1,161 +1,161 @@
 /// <reference path="jasmine.d.ts" />
-/// <reference path="../src/MappingIterator" />
-/// <reference path="../src/ConcatenatingIterator" />
-/// <reference path="../src/LimitingIterator" />
-/// <reference path="../src/SkippingIterator" />
-/// <reference path="../src/FilteringIterator" />
-/// <reference path="../src/PeekingIterator" />
-/// <reference path="../src/ArrayIterator" />
-/// <reference path="../src/RangeIterator" />
-/// <reference path="../src/EndlessIterator" />
-/// <reference path="../src/ZipIterator" />
+/// <reference path="../src/MappingItr" />
+/// <reference path="../src/ConcatenatingItr" />
+/// <reference path="../src/LimitingItr" />
+/// <reference path="../src/SkippingItr" />
+/// <reference path="../src/FilteringItr" />
+/// <reference path="../src/PeekingItr" />
+/// <reference path="../src/ArrayItr" />
+/// <reference path="../src/RangeItr" />
+/// <reference path="../src/EndlessItr" />
+/// <reference path="../src/ZipItr" />
 
 module tsf.test {
-	describe("Iterators", () => {
+	describe("Itrs", () => {
 		
-		describe("ArrayIterator", () => {
+		describe("ArrayItr", () => {
 			it("should have 3 items)", () => {
-				var iterator = new ArrayIterator(["A", "B", "C"]);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("A");
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("B");
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("C");
-				expect(iterator.hasNext()).toEqual(false);
-				expect(() => iterator.next()).toThrow();
-			});
-		});
+				var Itr = new ArrayItr(["A", "B", "C"])
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("A")
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("B")
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("C")
+				expect(Itr.hasNext()).toEqual(false)
+				expect(() => Itr.next()).toThrow()
+			})
+		})
 		
-		describe("DelegateIterator", () => {
-			it("should delegate correctly to the underlyig ArrayIterator", () => {
-				var delegate = new ArrayIterator([1, 2, 3]);
-				var iterator = new DelegateIterator(delegate);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual(1);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual(2);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual(3);
-				expect(iterator.hasNext()).toEqual(false);
-				expect(() => iterator.next()).toThrow();
-			});
-		});
+		describe("DelegateItr", () => {
+			it("should delegate correctly to the underlyig ArrayItr", () => {
+				var delegate = new ArrayItr([1, 2, 3])
+				var Itr = new DelegateItr(delegate)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual(1)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual(2)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual(3)
+				expect(Itr.hasNext()).toEqual(false)
+				expect(() => Itr.next()).toThrow()
+			})
+		})
 	
-		describe("FilteringIterator", () => {
+		describe("FilteringItr", () => {
 			it("should filter the only emit even numbers", () => {
-				var delegate = new ArrayIterator([1, 2, 3, 4, 5]);
-				var iterator = new FilteringIterator(delegate, n => n % 2 == 0);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual(2);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual(4);
-				expect(iterator.hasNext()).toEqual(false);
-				expect(() => iterator.next()).toThrow();
-			});
-		});
+				var delegate = new ArrayItr([1, 2, 3, 4, 5])
+				var Itr = new FilteringItr(delegate, n => n % 2 == 0)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual(2)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual(4)
+				expect(Itr.hasNext()).toEqual(false)
+				expect(() => Itr.next()).toThrow()
+			})
+		})
 		
-		describe("MappingIterator", () => {
+		describe("MappingItr", () => {
 			it("should map the elements to strings", () => {
-				var delegate = new ArrayIterator([1, 2, 3]);
-				var iterator = new MappingIterator(delegate, n => n + " is a string now");
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("1 is a string now");
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("2 is a string now");
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("3 is a string now");
-				expect(iterator.hasNext()).toEqual(false);
-				expect(() => iterator.next()).toThrow();
-			});
-		});
+				var delegate = new ArrayItr([1, 2, 3])
+				var Itr = new MappingItr(delegate, n => n + " is a string now")
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("1 is a string now")
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("2 is a string now")
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("3 is a string now")
+				expect(Itr.hasNext()).toEqual(false)
+				expect(() => Itr.next()).toThrow()
+			})
+		})
 		
-		describe("ConcatenatingIterator", () => {
-			it("should concatenate the 3 iterators, and have 5 elements", () => {
-				var iterator = new ConcatenatingIterator(
-					new ArrayIterator([
-						new ArrayIterator(["A", "B"]),
-						new ArrayIterator(["C"]),
-						new ArrayIterator(["D", "E"])
+		describe("ConcatenatingItr", () => {
+			it("should concatenate the 3 Itrs, and have 5 elements", () => {
+				var Itr = new ConcatenatingItr(
+					new ArrayItr([
+						new ArrayItr(["A", "B"]),
+						new ArrayItr(["C"]),
+						new ArrayItr(["D", "E"])
 					])
-				);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("A");
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("B");
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("C");
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("D");
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("E");
-				expect(iterator.hasNext()).toEqual(false);
-				expect(() => iterator.next()).toThrow();
-			});
-		});
+				)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("A")
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("B")
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("C")
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("D")
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("E")
+				expect(Itr.hasNext()).toEqual(false)
+				expect(() => Itr.next()).toThrow()
+			})
+		})
 		
-		describe("RangeIterator", () => {
+		describe("RangeItr", () => {
 			it("should emit the elements from 1 to 3 inclusive", () => {
-				var iterator = new RangeIterator(1, 3, 1);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual(1);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual(2);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual(3);
-				expect(iterator.hasNext()).toEqual(false);
-				expect(() => iterator.next()).toThrow();
-			});
-		});
+				var Itr = new RangeItr(1, 3, 1)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual(1)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual(2)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual(3)
+				expect(Itr.hasNext()).toEqual(false)
+				expect(() => Itr.next()).toThrow()
+			})
+		})
 		
-		describe("LimitingIterator", () => {
-			it("should limit the endless iterator to 2 elements", () => {
-				var delegate = new EndlessIterator(() => "A");
-				var iterator = new LimitingIterator(delegate, 2);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("A");
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual("A");
-				expect(iterator.hasNext()).toEqual(false);
-				expect(() => iterator.next()).toThrow();
-			});
-		});
+		describe("LimitingItr", () => {
+			it("should limit the endless Itr to 2 elements", () => {
+				var delegate = new EndlessItr(() => "A")
+				var Itr = new LimitingItr(delegate, 2)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("A")
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual("A")
+				expect(Itr.hasNext()).toEqual(false)
+				expect(() => Itr.next()).toThrow()
+			})
+		})
 		
-		describe("SkippingIterator", () => {
+		describe("SkippingItr", () => {
 			it("should skip the first 2 elements, and emit 2 and 3 only", () => {
-				var delegate = new ArrayIterator([0, 1, 2, 3]);
-				var iterator = new SkippingIterator(delegate, 2);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual(2);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual(3);
-				expect(iterator.hasNext()).toEqual(false);
-				expect(() => iterator.next()).toThrow();
-			});
-		});
+				var delegate = new ArrayItr([0, 1, 2, 3])
+				var Itr = new SkippingItr(delegate, 2)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual(2)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual(3)
+				expect(Itr.hasNext()).toEqual(false)
+				expect(() => Itr.next()).toThrow()
+			})
+		})
 		
-		describe("ZipIterator", () => {
-			it("should zip the 2 iterators", () => {
-				var first = new ArrayIterator(["A", "B", "C"]);
-				var second = new ArrayIterator([1, 2, 3]);
-				var iterator = new ZipIterator(first, second);
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual({ first: "A", second: 1 });
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual({ first: "B", second: 2 });
-				expect(iterator.hasNext()).toEqual(true);
-				expect(iterator.next()).toEqual({ first: "C", second: 3 });
-				expect(iterator.hasNext()).toEqual(false);
-				expect(() => iterator.next()).toThrow();
-			});
-		});
+		describe("ZipItr", () => {
+			it("should zip the 2 Itrs", () => {
+				var first = new ArrayItr(["A", "B", "C"])
+				var second = new ArrayItr([1, 2, 3])
+				var Itr = new ZipItr(first, second)
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual({ first: "A", second: 1 })
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual({ first: "B", second: 2 })
+				expect(Itr.hasNext()).toEqual(true)
+				expect(Itr.next()).toEqual({ first: "C", second: 3 })
+				expect(Itr.hasNext()).toEqual(false)
+				expect(() => Itr.next()).toThrow()
+			})
+		})
 		
-		describe("EmptyIterator", () => {
+		describe("EmptyItr", () => {
 			it("should be empty", () => {
-				var iterator = EmptyIterator.instance<any>()
-				expect(iterator.hasNext()).toEqual(false);
-				expect(() => iterator.next()).toThrow();
-			});
-		});
-	});
+				var Itr = EmptyItr.instance<any>()
+				expect(Itr.hasNext()).toEqual(false)
+				expect(() => Itr.next()).toThrow()
+			})
+		})
+	})
 }

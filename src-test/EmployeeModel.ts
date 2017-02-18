@@ -1,10 +1,10 @@
 module tsf.test {
 	/** Main model class representing an employee. */
 	export class Employee {
-		name: String;
-		profession: Profession;
-		boss: Employee;
-		salary: number;
+		name: String
+		profession: Profession
+		boss: Employee
+		salary: number
 	}
 	
 	/** Enum representing the profession of an employee. */
