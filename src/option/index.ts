@@ -1,7 +1,7 @@
 import { Itr, empty, peek, append, singleton } from '../itr'
-import { Sequence, ofIterable } from '../seq'
+import { Seq, ofIterable } from '../seq'
 
-export interface Option<T> extends Sequence<T> {
+export interface Option<T> extends Seq<T> {
 
   /** Returns true, if there is a non-null and non-undefined reference present, false otherwise. */
   isPresent(): boolean
@@ -61,21 +61,21 @@ abstract class BaseOption<T> implements Option<T>  {
   min(comparator: (first: T, second: T) => number): Option<T> { return this }
   head(): Option<T> { return this }
   last(): Option<T> { return this }
-  tail(): Sequence<T> { return None }
+  tail(): Seq<T> { return None }
 
   // Sadly abstract classes still won't allow to implement an interface, 
   // without redeclaring all the methods the interface has.
   abstract all(predicate: (input: T) => boolean): boolean
   abstract any(predicate: (input: T) => boolean): boolean
   abstract at(index: number): Option<T>
-  abstract append(other: Sequence<T>): Sequence<T>
+  abstract append(other: Seq<T>): Seq<T>
   abstract average(mapper: (input: T) => number): number
   abstract contains(item: T, equality?: (a: T, b: T) => boolean): boolean
   abstract count(): number
   abstract filter(predicate: (input: T) => boolean): Option<T>
   abstract findFirst(predicate: (input: T) => boolean): Option<T>
   abstract findLast(predicate: (input: T) => boolean): Option<T>
-  abstract flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R>
+  abstract flatten<R>(sequencify: (input: T) => Seq<R>): Seq<R>
   abstract fold<R>(reducer: (left: R, right: T) => R, initial: R): R
   abstract forEach(consumer: (input: T) => void): void
   abstract indexOf(item: T, equality?: (a: T, b: T) => boolean): Option<number>
@@ -86,11 +86,11 @@ abstract class BaseOption<T> implements Option<T>  {
   abstract peek(consumer: (input: T) => void): Option<T>
   abstract reduce(reducer: (left: T, right: T) => T): Option<T>
   abstract skip(amount: number): Option<T>
-  abstract skipWhile(predicate: (input: T) => boolean): Sequence<T>
+  abstract skipWhile(predicate: (input: T) => boolean): Seq<T>
   abstract sum(mapper: (input: T) => number): number
-  abstract takeWhile(predicate: (input: T) => boolean): Sequence<T>
+  abstract takeWhile(predicate: (input: T) => boolean): Seq<T>
   abstract toArray(): Array<T>
-  abstract zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Option<E>
+  abstract zip<R, E>(other: Seq<R>, combiner: (first: T, second: R) => E): Option<E>
 }
 
 /** Optional with a present value. */
@@ -128,7 +128,7 @@ class Some<T> extends BaseOption<T> {
   filter(predicate: (input: T) => boolean): Option<T> { return predicate(this.get()) ? this : None }
   findFirst(predicate: (input: T) => boolean): Option<T> { return this.filter(predicate) }
   findLast(predicate: (input: T) => boolean): Option<T> { return this.filter(predicate) }
-  flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> { return sequencify(this.get()) }
+  flatten<R>(sequencify: (input: T) => Seq<R>): Seq<R> { return sequencify(this.get()) }
   fold<R>(reducer: (left: R, right: T) => R, initial: R): R { return reducer(initial, this.get()) }
   forEach(consumer: (input: T) => void): void { consumer(this.get()) }
   indexOf(item: T, equality?: (a: T, b: T) => boolean): Option<number> { return (equality || ((a: T, b: T): boolean => a === b)(item, this.get()) ? new Some(0) : None) }
@@ -143,8 +143,8 @@ class Some<T> extends BaseOption<T> {
   sum(mapper: (input: T) => number): number { return mapper(this.get()) }
   takeWhile(predicate: (input: T) => boolean): Option<T> { return this.filter(predicate) }
   toArray(): Array<T> { return [this.get()] }
-  append(other: Sequence<T>): Sequence<T> { return ofIterable(() => append(this.iterator(), other.iterator())) }
-  zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Option<E> {
+  append(other: Seq<T>): Seq<T> { return ofIterable(() => append(this.iterator(), other.iterator())) }
+  zip<R, E>(other: Seq<R>, combiner: (first: T, second: R) => E): Option<E> {
     var otherIt = other.iterator()
     return otherIt.hasNext() ? maybe(combiner(this.get(), otherIt.next())) : None
   }
@@ -163,14 +163,14 @@ const None: Option<any> = {
   all(predicate: (input: any) => boolean): boolean { return true },
   any(predicate: (input: any) => boolean): boolean { return false },
   at(): any { return this },
-  append(other: Sequence<any>): Sequence<any> { return other },
+  append(other: Seq<any>): Seq<any> { return other },
   average(mapper: (input: any) => number): number { return 0 },
   contains(item: any, equality?: (a: any, b: any) => boolean): boolean { return false },
   count(): number { return 0 },
   filter(predicate: (input: any) => boolean): Option<any> { return this },
   findFirst(predicate: (input: any) => boolean): Option<any> { return this },
   findLast(predicate: (input: any) => boolean): Option<any> { return this },
-  flatten<R>(sequencify: (input: any) => Sequence<R>): Sequence<R> { return this },
+  flatten<R>(sequencify: (input: any) => Seq<R>): Seq<R> { return this },
   fold<R>(reducer: (left: R, right: any) => R, initial: R): R { return initial },
   forEach(consumer: (input: any) => void): void { /* no operation */ },
   head(): Option<any> { return this },
@@ -190,7 +190,7 @@ const None: Option<any> = {
   tail(): Option<any> { return this },
   takeWhile(predicate: (input: any) => boolean): Option<any> { return this },
   toArray(): Array<any> { return [] },
-  zip<R, E>(other: Sequence<R>, combiner: (first: any, second: R) => E): Option<E> { return this }
+  zip<R, E>(other: Seq<R>, combiner: (first: any, second: R) => E): Option<E> { return this }
 }
 
 /**

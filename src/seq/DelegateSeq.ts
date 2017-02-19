@@ -1,16 +1,16 @@
-import { Sequence } from './index'
+import { Seq } from './index'
 import { Option } from '../option'
 import { Itr } from '../itr'
 
-export class DelegateSequence<T> implements Sequence<T> {
+export class DelegateSeq<T> implements Seq<T> {
 
-	private mDelegate: Sequence<T>
+	private mDelegate: Seq<T>
 
-	constructor(delegate: Sequence<T>) {
+	constructor(delegate: Seq<T>) {
 		this.mDelegate = delegate
 	}
 
-	protected delegate(): Sequence<T> {
+	protected delegate(): Seq<T> {
 		return this.mDelegate
 	}
 
@@ -26,7 +26,7 @@ export class DelegateSequence<T> implements Sequence<T> {
 		return this.delegate().at(index)
 	}
 
-	append(other: Sequence<T>): Sequence<T> {
+	append(other: Seq<T>): Seq<T> {
 		return this.delegate().append(other)
 	}
 
@@ -42,7 +42,7 @@ export class DelegateSequence<T> implements Sequence<T> {
 		return this.delegate().count(predicate)
 	}
 
-	filter(predicate: (input: T) => boolean): Sequence<T> {
+	filter(predicate: (input: T) => boolean): Seq<T> {
 		return this.delegate().filter(predicate)
 	}
 
@@ -54,7 +54,7 @@ export class DelegateSequence<T> implements Sequence<T> {
 		return this.delegate().findLast(predicate)
 	}
 
-	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
+	flatten<R>(sequencify: (input: T) => Seq<R>): Seq<R> {
 		return this.delegate().flatten(sequencify)
 	}
 
@@ -86,11 +86,11 @@ export class DelegateSequence<T> implements Sequence<T> {
 		return this.delegate().last()
 	}
 
-	limit(limit: number): Sequence<T> {
+	limit(limit: number): Seq<T> {
 		return this.delegate().limit(limit)
 	}
 
-	map<R>(mapper: (input: T) => R): Sequence<R> {
+	map<R>(mapper: (input: T) => R): Seq<R> {
 		return this.delegate().map(mapper)
 	}
 
@@ -102,7 +102,7 @@ export class DelegateSequence<T> implements Sequence<T> {
 		return this.delegate().min(comparator)
 	}
 
-	peek(consumer: (input: T) => void): Sequence<T> {
+	peek(consumer: (input: T) => void): Seq<T> {
 		return this.delegate().peek(consumer)
 	}
 
@@ -110,11 +110,11 @@ export class DelegateSequence<T> implements Sequence<T> {
 		return this.delegate().reduce(reducer)
 	}
 
-	skip(amount: number): Sequence<T> {
+	skip(amount: number): Seq<T> {
 		return this.delegate().skip(amount)
 	}
 
-	skipWhile(predicate: (input: T) => boolean): Sequence<T> {
+	skipWhile(predicate: (input: T) => boolean): Seq<T> {
 		return this.delegate().skipWhile(predicate)
 	}
 
@@ -122,11 +122,11 @@ export class DelegateSequence<T> implements Sequence<T> {
 		return this.delegate().sum(mapper)
 	}
 
-	tail(): Sequence<T> {
+	tail(): Seq<T> {
 		return this.delegate().tail()
 	}
 
-	takeWhile(predicate: (input: T) => boolean): Sequence<T> {
+	takeWhile(predicate: (input: T) => boolean): Seq<T> {
 		return this.delegate().takeWhile(predicate)
 	}
 
@@ -134,7 +134,7 @@ export class DelegateSequence<T> implements Sequence<T> {
 		return this.delegate().toArray()
 	}
 
-	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Sequence<E> {
+	zip<R, E>(other: Seq<R>, combiner: (first: T, second: R) => E): Seq<E> {
 		return this.delegate().zip(other, combiner)
 	}
 }

@@ -1,5 +1,5 @@
 import { Itr } from '../itr'
-import { Sequence, ofIterable } from './index'
+import { Seq, ofIterable } from './index'
 import { Option } from '../option'
 import {
 	all, any, at, concatenate, filter, average, count, append, fold, forEach, head, indexOf, join,
@@ -7,7 +7,7 @@ import {
 } from '../itr'
 
 /** Sequence, which operates on an Itr. */
-export class IterableSequence<T> implements Sequence<T> {
+export class IterableSeq<T> implements Seq<T> {
 	/** The delegeate Itr */
 	private mIterable: () => Itr<T>
 
@@ -32,7 +32,7 @@ export class IterableSequence<T> implements Sequence<T> {
 		return at(this.iterator(), index)
 	}
 
-	append(other: Sequence<T>): Sequence<T> {
+	append(other: Seq<T>): Seq<T> {
 		return ofIterable(() => append(this.iterator(), other.iterator()))
 	}
 
@@ -48,7 +48,7 @@ export class IterableSequence<T> implements Sequence<T> {
 		return count(this.iterator())
 	}
 
-	filter(predicate: (input: T) => boolean): Sequence<T> {
+	filter(predicate: (input: T) => boolean): Seq<T> {
 		return ofIterable(() => filter(this.iterator(), predicate))
 	}
 
@@ -60,7 +60,7 @@ export class IterableSequence<T> implements Sequence<T> {
 		return this.filter(predicate).last()
 	}
 
-	flatten<R>(sequencify: (input: T) => Sequence<R>): Sequence<R> {
+	flatten<R>(sequencify: (input: T) => Seq<R>): Seq<R> {
 		return ofIterable<R>(
 			() => concatenate<R>(this.map(sequencify).map(seq => seq.iterator()).iterator())
 		)
@@ -94,11 +94,11 @@ export class IterableSequence<T> implements Sequence<T> {
 		return last(this.iterator())
 	}
 
-	limit(ct: number): Sequence<T> {
+	limit(ct: number): Seq<T> {
 		return ofIterable(() => limit(this.iterator(), ct))
 	}
 
-	map<R>(mapper: (input: T) => R): Sequence<R> {
+	map<R>(mapper: (input: T) => R): Seq<R> {
 		return ofIterable(() => map(this.iterator(), mapper))
 	}
 
@@ -110,7 +110,7 @@ export class IterableSequence<T> implements Sequence<T> {
 		return min(this.iterator(), comparator)
 	}
 
-	peek(consumer: (input: T) => void): Sequence<T> {
+	peek(consumer: (input: T) => void): Seq<T> {
 		return ofIterable(() => peek(this.iterator(), consumer))
 	}
 
@@ -118,11 +118,11 @@ export class IterableSequence<T> implements Sequence<T> {
 		return reduce(this.iterator(), reducer)
 	}
 
-	skip(amount: number): Sequence<T> {
+	skip(amount: number): Seq<T> {
 		return ofIterable(() => skip(this.iterator(), amount))
 	}
 
-	skipWhile(predicate: (input: T) => boolean): Sequence<T> {
+	skipWhile(predicate: (input: T) => boolean): Seq<T> {
 		return ofIterable(() => skipWhile(this.iterator(), predicate))
 	}
 
@@ -130,11 +130,11 @@ export class IterableSequence<T> implements Sequence<T> {
 		return sum(this.map(mapper).iterator())
 	}
 
-	tail(): Sequence<T> {
+	tail(): Seq<T> {
 		return ofIterable(() => tail(this.iterator()))
 	}
 
-	takeWhile(predicate: (input: T) => boolean): Sequence<T> {
+	takeWhile(predicate: (input: T) => boolean): Seq<T> {
 		return ofIterable(() => takeWhile(this.iterator(), predicate))
 	}
 
@@ -142,7 +142,7 @@ export class IterableSequence<T> implements Sequence<T> {
 		return toArray(this.iterator())
 	}
 
-	zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Sequence<E> {
+	zip<R, E>(other: Seq<R>, combiner: (first: T, second: R) => E): Seq<E> {
 		return ofIterable(() => zip(this.iterator(), other.iterator(), combiner))
 	}
 
