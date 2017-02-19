@@ -15,14 +15,18 @@
     "sequence"
   ],
   "devDependencies": {
+    "@types/chai": "^3.4.35",
+    "@types/mocha": "^2.2.39",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
     "rollup": "^0.41.4",
     "rollup-plugin-typescript": "^0.8.1",
+    "ts-node": "^2.1.0",
     "typescript": "^2.1.6"
   },
   "scripts": {
     "build": "rollup -c rollup.config.js --verbose",
-    "roll": "rollup",
-    "test": "gulp test"
+    "test": "mocha --opts mocha.opts"
   },
   "analyze": true,
   "license": "MIT"
