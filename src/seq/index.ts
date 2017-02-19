@@ -215,7 +215,7 @@ export function ofIterable<T>(iterable: () => Itr<T>): Sequence<T> {
  */
 export function ofArray<T>(array: Array<T>): Sequence<T> {
 	if (array.length === 0) {
-		return empty<T>()
+		return EmptySequence.instance<T>()
 	}
 	return ofIterable(() => itrOfArray(array))
 }
@@ -234,7 +234,7 @@ export function ofValue<T>(value: T): Sequence<T> {
  */
 export function ofValues<T>(...values: Array<T>): Sequence<T> {
 	switch (values.length) {
-		case 0: return empty<T>()
+		case 0: return EmptySequence.instance<T>()
 		case 1: return ofValue(values[0])
 		default: return ofArray(values)
 	}
@@ -272,7 +272,7 @@ export function range(from: number, to: number, delta?: number): Sequence<number
  */
 export function concatenate<T>(...sequences: Array<Sequence<T>>): Sequence<T> {
 	if (sequences.length === 0) {
-		return empty<T>()
+		return EmptySequence.instance<T>()
 	} else if (length === 1) {
 		return sequences[0]
 	} else {
@@ -284,9 +284,6 @@ export function concatenate<T>(...sequences: Array<Sequence<T>>): Sequence<T> {
 	}
 }
 
-/**
- * Constructs an empty Sequence.
- */
 export function empty<T>(): Sequence<T> {
 	return EmptySequence.instance<T>()
 }

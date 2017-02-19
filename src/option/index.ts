@@ -1,6 +1,5 @@
 import { Itr, empty, peek, append, singleton } from '../itr'
-import { Sequence } from '../seq'
-import { IterableSequence } from '../seq/IterableSequence'
+import { Sequence, ofIterable } from '../seq'
 
 export interface Option<T> extends Sequence<T> {
 
@@ -144,7 +143,7 @@ class Some<T> extends BaseOption<T> {
   sum(mapper: (input: T) => number): number { return mapper(this.get()) }
   takeWhile(predicate: (input: T) => boolean): Option<T> { return this.filter(predicate) }
   toArray(): Array<T> { return [this.get()] }
-  append(other: Sequence<T>): Sequence<T> { return new IterableSequence(() => append(this.iterator(), other.iterator())) }
+  append(other: Sequence<T>): Sequence<T> { return ofIterable(() => append(this.iterator(), other.iterator())) }
   zip<R, E>(other: Sequence<R>, combiner: (first: T, second: R) => E): Option<E> {
     var otherIt = other.iterator()
     return otherIt.hasNext() ? maybe(combiner(this.get(), otherIt.next())) : None

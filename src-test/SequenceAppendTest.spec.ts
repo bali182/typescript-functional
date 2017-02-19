@@ -1,6 +1,8 @@
+import 'mocha'
+import { expect } from 'chai'
+
 import { range, ofArray, empty, repeat, generate, ofValue, ofValues } from '../src/seq'
 import { some, none } from '../src/option'
-import { describe, it, expect } from 'jasmine'
 
 describe('Sequence#append', () => {
 	it('should be A, B, C, D, E, when appending 3 sequences', () => {
@@ -10,7 +12,7 @@ describe('Sequence#append', () => {
 		const complete = ofArray(first)
 			.append(ofArray(second))
 			.append(ofArray(third))
-		expect(complete.toArray()).toEqual(['A', 'B', 'C', 'D', 'E'])
+		expect(complete.toArray()).to.deep.equal(['A', 'B', 'C', 'D', 'E'])
 	})
 
 	it('should b A x2, B x3, C x1 when appending 3 limited endless sequences', () => {
@@ -18,7 +20,7 @@ describe('Sequence#append', () => {
 		const second = generate(() => 'B').limit(3)
 		const third = repeat('C').limit(1)
 		const complete = first.append(second).append(third)
-		expect(complete.toArray()).toEqual(['A', 'A', 'B', 'B', 'B', 'C'])
+		expect(complete.toArray()).to.deep.equal(['A', 'A', 'B', 'B', 'B', 'C'])
 	})
 
 	it('should be 0 - 10 when appending 3 ranges', () => {
@@ -26,7 +28,7 @@ describe('Sequence#append', () => {
 		const second = range(4, 5)
 		const third = range(6, 10)
 		const complete = first.append(second).append(third)
-		expect(complete.toArray()).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+		expect(complete.toArray()).to.deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 	})
 
 	// Because Itrs are deeply nested, this is slow, and memory consuming.
@@ -36,7 +38,7 @@ describe('Sequence#append', () => {
 		for (let i = 0; i < repeats; i++) {
 			appended = appended.append(ofValue('A'))
 		}
-		expect(appended.toArray()).toEqual(repeat('A').limit(repeats).toArray())
+		expect(appended.toArray()).to.deep.equal(repeat('A').limit(repeats).toArray())
 	})
 
 	it('should be a, b, c, d, e, when appending to empty optional', () => {
@@ -46,7 +48,7 @@ describe('Sequence#append', () => {
 			.append(ofArray(['c']))
 			.append(ofValues('d', 'e'))
 			.toArray()
-		expect(elements).toEqual(['a', 'b', 'c', 'd', 'e'])
+		expect(elements).to.deep.equal(['a', 'b', 'c', 'd', 'e'])
 	})
 
 	it('should be a, b, c, d, e, f when appending to a non-empty optional', () => {
@@ -56,6 +58,6 @@ describe('Sequence#append', () => {
 			.append(ofArray(['d']))
 			.append(ofValues('e', 'f'))
 			.toArray()
-		expect(elements).toEqual(['a', 'b', 'c', 'd', 'e', 'f'])
+		expect(elements).to.deep.equal(['a', 'b', 'c', 'd', 'e', 'f'])
 	})
 })
